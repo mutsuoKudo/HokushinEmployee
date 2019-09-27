@@ -1,0 +1,52 @@
+body {
+    background-color: #E8E7E1 !important;
+}
+
+.function-button {
+    background-color: #F7F7EF !important;
+    padding: 10px 30px;
+}
+
+.function-button2 {
+    background-color: #F7F7EF !important;
+    border-top: #DD1122 1px solid;
+    border-left: #DD1122 1px solid;
+    border-bottom: #DD1122 2px solid;
+    border-right: #DD1122 2px solid;
+    padding: 10px 30px;
+}
+
+td {
+    word-break: break-all;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: palevioletred !important;
+}
+
+
+/* 中デバイス（タブレット, 992px 未満） */
+
+@media (max-width: 991.98px) {
+    /* 操作 */
+    .hs-md-th1 {
+        width: 25% !important;
+    }
+    /* 社員コード */
+    .hs-md-th2 {
+        width: 30% !important;
+    }
+    /* 社員名 */
+    .hs-md-th3 {
+        width: 30% !important;
+    }
+    /* 部門 */
+    .hs-md-th4 {
+        width: 15% !important;
+    }
+}
+
+.error {
+    color: #DD1122;
+}
