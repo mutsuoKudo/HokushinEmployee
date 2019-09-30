@@ -59,6 +59,7 @@ class CRUDController extends Controller
         $employee->name_card = $request->name_card;
         $employee->id_card = $request->id_card;
         $employee->fuyo_kazoku = $request->fuyo_kazoku;
+        $employee->test = $request->test;
         $employee->remarks = $request->remarks;
 
         $employee->save();
@@ -130,6 +131,7 @@ class CRUDController extends Controller
         $employee->name_card = $request->input('name_card');
         $employee->id_card = $request->input('id_card');
         $employee->fuyo_kazoku = $request->input('fuyo_kazoku');
+        $employee->test = $request->input('test');
         $employee->remarks = $request->input('remarks');
         $employee->save();
 
