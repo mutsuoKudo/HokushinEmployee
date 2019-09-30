@@ -9,7 +9,6 @@
 <!-- 新規登録完了時に表示されるメッセージ -->
 @if (session('create'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('create') }}</div>@endif
 
-
 <div class="container">
 	<div class="col-sm-12">
 		<div class="panel panel-default">
@@ -307,53 +306,94 @@
 		<div class="panel panel-default mt-2">
 
 			<div class="panel-body">
-				<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
-					<tbody>
+				<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+					<thead>
 						<tr>
-							<th class="table-text hs-md-th1" width="10%">
+							<th class="table-text hs-md-th1" style="min-width:30px">
 								<div>操作</div>
 							</th>
-							<th class="table-text hs-md-th2" width="12%">
+							<th class="table-text hs-md-th2" style="min-width:50px">
 								<div>社員コード</div>
 							</th>
-							<th class="table-text hs-md-th3">
+							<th class="table-text hs-md-th3" style="min-width:50px">
 								<div>社員名</div>
 							</th>
-							<th class="table-text">
+							<th class="table-text" style="min-width:50px">
 								<div>社員名（カナ）</div>
 							</th>
-							<!-- <th class="table-text" width="4%"><div>社員名（ローマ字）</div></th> -->
-							<th class="table-text">
+							<th class="table-text" style="min-width:50px">
+								<div>社員名（ローマ字）</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
 								<div>メール</div>
 							</th>
-							<!-- <th class="table-text" width="4%"><div>性別</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>郵便番号</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>住所</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>住所（建物）</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>誕生日</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>入社日</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>正社員転換日</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>転籍日</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>退職日</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>社員形態</div></th> -->
+							<th class="table-text" style="min-width:50px">
+								<div>性別</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>郵便番号</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>住所</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>住所（建物）</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>誕生日</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>入社日</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>正社員転換日</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>転籍日</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>退職日</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>社員形態</div>
+							</th>
 							<th class="table-text">
 								<div>電話番号</div>
 							</th>
-							<!-- <th class="table-text" width="4%"><div>雇用保険番号</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>社会保険番号</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>基礎年金番号</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>月給</div></th> -->
-							<th class="table-text hs-md-th4" width="8%">
+							<th class="table-text" style="min-width:50px">
+								<div>雇用保険番号</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>社会保険番号</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>基礎年金番号</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>月給</div>
+							</th>
+							<th class="table-text hs-md-th4" style="min-width:30px">
 								<div>部門</div>
 							</th>
-							<!-- <th class="table-text" width="4%"><div>名刺</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>idカード</div></th> -->
-							<!-- <th class="table-text" width="4%"><div>扶養家族</div></th> -->
-							<th class="table-text">
+							<th class="table-text" style="min-width:50px">
+								<div>名刺</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>idカード</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>扶養家族</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
+								<div>入社試験点数</div>
+							</th>
+							<th class="table-text" style="min-width:50px">
 								<div>備考</div>
 							</th>
 
 						</tr>
+					</thead>
+					<tbody>
 						@foreach ($employees as $employee)
 						<tr>
 							<!-- Task Delete Button -->
@@ -381,33 +421,72 @@
 							<td class="table-text">
 								<div>{{ $employee->shain_mei_kana }}</div>
 							</td>
-							<!-- <td class="table-text"><div>{{ $employee->shain_mei_romaji }}</div></td> -->
+							<td class="table-text">
+								<div>{{ $employee->shain_mei_romaji }}</div>
+							</td>
 							<td class="table-text">
 								<div>{{ $employee->shain_mail }}</div>
 							</td>
-							<!-- <td class="table-text"><div>{{ $employee->gender }}</div></td>
-										<td class="table-text"><div>{{ $employee->shain_zip_code }}</div></td>
-										<td class="table-text"><div>{{ $employee->shain_jyusho }}</div></td>
-										<td class="table-text"><div>{{ $employee->shain_jyusho_tatemono }}</div></td>
-										<td class="table-text"><div>{{ $employee->shain_birthday }}</div></td>
-										<td class="table-text"><div>{{ $employee->nyushabi }}</div></td>
-										<td class="table-text"><div>{{ $employee->seishain_tenkanbi }}</div></td>
-										<td class="table-text"><div>{{ $employee->tensekibi }}</div></td>
-										<td class="table-text"><div>{{ $employee->taishokubi }}</div></td>
-										<td class="table-text"><div>{{ $employee->shain_keitai }}</div></td> -->
+							<td class="table-text">
+								<div>{{ $employee->gender }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->shain_zip_code }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->shain_jyusho }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->shain_jyusho_tatemono }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->shain_birthday }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->nyushabi }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->seishain_tenkanbi }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->tensekibi }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->taishokubi }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->shain_keitai }}</div>
+							</td>
 							<td class="table-text">
 								<div>{{ $employee->shain_tel }}</div>
 							</td>
-							<!-- <td class="table-text"><div>{{ $employee->koyohoken_bango }}</div></td>
-										<td class="table-text"><div>{{ $employee->shakaihoken_bango }}</div></td>
-										<td class="table-text"><div>{{ $employee->kisonenkin_bango }}</div></td>
-										<td class="table-text"><div>{{ $employee->monthly_saraly }}</div></td> -->
+							<td class="table-text">
+								<div>{{ $employee->koyohoken_bango }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->shakaihoken_bango }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->kisonenkin_bango }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->monthly_saraly }}</div>
+							</td>
 							<td class="table-text">
 								<div>{{ $employee->department }}</div>
 							</td>
-							<!-- <td class="table-text"><div>{{ $employee->name_card }}</div></td>
-										<td class="table-text"><div>{{ $employee->id_card }}</div></td>
-										<td class="table-text"><div>{{ $employee->fuyo_kazoku }}</div></td> -->
+							<td class="table-text">
+								<div>{{ $employee->name_card }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->id_card }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->fuyo_kazoku }}</div>
+							</td>
+							<td class="table-text">
+								<div>{{ $employee->test }}</div>
+							</td>
 							<td class="table-text">
 								<div>{{ $employee->remarks }}</div>
 							</td>
