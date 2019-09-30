@@ -28,7 +28,7 @@
 
 
 					<!-- ALL -->
-					<form action="/all" method="GET">
+					<form action="/employee/public/all" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="all" value="ALL" class="mr-2 mt-1 function-button">
 					</form>

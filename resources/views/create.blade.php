@@ -7,7 +7,8 @@
 
             <div class="panel-body">
                 <div class="mt-2 text-center">
-                    <a href="/" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- トップに戻るボタン -->
+                    <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
                 </div>
             </div>
         </div>
@@ -25,7 +26,8 @@
 
                 </thead>
                 <tbody>
-                    <form class="form-signin" role="form" method="post" action="/submit">
+                    <!-- 新規登録ボタン -->
+                    <form class="form-signin" role="form" method="post" action="/employee/public/submit">
                         {{ csrf_field() }}
                         <tr>
                             <th>社員コード<small class="float-right text-danger">※必須</small></th>
@@ -199,7 +201,8 @@
     </div>
 
     <div class="mt-3 text-center">
-        <a href="/" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+        <!-- トップに戻るボタン -->
+        <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
     </div>
 </div>
 </div>

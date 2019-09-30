@@ -11,8 +11,10 @@
                 @include('common.errors')
 
                 <div class="mt-4 text-center">
-                    <a href="/" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
-                    <form action="/edit/{{$employee->shain_cd}}" method="GET">
+                    <!-- トップに戻るボタン -->
+                    <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- 編集ボタン -->
+                    <form action="/employee/public/edit/{{$employee->shain_cd}}" method="GET">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
                     </form>
@@ -143,8 +145,10 @@
             </div>
 
             <div class="mt-5 text-center">
-                <a href="/" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
-                <form action="/edit/{{$employee->shain_cd}}" method="GET">
+                <!-- トップに戻るボタン -->
+                <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                <!-- 編集ボタン -->
+                <form action="/employee/public/edit/{{$employee->shain_cd}}" method="GET">
                     {{ csrf_field() }}
                     <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
                 </form>

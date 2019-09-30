@@ -7,11 +7,14 @@
 
             <div class="panel-body">
                 <div class="col-12 mt-2 text-center">
-                    <a href="/" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- トップに戻るボタン -->
+                    <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- 詳細画面に戻るボタン -->
                     <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
                     {{ csrf_field() }}
                         <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -29,7 +32,8 @@
 
                     </thead>
                     <tbody>
-                        <form class="form-signin" role="form" method="post" action="/update/{{ $employee->shain_cd }}">
+                        <!-- 更新ボタン -->
+                        <form class="form-signin" role="form" method="post" action="/employee/public/update/{{ $employee->shain_cd }}">
                         {{ csrf_field() }}
                             <tr>
                                 <th>社員コード<small class="float-right text-danger">※必須</small></th>
@@ -362,7 +366,7 @@
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     {{-- 隠しフィールド --}}
                                     <input type="hidden" name="_method" value="PATCH">
-                                    <textarea name="remarks" value="{{ $employee->remarks }}" class="form-control" placeholder="ご自由にご入力ください"></textarea>
+                                    <textarea name="remarks" value="{{ $employee->remarks }}" class="form-control" placeholder="ご自由にご入力ください">{{ $employee->remarks }}</textarea>
                                     {{-- バリデーション --}}
                                     @if($errors->has('remarks'))
                                     <p class="text-danger" style="margin-bottom: 30px;">{{ $errors->first('remarks') }}</p>
@@ -381,7 +385,9 @@
         </div>
 
         <div class="mt-3 p-0 text-center">
-            <a href="/" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+            <!-- トップに戻る -->
+            <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+            <!-- 詳細画面に戻るボタン -->
             <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
             {{ csrf_field() }}
                 <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
