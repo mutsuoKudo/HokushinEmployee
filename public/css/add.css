@@ -50,3 +50,8 @@ textarea::placeholder {
 .error {
     color: #DD1122;
 }
+
+#data-teble>thead>tr>th.table-text.hs-md-th1.sorting_asc::after {
+    content: "" !important;
+    cursor: none !important;
+}

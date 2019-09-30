@@ -50,6 +50,9 @@ Route::group(['middleware' => ['web']], function(){
     //編集ボタンクリック→編集画面表示
     Route::get('/edit/{employee}', 'CRUDController@edit');
 
+    //有給取得日数明細ボタンクリック→有給明細
+    Route::get('/holiday/{employee}', 'HolidayController@holiday');
+
     //更新ボタンクリック→更新完了の場合、トップページにリダイレクト
     Route::patch('/update/{id}', 'CRUDController@update');
 

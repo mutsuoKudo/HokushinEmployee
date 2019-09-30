@@ -14,14 +14,146 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/add.js') }}" defer></script>
 
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/add.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <!-- DataTablesプラグイン -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css" />
+    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+
+
+    <script>
+        jQuery(function($) {
+            // デフォルトの設定を変更
+            $.extend($.fn.dataTable.defaults, {
+                language: {
+                    url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
+                }
+            });
+
+            $("#data-teble").DataTable({
+                // // 横スクロールバーを有効にする (scrollXはtrueかfalseで有効無効を切り替えます)
+                // scrollX: true,
+                // // 縦スクロールバーを有効にする (scrollYは200, "200px"など「最大の高さ」を指定します)
+                // scrollY: 1000
+                columnDefs: [
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 4,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 5,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 6,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 7,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 8,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 9,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 11,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 12,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 13,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 14,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 15,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 16,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 17,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 18,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 19,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 20,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 22,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 23,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 24,
+                        visible: false
+                    },
+                    // 1列目を消す(visibleをfalseにすると消えます)
+                    {
+                        targets: 25,
+                        visible: false
+                    },
+                    {
+                        "orderable": false,
+                        "targets": [0,2,10,21,26]
+                    }
+                ]
+            });
+        });
+    </script>
+
 </head>
 
 <body>
@@ -48,11 +180,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
-                        @if (Route::has('register'))
+                        <!-- @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                        @endif
+                        @endif -->
                         @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
