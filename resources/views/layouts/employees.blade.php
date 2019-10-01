@@ -90,7 +90,7 @@
 									<!-- <th class="table-text" width="4%"><div>正社員転換日</div></th> -->
 									<!-- <th class="table-text" width="4%"><div>転籍日</div></th> -->
 									<!-- <th class="table-text" width="4%"><div>退職日</div></th> -->
-									<!-- <th class="table-text" width="4%"><div>社員形態</div></th> -->
+									<!-- <th class="table-text" width="4%"><div>社員携帯</div></th> -->
 									<th class="table-text" width="4%"><div>電話番号</div></th>
 									<!-- <th class="table-text" width="4%"><div>雇用保険番号</div></th> -->
 									<!-- <th class="table-text" width="4%"><div>社会保険番号</div></th> -->

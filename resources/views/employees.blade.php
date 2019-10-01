@@ -355,7 +355,7 @@
 								<div>退職日</div>
 							</th>
 							<th class="table-text" style="min-width:50px">
-								<div>社員形態</div>
+								<div>社員携帯</div>
 							</th>
 							<th class="table-text">
 								<div>電話番号</div>

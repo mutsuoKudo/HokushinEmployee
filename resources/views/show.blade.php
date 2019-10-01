@@ -34,7 +34,7 @@
                 <?php
                 $year = \Carbon\Carbon::now();
                 ?>
-                {{Form::select('age', [$year->year, $year->subYears(1) , $year->subYears(2)])}}
+                {{Form::select('year', [$year->year, $year->subYears(1) , $year->subYears(2)])}}
                     <!-- <select name="holiday" class="mr-2 mt-3" style="font-size: 18px;">
                         <option value="2017">2017年</option>
                         <option value="2018">2018年</option>
@@ -107,7 +107,7 @@
                             <td>{{ $employee->taishokubi }}</td>
                         </tr>
                         <tr>
-                            <th>社員形態</th>
+                            <th>社員携帯</th>
                             <td>{{ $employee->shain_keitai }}</td>
                         </tr>
                         <tr>
