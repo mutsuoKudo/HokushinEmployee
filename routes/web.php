@@ -1,6 +1,7 @@
 <?php
 
 use App\Employee;
+use App\Holiday;
 use Illuminate\Http\Request;
 
 /*

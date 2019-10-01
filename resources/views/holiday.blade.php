@@ -15,10 +15,10 @@
                     <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
                     <!-- 詳細画面に戻るボタン -->
                     <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
-                    {{ csrf_field() }}
-                    <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
-                </form>
-            </div>
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -32,9 +32,8 @@
 
             <div class="panel-body">
                 <div class="text-center mb-5">
-                    <p>社員コード：　{{ $holiday->shain_cd }}</p>
-                    <!-- <p>社員名：　{{ $employee->shain_mei }}</p> -->
-                    <p>社員名：　{{ $employee->shain_mei }}</p>
+                    <p>社員コード：　{{ $employee -> shain_cd }} </p>
+                    <p>社員名：　{{ $employee -> shain_mei }} </p>
                 </div>
 
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -43,30 +42,15 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th>有給基準日</th>
-                            <td>{{ $holiday->shain_cd }}　日</td>
-                        </tr>
-                        <tr>
-                            <th>期首有給残高</th>
-                            <td>{{ $holiday->shain_cd }}　日</td>
-                        </tr>
-                        <tr>
                             <th>今期有給消化日数</th>
-                            <td>{{ $holiday->shain_cd }}　日</td>
+                            <td>{{ $holiday_count }}　日</td>
                         </tr>
                         <tr>
-                            <th>今期有給消化残日数</th>
-                            <td>{{ $holiday->shain_cd }}　日</td>
-                        </tr>
-                        <tr>
-                            <th rowspan="3">今期有給消化日</th>
-                            <td>{{ $holiday->shain_cd }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ $holiday->shain_cd }}</td>
-                        </tr>
-                        <td>{{ $holiday->shain_cd }}</td>
-                        </tr>
+                            <th>今期有給消化日</th>
+                            @if(isset($holiday))
+                            <td>{{ $holiday[0] }}</td>
+                            @endif
+                        </tr>>
                     </tbody>
                 </table>
 
@@ -77,10 +61,10 @@
                 <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
                 <!-- 詳細画面に戻るボタン -->
                 <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
-                {{ csrf_field() }}
-                <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
-            </form>
-        </div>
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
+                </form>
+            </div>
 
         </div>
     </div>
