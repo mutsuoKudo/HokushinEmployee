@@ -29,18 +29,15 @@
             </div>
 
             <div class="float-right mr-5">
-                <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="GET">
-                {{ csrf_field() }}
-                <?php
-                $year = \Carbon\Carbon::now();
-                ?>
-                {{Form::select('year', [$year->year, $year->subYears(1) , $year->subYears(2)])}}
-                    <!-- <select name="holiday" class="mr-2 mt-3" style="font-size: 18px;">
-                        <option value="2017">2017年</option>
-                        <option value="2018">2018年</option>
-                        <option value="2019" selected>2019年</option>
-                    </select> -->
-                    <button type="submit" class="btn btn-info mr-2 mb-2">有給取得日明細</button>
+                <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
+                    {{ csrf_field() }}
+                    <select name='year'>
+                        <option value='2017'>2017年</option>
+                        <option value='2018'>2018年</option>
+                        <option value='2019' selected>2019年</option>
+                        <option value='2020'>2020年</option>
+                    </select>
+                    <input type="submit" class="btn btn-info mr-2 mb-2" value="有給取得日明細">
                 </form>
             </div>
 

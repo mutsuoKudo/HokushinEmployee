@@ -25,7 +25,10 @@
         <!-- Books -->
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
-                有給取得日明細
+                <?php
+                print $_POST['year'];
+                ?>
+            年　有給取得日明細
             </div>
 
 
@@ -37,19 +40,25 @@
                 </div>
 
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
-                    <thead>
 
-                    </thead>
                     <tbody>
                         <tr>
-                            <th>今期有給消化日数</th>
+                            <th class="text-center">今期有給消化日数</th>
                             <td>{{ $holiday_count }}　日</td>
                         </tr>
                         <tr>
-                            <th>今期有給消化日</th>
-                            @if(isset($holiday))
-                            <td>{{ $holiday[0] }}</td>
-                            @endif
+                            <th class="text-center">月別有給取得日数</th>
+                            <td></td>
+                        </tr>
+                        @foreach ($get_holiday as $get_holidays)
+                        <tr>
+                            <th class="text-center">{{ $get_holidays->month}}月</th>
+                            <td>{{ $get_holidays->day}}日</td>
+                        </tr>
+                        @endforeach
+
+
+
                         </tr>>
                     </tbody>
                 </table>

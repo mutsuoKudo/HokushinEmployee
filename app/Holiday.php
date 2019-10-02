@@ -8,7 +8,7 @@ class Holiday extends Model
 {
     //
      // 主キーの指定
-     protected $primaryKey = 'id';
+    //  protected $primaryKey = 'id';
 
 
 }

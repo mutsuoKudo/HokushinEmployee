@@ -14,93 +14,56 @@ class HolidayController extends Controller
 
     public function holiday($id)
     {
-        //
-        // $holiday = Holiday::find($id);
+
         $employee = Employee::find($id);
 
-
-        // // 基準日の計算
-        // $kijunbi2 = DB::raw('ADDDATE(nyushabi , INTERVAL +3 MONTH) AS "kijunbi"');
-        // $kijunbi = DB::table('employees')
-        //     ->select($kijunbi2)
-        //     ->where('shain_cd', $id)
-        //     // ->toSQL();
-        //     ->get();
-        //     // ->toArray();
-
-        //     $collection = collect($kijunbi)->toArray();
-        // var_dump($collection);
-
-
-        // var_dump($kijunbi);
-
-
-        // $test_array = ["テスト1","テスト2", "テスト3"];
-        // var_dump($test_array);
-
-
-        // 今期有給消化日の計算
-        // $get_holiday2 = DB::raw('holidays.date');
-        // $get_holiday = DB::table('employees')
-        //     ->select($get_holiday2)
-        //     ->join('holidays', 'employees.shain_cd', '=', 'holidays.shain_cd')
-        //     // ->where('employees.shain_cd', $id)
-        //     ->where(DB::raw('employees.shain_cd = 15010051'))
-        //     ->toSQL();
-        // ->get();
-
-
-
-        // $employees = Employee::all();
-        // $get_holiday = DB::table('holidays')
-        // ->select('date')
-        // // ->where('shain_cd', $id)
-        // ->whereNull('date ')
-        // ->toSQL();
-        // ->get();
-
         $holiday_count = DB::table('holidays')
-            ->where('shain_cd', $id)
-            ->count();
+            // ->where('shain_cd', $id)
+            // ->where('holidays.year',"2019")
+            ->select(DB::raw('sum(day)'))
+            ->where(DB::raw('CONCAT(year, month) > 20194 AND CONCAT(year, month) < 20203 AND shain_cd = 2007010021'))
+            // ->where('shain_cd',$id)
+            // ->sum('day')
+            // ->get();
+        ->toSQL();
 
-        $holiday = DB::table('holidays')
-            ->select('day')
-            ->where('shain_cd', $id)
+        // SELECT year,month FROM holidays WHERE CONCAT(year, month) BETWEEN 20194 AND 20203 AND shain_cd = 2007010021
+        // SELECT year,month,sum(day) FROM holidays WHERE CONCAT(year, month) BETWEEN 20194 AND 20203 AND shain_cd = 2007010021
+        
+
+        // var_dump($holiday_count);
+
+
+        $get_holiday = DB::table('holidays')
+            ->select('day', 'month')
+            // ->where('shain_cd', $id)
+            ->join('employees', 'holidays.shain_cd', '=', 'employees.shain_cd')
+            ->where('employees.shain_cd', $id)
+            ->where('holidays.year', "2019")
+            ->whereNotNull('holidays.month')
+            // ->toSQL();
             ->get();
 
-            var_dump($holiday);
+        // var_dump($get_holiday_5);
 
+        // SELECT day FROM holidays LEFT JOIN employees USING (shain_cd) WHERE shain_cd = 15010051 AND month = 5
 
+        // select `day` from `holidays` inner join `employees` on `holidays`.`shain_cd` = `employees`.`shain_cd` where employees.`shain_cd` = 15010051 and holidays.`month` = 5
 
-        // var_dump($holiday);
 
 
         return view('/holiday')->with([
             // 'holiday' => $holiday,
             'employee' => $employee,
             'holiday_count' => $holiday_count,
-            'holiday' => $holiday,
+            'get_holiday' => $get_holiday,
             'shain_cd' => $id,
+            // 'year' -> $year,
 
         ]);
+
+
     }
+
+    
 }
-
-
-
-
-
-
-// $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
-
-// $employees = DB::table('employees')
-//     ->whereNull('taishokubi')
-//     ->whereBetween($birthday, [60, 69])
-//     ->get();
-
-// $title = "60代";
-
-// return view('employees')->with([
-//     'title' => $title,
-//     'employees' => $employees,
-// ]);
