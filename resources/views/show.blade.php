@@ -30,14 +30,25 @@
 
             <div class="float-right mr-5">
                 <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
+                
                     {{ csrf_field() }}
                     <select name='year'>
-                        <option value='2017'>2017年</option>
-                        <option value='2018'>2018年</option>
+
+                    <?php
+                    $year = date('Y');
+                    for($i = 2015; $i <= $year; $i++){
+                        if($i == $year){
+                            echo '<option value="', $i, '" selected >', $i, '年</option>'; 
+                        }
+                        echo '<option value="', $i, '">', $i, '年</option>'; 
+                    }
+                    ?>
+                        <!-- <option value='2018'>2018年</option>
                         <option value='2019' selected>2019年</option>
-                        <option value='2020'>2020年</option>
+                        <option value='2020'>2020年</option> -->
                     </select>
                     <input type="submit" class="btn btn-info mr-2 mb-2" value="有給取得日明細">
+                    <!-- <input type="hidden" value=""> -->
                 </form>
             </div>
 

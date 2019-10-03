@@ -12,5 +12,7 @@ class Employee extends Model
      // 主キーが数値型ではない場合
     protected $keyType = 'string';
 
+    protected $dates = ['day_month'];
+
     
 }

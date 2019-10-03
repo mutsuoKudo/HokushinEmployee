@@ -28,7 +28,7 @@
                 <?php
                 print $_POST['year'];
                 ?>
-            年　有給取得日明細
+                年　有給取得日明細
             </div>
 
 
@@ -43,17 +43,38 @@
 
                     <tbody>
                         <tr>
-                            <th class="text-center">今期有給消化日数</th>
-                            <td>{{ $holiday_count }}　日</td>
+                            <th class="text-center">有給基準月</th>
+                            @if(isset($day_month))
+                            <td>{{ $day_month }}　月</td>
+                            @elseif($day_month = false)
+                            <td>データがありません</td>
+                            @endif
                         </tr>
+                        <tr>
+                            <th class="text-center">今期有給消化日数</th>
+                            @foreach($holiday_count as $counts)
+                            @if(isset($counts->sumday))
+                            <td>{{ $counts->sumday }}　日</td>
+                            @elseif(is_null($counts->sumday))
+                            <td>データがありません</td>
+                            @endif
+                            @endforeach
+                        </tr>
+
                         <tr>
                             <th class="text-center">月別有給取得日数</th>
                             <td></td>
                         </tr>
                         @foreach ($get_holiday as $get_holidays)
                         <tr>
-                            <th class="text-center">{{ $get_holidays->month}}月</th>
+                            <th class="text-center">
+                            @if(isset($get_holidays->day))
+                                <?php print $_POST['year']; ?>年 {{ $get_holidays->month}}月</th>
                             <td>{{ $get_holidays->day}}日</td>
+                            @elseif(is_null($get_holidays->day))
+                            <th></th>
+                            <td>データがありません</td>
+                            @endif
                         </tr>
                         @endforeach
 
