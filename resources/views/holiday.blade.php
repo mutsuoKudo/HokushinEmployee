@@ -39,28 +39,52 @@
                     <p>社員名：　{{ $employee -> shain_mei }} </p>
                 </div>
 
+
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <tbody>
                         <tr>
                             <th class="text-center">有給基準月</th>
-                            @if(empty($day_month))
+                            @if(empty($kijunbi_month))
                             <td>データがありません</td>
                             @else
-                            <td>{{ $day_month }}　月</td>
+                            <td>{{ $kijunbi_month }}　月</td>
                             @endif
-                        </tr>
-                        <tr>
-                            <th class="text-center">今期有給消化日数</th>
-                            @foreach($holiday_count as $counts)
-                            @if(isset($counts->sumday))
-                            <td>{{ $counts->sumday }}　日</td>
-                            @else
-                            <td>データがありません</td>
-                            @endif
-                            @endforeach
                         </tr>
 
                         <tr>
+                            <th class="text-center">有給期首残高</th>
+                            @if($post_year == $nyushabi_year)
+                            <td>{{$first_kisyu_nokori}}　日</td>
+                            @else
+                            <td>{{$kisyu_nokori}}　日</td>
+                            @endif
+                        </tr>
+
+                        <tr>
+                            <th class="text-center">今期有給消化日数</th>
+                            @foreach($holiday_count as $counts)
+                                @if(isset($counts->sumday))
+                                <?php $cure_month = date('Ym');
+                                    // var_dump("現在の年月：" .$cure_month);
+                                    ?>
+                                    <!-- {{$day_max_before3}} -->
+                                    @if($day_max_before3 == $cure_month AND $counts->sumday <= 3)
+                                    <td style="color:red">{{ $counts->sumday }}　日　<small>※3日休んでいません！</small></td>
+                                    @else
+                                    <td>{{ $counts->sumday }}　日</td>
+                                    @endif
+                                @else
+                                <td>データがありません</td>
+                                @endif
+                            @endforeach
+                                </tr>
+
+                                <tr>
+                                    <th class="text-center">有給残高</th>
+                                    <td>{{$nokori}}　日</td>
+                                </tr>
+                                
+                                <tr>
                             <th class="text-center">月別有給取得日数</th>
                             <td></td>
                         </tr>
