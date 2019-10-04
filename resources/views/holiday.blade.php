@@ -28,7 +28,7 @@
                 <?php
                 print $_POST['year'];
                 ?>
-                年　有給取得日明細
+                年度　有給取得日明細
             </div>
 
 
@@ -40,14 +40,13 @@
                 </div>
 
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
-
                     <tbody>
                         <tr>
                             <th class="text-center">有給基準月</th>
-                            @if(isset($day_month))
-                            <td>{{ $day_month }}　月</td>
-                            @elseif($day_month = false)
+                            @if(empty($day_month))
                             <td>データがありません</td>
+                            @else
+                            <td>{{ $day_month }}　月</td>
                             @endif
                         </tr>
                         <tr>
@@ -55,7 +54,7 @@
                             @foreach($holiday_count as $counts)
                             @if(isset($counts->sumday))
                             <td>{{ $counts->sumday }}　日</td>
-                            @elseif(is_null($counts->sumday))
+                            @else
                             <td>データがありません</td>
                             @endif
                             @endforeach
@@ -67,22 +66,16 @@
                         </tr>
                         @foreach ($get_holiday as $get_holidays)
                         <tr>
-                            <th class="text-center">
-                            @if(isset($get_holidays->day))
-                                <?php print $_POST['year']; ?>年 {{ $get_holidays->month}}月</th>
+                            <th class="text-center"> {{ $get_holidays->year}}年
+                                {{ $get_holidays->month}}月</th>
                             <td>{{ $get_holidays->day}}日</td>
-                            @elseif(is_null($get_holidays->day))
-                            <th></th>
-                            <td>データがありません</td>
-                            @endif
                         </tr>
                         @endforeach
-
-
-
-                        </tr>>
                     </tbody>
                 </table>
+
+
+
 
             </div>
 
