@@ -40,6 +40,8 @@
             });
 
             $("#data-teble").DataTable({
+
+
                 // // 横スクロールバーを有効にする (scrollXはtrueかfalseで有効無効を切り替えます)
                 // scrollX: true,
                 // // 縦スクロールバーを有効にする (scrollYは200, "200px"など「最大の高さ」を指定します)
@@ -147,7 +149,7 @@
                     },
                     {
                         "orderable": false,
-                        "targets": [0,2,10,21,26]
+                        "targets": [0, 2, 10, 21, 26]
                     }
                 ]
             });
@@ -188,7 +190,7 @@
                         @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} 
+                                {{ Auth::user()->name }}
                                 <!-- <span class="caret"></span> -->
                             </a>
 

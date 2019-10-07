@@ -36,7 +36,7 @@
 
                     <?php
                     $year = date('Y');
-                    for($i = 2015; $i <= $year; $i++){
+                    for($i = $kijunbi_year; $i <= $year; $i++){
                         if($i == $year){
                             echo '<option value="', $i, '" selected >', $i, '年度</option>'; 
                         }elseif($i < $year){

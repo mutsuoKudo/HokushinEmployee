@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="col-sm-12">
+    <div class="mb-5">
         <div class="panel panel-default">
 
             <div class="panel-body">

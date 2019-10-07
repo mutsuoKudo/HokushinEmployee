@@ -52,16 +52,12 @@
                         </tr>
 
                         <tr>
-                            <th class="text-center">有給期首残高</th>
-                            @if($post_year == $nyushabi_year)
-                            <td>{{$first_kisyu_nokori}}　日</td>
-                            @else
+                            <th class="text-center">期首残高</th>
                             <td>{{$kisyu_nokori}}　日</td>
-                            @endif
                         </tr>
 
                         <tr>
-                            <th class="text-center">今期有給消化日数</th>
+                            <th class="text-center">消化日数</th>
                             @foreach($holiday_count as $counts)
                                 @if(isset($counts->sumday))
                                 <?php $cure_month = date('Ym');
@@ -80,7 +76,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-center">有給残高</th>
+                                    <th class="text-center">消化残</th>
                                     <td>{{$nokori}}　日</td>
                                 </tr>
                                 

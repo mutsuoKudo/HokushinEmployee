@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Employee;
+use \DB;
 
 use App\Http\Requests\UpdatePost;
 use App\Http\Requests\CreatePost;
@@ -33,7 +34,7 @@ class CRUDController extends Controller
 
     public function submit(CreatePost $request)
     {
-        
+
         $employee = new Employee();
         $employee->shain_cd = $request->shain_cd;
         $employee->shain_mei = $request->shain_mei;
@@ -65,7 +66,6 @@ class CRUDController extends Controller
         $employee->save();
 
         return redirect('/')->with('create', '新規登録完了!');
-
     }
 
     /**
@@ -78,7 +78,24 @@ class CRUDController extends Controller
     {
         //
         $employee = Employee::find($id);
-        return view('/show')->with('employee', $employee);
+
+        //基準日の計算(入社日に+6か月)　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
+        $kijunbi = DB::table('employees')
+            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi"'))
+            ->where('shain_cd', $id)
+            ->first();
+        // ->toSQL();
+
+        // 基準年を抜き出す
+        $kijunbi_year = substr($kijunbi->kijunbi, 0, 4);
+        var_dump('基準年:' . $kijunbi_year);
+
+
+        return view('/show')->with([
+            'employee' => $employee,
+            'kijunbi_year' => $kijunbi_year,
+
+        ]);
     }
 
     /**
@@ -137,5 +154,4 @@ class CRUDController extends Controller
 
         return redirect('/')->with('status', 'UPDATE完了!');
     }
-
 }
