@@ -30,19 +30,19 @@ class HolidayController extends Controller
 
         //入社年の抜き出し
         $nyushabi_year = substr($nyushabi->nyushabi, 0, 4);
-        var_dump($nyushabi_year);
+        // var_dump($nyushabi_year);
 
-        //基準日の計算　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
+        //基準日の計算(入社日に+6か月)　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
         $kijunbi = DB::table('employees')
             ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi"'))
             ->where('shain_cd', $id)
             ->first();
         // ->toSQL();
-        var_dump($kijunbi);
+        // var_dump($kijunbi);
 
         // 基準月を抜き出す
         $kijunbi_month = substr($kijunbi->kijunbi, 5, 2);
-        // var_dump('基準月:' . $kijunbi_month);
+        var_dump('基準月:' . $kijunbi_month);
         // var_dump($kijunbi_month);
 
         // 基準年を抜き出す
@@ -50,15 +50,31 @@ class HolidayController extends Controller
         var_dump('基準年:' . $kijunbi_year);
 
 
-        //基準日の３ヶ月前の計算　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
+
+
+        // 今期最後の月の計算(入社月　+6 -1)
+        $kijunbi_max_pre = DB::table('employees')
+            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +5 MONTH) AS "kijunbi_max_pre"'))
+            ->where('shain_cd', $id)
+            ->first();
+        // ->toSQL();
+        // var_dump($kijunbi_max_pre);
+
+        // 今期最後の月を抜き出す
+        $kijunbi_max_month = substr($kijunbi_max_pre->kijunbi_max_pre, 5, 2);
+        var_dump('今期最後の月:' . $kijunbi_max_month);
+
+
+
+        //基準日の３ヶ月前の計算（警告を出すため）
         $kijunbi_before3 = DB::table('employees')
             ->select(db::raw('SUBDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL -3 MONTH) AS "kijunbi_before3"'))
             ->where('shain_cd', $id)
             ->first();
         // ->toSQL();
-        var_dump($kijunbi_before3);
+        // var_dump($kijunbi_before3);
 
-        //年度終わりの３ヶ月前の月を抜き出す
+        //年度終わりから３ヶ月前の月を抜き出す
         $kijunbi_before3_month = substr($kijunbi_before3->kijunbi_before3, 5, 2);
         var_dump('基準日の３ヶ月前:' . $kijunbi_before3_month);
         // var_dump($kijunbi_month);
@@ -73,7 +89,7 @@ class HolidayController extends Controller
         $day_max_year = $post_year + 1;
 
         //今期最後の月
-        $day_max = $day_max_year . $kijunbi_month;
+        $day_max = $day_max_year . $kijunbi_max_month;
         //今期始まりの月
         $day_min = $post_year . $kijunbi_month;
         //今期最後の月から3ヶ月前（=warning）
@@ -96,38 +112,38 @@ class HolidayController extends Controller
             //前年の付与日数
             $huyo_holiday_before = "0";
             // 時効消滅
-            $dis_holiday = "0";
+            $max_carry_over = "10";
         } elseif ($kinzoku_year == 1) {
             $huyo_holiday = "11";
             $huyo_holiday_before = "10";
-            $dis_holiday = "10";
+            $max_carry_over = "10";
         } elseif ($kinzoku_year == 2) {
             $huyo_holiday = "12";
             $huyo_holiday_before = "11";
-            $dis_holiday = "11";
+            $max_carry_over = "11";
         } elseif ($kinzoku_year == 3) {
             $huyo_holiday = "14";
             $huyo_holiday_before = "12";
-            $dis_holiday = "12";
+            $max_carry_over = "12";
         } elseif ($kinzoku_year == 4) {
             $huyo_holiday = "16";
             $huyo_holiday_before = "14";
-            $dis_holiday = "14";
+            $max_carry_over = "14";
         } elseif ($kinzoku_year == 5) {
             $huyo_holiday = "18";
             $huyo_holiday_before = "16";
-            $dis_holiday = "16";
+            $max_carry_over = "16";
         } elseif ($kinzoku_year == 6) {
             $huyo_holiday = "20";
             $huyo_holiday_before = "18";
-            $dis_holiday = "18";
+            $max_carry_over = "18";
         } elseif ($kinzoku_year > 6) {
             $huyo_holiday = "20";
             $huyo_holiday_before = "20";
-            $dis_holiday = "20";
+            $max_carry_over = "20";
         }
         var_dump('付与日数:' . $huyo_holiday);
-        var_dump('時効消滅:' . $dis_holiday);
+        var_dump('最大繰り越し日数:' . $max_carry_over);
         var_dump('前年の付与日数:' . $huyo_holiday_before);
 
 
@@ -138,19 +154,19 @@ class HolidayController extends Controller
             ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
             ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
             ->where('shain_cd', $id)
-            ->first();
-        // ->get();
+            // ->first();
+            ->get();
         // ->toSQL();
         // var_dump('消化日数:' . $holiday_count);
-        var_dump($holiday_count);
+        // var_dump($holiday_count);
 
         //$holiday_countをobjectからarrayに変換
         $holiday_count_arr = (array) $holiday_count;
         //arratをintに変換
         $holiday_count_int = (int) $holiday_count_arr;
 
-        var_dump($holiday_count_arr);
-        var_dump($holiday_count_int);
+        // var_dump($holiday_count_arr);
+        // var_dump($holiday_count_int);
 
 
         //消化残（付与日数-消化日数）
@@ -168,7 +184,7 @@ class HolidayController extends Controller
         $day_max_year_before = $post_year - 1;
 
         //前期最後の月
-        $day_max_before = $day_max_year_before . $kijunbi_month;
+        $day_max_before = $day_max_year_before . $kijunbi_max_month;
         //前期始まりの月
         $day_min_before = $day_max_year_before . $kijunbi_month;
 
@@ -182,28 +198,34 @@ class HolidayController extends Controller
         // ->get();
         // ->toSQL();
         // var_dump('前年度消化日数:' . $holiday_count);
-        var_dump($holiday_count_before);
+        // var_dump($holiday_count_before);
 
         //$holiday_count_beforeをobjectからarrayに変換
         $holiday_count_arr_before = (array) $holiday_count_before;
         //arratをintに変換
         $holiday_count_int_before = (int) $holiday_count_arr_before;
 
-        var_dump($holiday_count_arr_before);
-        var_dump($holiday_count_int_before);
+        // var_dump($holiday_count_arr_before);
+        // var_dump($holiday_count_int_before);
 
 
         //前年度消化残（付与日数-消化日数）
         $nokori_before = $huyo_holiday_before - $holiday_count_int_before;
-        var_dump('消化残:' . $nokori_before);
+        var_dump('前年度消化残:' . $nokori_before);
 
-
-        $carry_over = $nokori_before - $dis_holiday;
 
         // 期首残高（基準年の時は10で固定、それ以外は付与日数+前期繰越日数）
         $first_kisyu_nokori = 10;
-        $kisyu_nokori = $huyo_holiday + $carry_over;
+        
 
+
+            if ($nokori > $max_carry_over) {
+                $carry_over = $max_carry_over;
+            } else {
+                $carry_over = $nokori;
+            }
+            
+            $kisyu_nokori = $huyo_holiday + $carry_over;
 
 
 
