@@ -30,21 +30,38 @@
 
             <div class="float-right mr-5">
                 <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
-                
+
                     {{ csrf_field() }}
                     <select name='year'>
 
-                    <?php
-                    $year = date('Y');
-                    for($i = $kijunbi_year; $i <= $year; $i++){
-                        if($i == $year){
-                            echo '<option value="', $i, '" selected >', $i, '年度</option>'; 
-                        }elseif($i < $year){
-                            echo '<option value="', $i, '">', $i, '年度</option>'; 
+                        <?php
+                        $year = date('Y');
+                        //退職日が入力されている場合・・・
+                        if (isset($employee->taishokubi)) {
+                            //退職年までの選択
+                            for ($i = $kijunbi_year; $i <= $taishokubi_year; $i++) {
+                                if ($i == $taishokubi_year) {
+                                    //退職した年にselected
+                                    echo '<option value="', $i, '" selected >', $i, '年度</option>';
+                                } elseif ($i < $taishokubi_year) {
+                                    echo '<option value="', $i, '">', $i, '年度</option>';
+                                }
+                                echo 'ERROR';
+                            }
+                            //退職日が入力されていない場合・・・
+                        } else {
+                            //現在年までの選択
+                            for ($i = $kijunbi_year; $i <= $year; $i++) {
+                                if ($i == $year) {
+                                    //現在の年にselected
+                                    echo '<option value="', $i, '" selected >', $i, '年度</option>';
+                                } elseif ($i < $year) {
+                                    echo '<option value="', $i, '">', $i, '年度</option>';
+                                }
+                                echo 'ERROR';
+                            }
                         }
-                        echo 'ERROR'; 
-                    }
-                    ?>
+                        ?>
                     </select>
                     <input type="submit" class="btn btn-info m-2" value="有給取得日明細">
                 </form>
