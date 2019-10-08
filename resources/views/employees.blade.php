@@ -26,10 +26,10 @@
 				<div class="col-12 mt-2 d-inline-flex">
 
 
-					<!-- ALL -->
+					<!-- 在籍者 -->
 					<form action="/employee/public/all" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="all" value="ALL" class="mr-2 mt-1 function-button">
+						<input type="submit" name="all" value="在籍者" class="mr-2 mt-1 function-button">
 					</form>
 
 
@@ -73,38 +73,14 @@
 						</button>
 						<!-- ドロップメニューの設定 -->
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<form action="/employee/public/nyushabi2013" method="GET" class="mt-2">
+
+							@foreach ($select_nyusha_year as $select_nyusha_years)
+							<form action="/employee/public/nyushabi{{$select_nyusha_years->nyushanen}}" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2013年" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="nyushabi" value="{{$select_nyusha_years->nyushanen}}年" class="mr-2 mt-1" style="border:none; background-color:#fff">
 							</form>
-							<form action="/employee/public/nyushabi2014" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2014年" class="mr-2 mt-1" style="border:none; background-color:#fff">
-							</form>
-							<form action="/employee/public/nyushabi2015" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2015年" class="mr-2 mt-1" style="border:none; background-color:#fff">
-							</form>
-							<form action="/employee/public/nyushabi2016" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2016年" class="mr-2 mt-1" style="border:none; background-color:#fff">
-							</form>
-							<form action="/employee/public/nyushabi2017" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2017年" class="mr-2 mt-1" style="border:none; background-color:#fff">
-							</form>
-							<form action="/employee/public/nyushabi2018" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2018年" class="mr-2 mt-1" style="border:none; background-color:#fff">
-							</form>
-							<form action="/employee/public/nyushabi2019" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2019年" class="mr-2 mt-1" style="border:none; background-color:#fff">
-							</form>
-							<form action="/employee/public/nyushabi2020" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="2020年" class="mr-2 mt-1" style="border:none; background-color:#fff">
-							</form>
+							@endforeach
+
 						</div><!-- /.dropdown-menu -->
 					</div><!-- /.dropdown -->
 
@@ -151,6 +127,25 @@
 						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button">
 					</form>
 
+					<!-- 退職者年代別 -->
+					<div class="dropdown">
+						<!-- 切替ボタンの設定 -->
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							退社年別
+						</button>
+						<!-- ドロップメニューの設定 -->
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+						@foreach ($select_taishoku_year as $select_taishoku_years)
+							<form action="/employee/public/taishokubi{{$select_taishoku_years->taishokunen}}" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="taishokubi" value="{{$select_taishoku_years->taishokunen}}年" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							@endforeach
+
+						</div><!-- /.dropdown-menu -->
+					</div><!-- /.dropdown -->
+
 				</div>
 
 
@@ -159,7 +154,7 @@
 				<div class="col-12 mt-2 d-inline-flex">
 					<form action="/employee/public/all_avg" method="GET">
 						{{ csrf_field() }}
-						<button type="submit" class="mr-2 mt-1 function-button">平均年齢（ALL）</button>
+						<button type="submit" class="mr-2 mt-1 function-button">平均年齢（在籍者）</button>
 					</form>
 
 					<form action="/employee/public/department_avg" method="GET">
@@ -177,7 +172,7 @@
 				<div class="col-12 mt-2 d-inline-flex">
 					<form action="/employee/public/all_count" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="all_count" value="人数（ALL）" class="mr-2 mt-1 function-button">
+						<input type="submit" name="all_count" value="人数（在籍者）" class="mr-2 mt-1 function-button">
 					</form>
 
 					<form action="/employee/public/department_count" method="GET">
@@ -205,9 +200,9 @@
 					</form>
 				</div> -->
 
-				<!-- 平均年齢（ALL） -->
+				<!-- 平均年齢（在籍者） -->
 				@if(isset($all_avg))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">全社員の平均年齢は　{{ $all_avg }}　歳です</p>
+				<p class="mt-5 p-3" style="background-color: #F7F7EE">全在籍者の平均年齢は　{{ $all_avg }}　歳です</p>
 				@endif
 
 				<!-- 平均年齢（部門別） -->
@@ -236,9 +231,9 @@
 				@endif
 
 
-				<!-- 人数（ALL） -->
+				<!-- 人数（在籍者） -->
 				@if(isset($all_count))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">全社員の人数は　{{ $all_count }}　人です</p>
+				<p class="mt-5 p-3" style="background-color: #F7F7EE">全在籍者の人数は　{{ $all_count }}　人です</p>
 				@endif
 
 				<!-- 人数（部門別） -->

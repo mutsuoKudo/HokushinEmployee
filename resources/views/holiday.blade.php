@@ -31,8 +31,6 @@
                 年度　有給取得日明細
             </div>
 
-
-
             <div class="panel-body">
                 <div class="text-center mb-5">
                     <p>社員コード：　{{ $employee -> shain_cd }} </p>
@@ -63,8 +61,8 @@
                                 <?php $cure_month = date('Ym');
                                     // var_dump("現在の年月：" .$cure_month);
                                     ?>
-                                    <!-- {{$day_max_before3}} -->
-                                    @if($day_max_before3 == $cure_month AND $counts->sumday <= 3)
+                                    <!-- {{$warning}} -->
+                                    @if($warning == $cure_month AND $counts->sumday <= 3)
                                     <td style="color:red">{{ $counts->sumday }}　日　<small>※3日休んでいません！</small></td>
                                     @else
                                     <td>{{ $counts->sumday }}　日</td>
@@ -77,7 +75,13 @@
 
                                 <tr>
                                     <th class="text-center">消化残</th>
+                                    @if($nokori <= 2 AND $nokori > 0)
+                                    <td style="color:green">{{$nokori}}　日　<small>※有給残り僅かです！</small></td>
+                                    @elseif($nokori <= 0)
+                                    <td style="color:red">{{$nokori}}　日　<small>※有給なくなりました！</small></td>
+                                    @else
                                     <td>{{$nokori}}　日</td>
+                                    @endif
                                 </tr>
                                 
                                 <tr>

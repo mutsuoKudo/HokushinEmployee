@@ -89,11 +89,21 @@ class CRUDController extends Controller
         // 基準年を抜き出す
         $kijunbi_year = substr($kijunbi->kijunbi, 0, 4);
         var_dump('基準年:' . $kijunbi_year);
-
+        
+        //退職年の計算
+        $taishokubi = DB::table('employees')
+        ->select('taishokubi')
+        ->where('shain_cd', $id)
+        ->first();
+        
+        // 退職年を抜き出す
+        $taishokubi_year = substr($taishokubi->taishokubi, 0, 4);
+        var_dump('退職年:' . $kijunbi_year);
 
         return view('/show')->with([
             'employee' => $employee,
             'kijunbi_year' => $kijunbi_year,
+            'taishokubi_year' => $taishokubi_year,
 
         ]);
     }
