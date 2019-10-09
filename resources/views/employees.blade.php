@@ -169,7 +169,7 @@
 				</div>
 
 
-				<div class="col-12 mt-2 d-inline-flex">
+				<div class="col-12 mt-2 d-inline-flex mt-3">
 					<form action="/employee/public/all_count" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="all_count" value="人数（在籍者）" class="mr-2 mt-1 function-button">
@@ -188,6 +188,19 @@
 					<form action="/employee/public/age_count" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="age_count" value="人数（年代別）" class="mr-2 mt-1 function-button">
+					</form>
+				</div>
+
+
+				<div class="col-12 mt-2 d-inline-flex mt-3">
+					<form action="/employee/public/mishouka" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="all_count" value="未消化アラート一覧" class="mr-2 mt-1 function-button">
+					</form>
+
+					<form action="/employee/public/zansu_kinshou" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="all_department" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button">
 					</form>
 				</div>
 
