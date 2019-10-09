@@ -158,6 +158,12 @@ Route::group(['middleware' => ['web']], function(){
     Route::get('/age_count', 'ButtonController@age_count');
 
 
+    //未消化アラート一覧ボタンクリック→有給未消化アラート表示
+    Route::get('/mishouka', 'AlertController@mishouka');
+    //残数僅少アラート一覧ボタンクリック→残数僅少アラート表示
+    Route::get('/zansu_kinshou', 'AlertController@zansu_kinshou');
+
+
     //shainテーブルアップデートボタンクリック→shainテーブルのアップデート
     // Route::get('/shain_update', 'ButtonController@shain_update');
 
