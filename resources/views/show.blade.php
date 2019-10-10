@@ -34,11 +34,11 @@
                     {{ csrf_field() }}
                     <select name='year'>
                         <?php
-                        $year = date('Y');
+
                         $year_month = date("Ym");
-                        if ($kijunbi_year_month > $year_month){
-                            echo '<option value="00" selected >基準月未満</option>';
-                        }else{
+                        if ($kijunbi_year_month > $year_month) {
+                            echo '<option value="00" selected >初回基準月未満</option>';
+                        } else {
 
 
                             //退職日が入力されている場合・・・
@@ -57,19 +57,33 @@
 
                                 //退職日が入力されていない場合・・・
                             } else {
-                                //現在年までの選択
-                                for ($i = $kijunbi_year; $i <= $year; $i++) {
-                                    if ($i == $year) {
-                                        //現在の年にselected
-                                        echo '<option value="', $i, '" selected >', $i, '年度</option>';
-                                    } elseif ($i < $year) {
-                                        echo '<option value="', $i, '">', $i, '年度</option>';
+                                //現在年月が基準年月に達していない場合・・・
+                                if ($month < $kijunbi_month) {
+                                    //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/5、基準日が11月の場合、2016年度・2017年度・2018年度まで表示する)
+                                    for ($i = $kijunbi_year; $i < $year; $i++) {
+                                        if ($i == $year-1) {
+                                            //現在の年にselected
+                                            echo '<option value="', $i, '" selected >', $i, '年度</option>';
+                                        } elseif ($i < $year) {
+                                            echo '<option value="', $i, '">', $i, '年度</option>';
+                                        }
+                                        echo 'ERROR';
                                     }
-                                    echo 'ERROR';
+                                } else {
+                                    //基準日から現在年まで(現在年を含む)
+                                    for ($i = $kijunbi_year; $i <= $year; $i++) {
+                                        if ($i == $year) {
+                                            //現在の年にselected
+                                            echo '<option value="', $i, '" selected >', $i, '年度</option>';
+                                        } elseif ($i < $year) {
+                                            echo '<option value="', $i, '">', $i, '年度</option>';;
+                                        }
+                                        echo 'ERROR';
+                                    }
                                 }
                             }
                         }
-                    
+
                         ?>
                     </select>
                     @if($kijunbi_year_month > $year_month)
@@ -78,7 +92,7 @@
                     <input type="submit" class="btn btn-info m-2" value="有給取得日明細">
                     @endif
                 </form>
-               
+
             </div>
 
             <div class="panel-body">
