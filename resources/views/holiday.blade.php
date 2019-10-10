@@ -25,10 +25,16 @@
         <!-- Books -->
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
-                <?php
-                print $_POST['year'];
-                ?>
-                年度　有給取得日明細
+                @if($post_year ==00)
+                初回基準月未満
+                @else
+                {{$post_year}} 年度　有給取得日明細
+                @endif
+                @if($post_year == $year OR $post_year == 0)
+                <div>
+                    <p style="font-size:20px; color:red;">※{{$year_month_a}}末時点の消化日数です。</p>
+                </div>
+                @endif
             </div>
 
             <div class="panel-body">
@@ -36,6 +42,7 @@
                     <p>社員コード：　{{ $employee -> shain_cd }} </p>
                     <p>社員名：　{{ $employee -> shain_mei }} </p>
                 </div>
+                <!-- 初回基準月に達していない場合 -->
                 @if($kijunbi_year_month > $year_month)
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <tbody>
@@ -59,16 +66,9 @@
 
                         <tr>
                             <th class="text-center">消化日数</th>
-                            @if($array2[0][4] == 0)
-                            <td> データがありません</td>
-                            @else
-                            <?php
-                            $genzai_month = date("m");
-                            ?>
-                            @if($warning == $genzai_month AND $array2[0][4] <= 3) <td style="color:red"> {{$array2[0][4]}} 　日　<small> ※3日休んでいません！</small></td>
+                            @if($warning == $month AND $array2[0][4] <= 3) <td style="color:red"> {{$array2[0][4]}} 　日　<small> ※3日休んでいません！</small></td>
                                 @else
                                 <td> {{$array2[0][4]}} 　日　</td>
-                                @endif
                                 @endif
 
                         </tr>
@@ -91,7 +91,7 @@
                         @if(empty($array2[0][7]))
                         <tr>
                             <th class="text-center"></th>
-                            <td>データがありません</td>
+                            <td></td>
                         </tr>
                         @else
                         @foreach($array2[0][7] as $array2)
@@ -104,6 +104,7 @@
                         @endif
                     </tbody>
                 </table>
+
                 @else
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <tbody>
@@ -125,19 +126,18 @@
                             @endif
                         </tr>
 
+
                         <tr>
                             <th class="text-center">消化日数</th>
-                            @if($array[$array_count][4] == 0)
-                            <td> データがありません</td>
-                            @else
-                            <?php
-                            $genzai_month = date("m");
-                            ?>
-                            @if($warning == $genzai_month AND $array[$array_count][4] <= 3) <td style="color:red"> {{$array[$array_count][4]}} 　日　<small> ※3日休んでいません！</small></td>
+      
+                            @if($warning < $year_month AND $array[$array_count][4] <= 3)
+                            <td style="color:red"> {{$array[$array_count][4]}} 　日　<small> ※3日休んでいません！</small></td>
                                 @else
                                 <td> {{$array[$array_count][4]}} 　日　</td>
                                 @endif
-                                @endif
+                            
+
+                        </tr>
 
                         </tr>
 
@@ -156,10 +156,10 @@
                             <th class="text-center">月別有給取得日数</th>
                             <td></td>
                         </tr>
-                        @if(empty($array[$array_count][7]))
+                        @if(empty($array2[$array_count][7]))
                         <tr>
                             <th class="text-center"></th>
-                            <td>データがありません</td>
+                            <td></td>
                         </tr>
                         @else
                         @foreach($array[$array_count][7] as $array)
@@ -174,6 +174,18 @@
                 </table>
                 @endif
                 <th class="text-center"> </th>
+
+
+
+
+                <?php
+                $collection = collect(['name' => 'Desk', 'price' => 100], ['name' => 'Test', 'price' => 200]);
+                ?>
+                @if($collection->contains("name","Test"))
+                <!-- $array = array_add(['name' => 'Desk'], 'price', 100); -->
+                @else
+                <!-- <p>ないですわ</p> -->
+                @endif
 
 
 
