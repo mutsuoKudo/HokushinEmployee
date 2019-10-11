@@ -8,7 +8,8 @@
             <div class="panel-body">
                 <div class="mt-2 text-center">
                     <!-- トップに戻るボタン -->
-                    <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                    <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
                 </div>
             </div>
         </div>
@@ -202,7 +203,8 @@
 
     <div class="mt-3 text-center">
         <!-- トップに戻るボタン -->
-        <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+        <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+        <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
     </div>
 </div>
 </div>

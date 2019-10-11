@@ -116,12 +116,19 @@ class CRUDController extends Controller
         //入社年の抜き出し
         $nyushabi_year = substr($nyushabi->nyushabi, 0, 4);
 
-        //現在年月
-        $month = date("m");
+        //現在年
         $year = date("Y");
 
-        var_dump($month . "<" . $kijunbi_month);
-        var_dump($year - 1);
+        //一番最近のデータの年月(0000-00)を作成
+        $year_month_a_pre = DB::table('holidays')
+            ->select('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->first();
+        // var_dump($year_month_a_pre);
+
+        $year_month_a2 = $year_month_a_pre->month;
+
 
         return view('/show')->with([
             'employee' => $employee,
@@ -129,9 +136,9 @@ class CRUDController extends Controller
             'taishokubi_year' => $taishokubi_year,
             'nyushabi_year' => $nyushabi_year,
             'kijunbi_year_month' => $kijunbi_year_month,
-            'month' => $month,
             'year' => $year,
             'kijunbi_month' => $kijunbi_month,
+            'year_month_a2' => $year_month_a2,
 
 
         ]);
@@ -193,4 +200,6 @@ class CRUDController extends Controller
 
         return redirect('/')->with('status', 'UPDATE完了!');
     }
+
+
 }
