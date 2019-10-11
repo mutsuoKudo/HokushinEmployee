@@ -7,12 +7,14 @@
         <div class="panel panel-default">
 
             <div class="panel-body">
+
                 <!-- Display Validation Errors -->
                 @include('common.errors')
 
                 <div class="mt-4 text-center">
                     <!-- トップに戻るボタン -->
-                    <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                    <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
                     <!-- 編集ボタン -->
                     <form action="/employee/public/edit/{{$employee->shain_cd}}" method="GET">
                         {{ csrf_field() }}
@@ -58,8 +60,9 @@
                                 //退職日が入力されていない場合・・・
                             } else {
                                 //現在年月が基準年月に達していない場合・・・
-                                if ($month < $kijunbi_month) {
-                                    //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/5、基準日が11月の場合、2016年度・2017年度・2018年度まで表示する)
+                                if ($year_month_a2 < $kijunbi_month) {
+                                    //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/4、基準日が10月の場合、2016年度・2017年度・2018年度まで表示する)
+                                    //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/3、基準日が9月の場合、2016年度・2017年度・2018年度・2019年度まで表示する)
                                     for ($i = $kijunbi_year; $i < $year; $i++) {
                                         if ($i == $year-1) {
                                             //現在の年にselected
@@ -213,7 +216,8 @@
 
             <div class="mt-5 text-center">
                 <!-- トップに戻るボタン -->
-                <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
                 <!-- 編集ボタン -->
                 <form action="/employee/public/edit/{{$employee->shain_cd}}" method="GET">
                     {{ csrf_field() }}

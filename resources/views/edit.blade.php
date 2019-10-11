@@ -8,7 +8,8 @@
             <div class="panel-body">
                 <div class="col-12 mt-2 text-center">
                     <!-- トップに戻るボタン -->
-                    <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                    <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
                     <!-- 詳細画面に戻るボタン -->
                     <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
                     {{ csrf_field() }}
@@ -386,7 +387,8 @@
 
         <div class="mt-3 p-0 text-center">
             <!-- トップに戻る -->
-            <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+            <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+            <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
             <!-- 詳細画面に戻るボタン -->
             <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
             {{ csrf_field() }}

@@ -164,6 +164,12 @@ Route::group(['middleware' => ['web']], function(){
     Route::get('/zansu_kinshou', 'AlertController@zansu_kinshou');
 
 
+    //残数僅少アラート一覧ボタンクリック→残数僅少アラート表示
+    Route::post('/back', function () {
+        return back()->withInput();
+    });
+
+
     //shainテーブルアップデートボタンクリック→shainテーブルのアップデート
     // Route::get('/shain_update', 'ButtonController@shain_update');
 
