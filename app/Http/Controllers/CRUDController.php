@@ -23,7 +23,15 @@ class CRUDController extends Controller
 
     public function add()
     {
-        return view('/create');
+
+        $post_url = $_POST['url'];
+
+        // return view('/create');
+
+        return view('/create')->with([
+            'post_url' => $post_url,
+
+        ]);
     }
 
     /**
@@ -116,18 +124,35 @@ class CRUDController extends Controller
         //入社年の抜き出し
         $nyushabi_year = substr($nyushabi->nyushabi, 0, 4);
 
+        //入社月の抜き出し
+        $nyushabi_month = substr($nyushabi->nyushabi, 5, 2);
+
+        //入社年月の作成
+        $nyushabi_year_month = $nyushabi_year . $nyushabi_month;
+
         //現在年
         $year = date("Y");
 
-        //一番最近のデータの年月(0000-00)を作成
+        //一番最近のデータの年月(0000-00)を作成(=現在日時になる)
         $year_month_a_pre = DB::table('holidays')
-            ->select('year', 'month')
+            // ->select('year', 'month')
+            ->select(db::raw('year,lpad(month, 2, "0") as month'))
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
             ->first();
         // var_dump($year_month_a_pre);
 
+        //一番最近のデータの年
+        $year_month_a1 = $year_month_a_pre->year;
+        //一番最近のデータの月
         $year_month_a2 = $year_month_a_pre->month;
+        //一番最近のデータの年月（000000：文字なし）
+        $year_month_b = $year_month_a1 . $year_month_a2;
+
+        $post_url = $_POST['url'];
+
+
+
 
 
         return view('/show')->with([
@@ -135,10 +160,14 @@ class CRUDController extends Controller
             'kijunbi_year' => $kijunbi_year,
             'taishokubi_year' => $taishokubi_year,
             'nyushabi_year' => $nyushabi_year,
+            'nyushabi_year_month' => $nyushabi_year_month,
             'kijunbi_year_month' => $kijunbi_year_month,
             'year' => $year,
             'kijunbi_month' => $kijunbi_month,
             'year_month_a2' => $year_month_a2,
+            'year_month_b' => $year_month_b,
+            'post_url' => $post_url,
+
 
 
         ]);
@@ -154,7 +183,17 @@ class CRUDController extends Controller
     {
         //
         $employee = Employee::find($id);
-        return view('/edit')->with('employee', $employee);
+
+        // return view('/edit')->with('employee', $employee);
+
+        $top_url = $_POST['top_url'];
+
+
+        return view('/edit')->with([
+            'employee' => $employee,
+            'top_url' => $top_url,
+
+        ]);
     }
 
     /**
@@ -200,6 +239,4 @@ class CRUDController extends Controller
 
         return redirect('/')->with('status', 'UPDATE完了!');
     }
-
-
 }

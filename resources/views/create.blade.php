@@ -9,12 +9,12 @@
                 <div class="mt-2 text-center">
                     <!-- トップに戻るボタン -->
                     <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+                    <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
                 </div>
             </div>
         </div>
     </div>
-
+{{$post_url}}
     <!-- Books -->
     <div class="panel panel-default mt-5 col-12">
         <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
@@ -204,7 +204,7 @@
     <div class="mt-3 text-center">
         <!-- トップに戻るボタン -->
         <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-        <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+        <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
     </div>
 </div>
 </div>

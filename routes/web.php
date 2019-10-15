@@ -22,36 +22,39 @@ use Illuminate\Http\Request;
 
 
 //インターフェースがWebのとき
-Route::group(['middleware' => ['web']], function(){
-// Route::group(['middlewareGroups' => ['web']], function () {
+Route::group(['middleware' => ['web']], function () {
+    // Route::group(['middlewareGroups' => ['web']], function () {
 
     //全ての表示
     Route::get('/', ['middleware' => 'auth', function () {
         //employeesテーブルのデータをemployees変数に入れる
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
-            ->get(); 
+            ->get();
         // $employees = Employee::all();
         $title = "在籍者";
 
         $select_nyusha_year = DB::table('employees')
-        ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-        ->whereNull('taishokubi')
-        ->orderBy('nyushanen', 'asc')
-        ->get();
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
 
         $select_taishoku_year = DB::table('employees')
-        ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-        ->whereNotNull('taishokubi')
-        ->orderBy('taishokunen', 'asc')
-        ->get();
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
 
+
+   
+        
         //view (employeesテンプレ)に渡す
         return view('employees', [
             'employees' => $employees,
             'title' => $title,
             'select_nyusha_year' => $select_nyusha_year,
-            'select_taishoku_year' => $select_taishoku_year
+            'select_taishoku_year' => $select_taishoku_year,
         ]);
     }]);
 
@@ -64,10 +67,12 @@ Route::group(['middleware' => ['web']], function(){
     });
 
     // 詳細ボタンクリック→詳細画面表示
-    Route::get('/show/{employee}', 'CRUDController@show');
+    // Route::get('/show/{employee}', 'CRUDController@show');
+    Route::post('/show/{employee}', 'CRUDController@show');
 
     //編集ボタンクリック→編集画面表示
-    Route::get('/edit/{employee}', 'CRUDController@edit');
+    // Route::get('/edit/{employee}', 'CRUDController@edit');
+    Route::post('/edit/{employee}', 'CRUDController@edit');
 
     //有給取得日数明細ボタンクリック→有給明細
     // Route::get('/holiday/{employee}', 'HolidayController@holiday');
@@ -77,7 +82,8 @@ Route::group(['middleware' => ['web']], function(){
     Route::patch('/update/{id}', 'CRUDController@update');
 
     //新規登録ボタンクリック→新規登録画面の表示
-    Route::get('/add', 'CRUDController@add');
+    // Route::get('/add', 'CRUDController@add');
+    Route::post('/add', 'CRUDController@add');
 
     //新規登録画面の更新ボタンをクリック→エラーなしの場合、トップページにリダイレクト
     Route::post('/submit', 'CRUDController@submit');
@@ -126,10 +132,35 @@ Route::group(['middleware' => ['web']], function(){
     Route::get('/age60', 'ButtonController@age60');
     //年代別ボタンクリック→その他ボタンクリック→その他のテーブル表示
     Route::get('/age_other', 'ButtonController@age_other');
-    
+
+    //有給基準月別ボタンクリック→1月ボタンクリック→有給基準月1月の人のテーブル表示
+    Route::get('/kijun_month01', 'ButtonController@kijun_month01');
+    //有給基準月別ボタンクリック→2月ボタンクリック→有給基準月2月の人のテーブル表示
+    Route::get('/kijun_month02', 'ButtonController@kijun_month02');
+    //有給基準月別ボタンクリック→3月ボタンクリック→有給基準月3月の人のテーブル表示
+    Route::get('/kijun_month03', 'ButtonController@kijun_month03');
+    //有給基準月別ボタンクリック→4月ボタンクリック→有給基準月4月の人のテーブル表示
+    Route::get('/kijun_month04', 'ButtonController@kijun_month04');
+    //有給基準月別ボタンクリック→5月ボタンクリック→有給基準月5月の人のテーブル表示
+    Route::get('/kijun_month05', 'ButtonController@kijun_month05');
+    //有給基準月別ボタンクリック→6月ボタンクリック→有給基準月6月の人のテーブル表示
+    Route::get('/kijun_month06', 'ButtonController@kijun_month06');
+    //有給基準月別ボタンクリック→7月ボタンクリック→有給基準月7月の人のテーブル表示
+    Route::get('/kijun_month07', 'ButtonController@kijun_month07');
+    //有給基準月別ボタンクリック→8月ボタンクリック→有給基準月8月の人のテーブル表示
+    Route::get('/kijun_month08', 'ButtonController@kijun_month08');
+    //有給基準月別ボタンクリック→9月ボタンクリック→有給基準月9月の人のテーブル表示
+    Route::get('/kijun_month09', 'ButtonController@kijun_month09');
+    //有給基準月別ボタンクリック→10月ボタンクリック→有給基準月10月の人のテーブル表示
+    Route::get('/kijun_month10', 'ButtonController@kijun_month10');
+    //有給基準月別ボタンクリック→11月ボタンクリック→有給基準月11月の人のテーブル表示
+    Route::get('/kijun_month11', 'ButtonController@kijun_month11');
+    //有給基準月別ボタンクリック→12月ボタンクリック→有給基準月12月の人のテーブル表示
+    Route::get('/kijun_month12', 'ButtonController@kijun_month12');
+
     //退職者ボタンクリック→退職者のテーブル表示
     Route::get('/retirement', 'ButtonController@retirement');
-   
+
     //退社年別ボタンクリック→2016年ボタンクリック→2016年退社のテーブル表示
     Route::get('/taishokubi2016', 'ButtonController@taishokubi2016');
     //退社年別ボタンクリック→2017年ボタンクリック→2017年退社のテーブル表示
@@ -180,4 +211,3 @@ Route::group(['middleware' => ['web']], function(){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-

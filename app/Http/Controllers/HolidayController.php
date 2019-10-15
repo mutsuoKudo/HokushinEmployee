@@ -54,7 +54,7 @@ class HolidayController extends Controller
         $nyushabi_year = substr($nyushabi->nyushabi, 0, 4);
         $nyushabi_month = substr($nyushabi->nyushabi, 5, 2);
         $nyushabi_year_month = $nyushabi_year . $nyushabi_month;
-        // var_dump("入社年月".$nyushabi_year_month);
+        // var_dump("入社年月" . $nyushabi_year_month);
 
 
         // 選択された年数に＋1年する (=今期最後の月で使用する年数)
@@ -70,7 +70,7 @@ class HolidayController extends Controller
         $first_day_max1 = substr($first_day_max_pre->first_day_max_pre, 0, 4);
         $first_day_max2 = substr($first_day_max_pre->first_day_max_pre, 5, 2);
         $first_day_max = $first_day_max1 . $first_day_max2;
-        // var_dump("初年度最後の月" . $first_day_max);
+        var_dump("初年度最後の月" . $first_day_max);
 
 
 
@@ -79,12 +79,12 @@ class HolidayController extends Controller
         //アラート用(基準月の3ヶ月前の時点で5日以上取得していないとき（＝未消化）)
         // 基準月から３ヶ月前の計算(基準月の3ヶ月前の時点で5日以上取得していないとき（＝未消化）)
         $kijunbi_before3 = DB::table('employees')
-            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +15 MONTH) AS "kijunbi_before3"'))
+            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +14 MONTH) AS "kijunbi_before3"'))
             ->where('shain_cd', $id)
             ->first();
         // ->toSQL();
-        var_dump("kijunbi_before3");
-        var_dump($kijunbi_before3);
+        // var_dump("基準月から３ヶ月前");
+        // var_dump($kijunbi_before3);
 
         //年度終わりから３ヶ月前の年を抜き出す
         // $kijunbi_before3_year = substr($kijunbi_before3->kijunbi_before3, 0, 4);
@@ -118,7 +118,7 @@ class HolidayController extends Controller
 
 
             if ($i == 0) {
-                var_dump("ここは初年度");
+                // var_dump("ここは初年度");
 
                 //付与日数
                 $huyo_holiday = "10";
@@ -141,8 +141,8 @@ class HolidayController extends Controller
                 $day_max2 = substr($day_max_pre->day_max_pre, 5, 2);
                 //年度最後の年月
                 $day_max = $day_max1 . $day_max2;
-                var_dump("初年度最初の月" . $nyushabi_year_month);
-                var_dump("初年度最後の月" . $day_max);
+                // var_dump("初年度最初の月" . $nyushabi_year_month);
+                // var_dump("初年度最後の月" . $day_max);
 
                 //年度終わりから３ヶ月前の年を抜き出す
                 $kijunbi_before3_year = substr($kijunbi_before3->kijunbi_before3, 0, 4);
@@ -154,7 +154,7 @@ class HolidayController extends Controller
 
                 //年度終わりから３ヶ月前（=warning）
                 $warning = $kijunbi_before3_year + $i . $kijunbi_before3_month;
-                // var_dump('年度最後の月の三ヶ月前:' . $warning);
+                var_dump('年度最後の月の三ヶ月前:' . $warning);
 
 
                 $holiday_count = DB::table('holidays')
@@ -196,6 +196,8 @@ class HolidayController extends Controller
                     //入社日から～基準日に1年度分（11ヶ月）足したもの(ex:2016/10/1入社なら、2016/10/1~（基準日が2017/4/1なので）2018/3/1まで))
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $nyushabi_year_month)
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
                     ->get();
                 // ->toSQL();
                 // var_dump($get_holiday);
@@ -203,7 +205,7 @@ class HolidayController extends Controller
 
 
             } elseif ($i == 1) {
-                var_dump("ここは" . $i . "年目");
+                // var_dump("ここは" . $i . "年目");
 
                 //付与日数
                 $huyo_holiday = "11";
@@ -282,6 +284,8 @@ class HolidayController extends Controller
                     //基準日～
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $day_min)
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
                     ->get();
                 // ->toSQL();
                 // var_dump($get_holiday);
@@ -289,7 +293,7 @@ class HolidayController extends Controller
 
 
             } elseif ($i == 2) {
-                var_dump("ここは" . $i . "年目");
+                // var_dump("ここは" . $i . "年目");
 
                 $huyo_holiday = "12";
                 $max_carry_over = "12";
@@ -365,6 +369,8 @@ class HolidayController extends Controller
                     //基準日～
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $day_min)
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
                     ->get();
                 // ->toSQL();
                 // var_dump($get_holiday);
@@ -372,7 +378,7 @@ class HolidayController extends Controller
 
 
             } elseif ($i == 3) {
-                var_dump("ここは" . $i . "年目");
+                // var_dump("ここは" . $i . "年目");
                 $huyo_holiday = "14";
                 $max_carry_over = "14";
                 $carry_over = $array[$i - 1][6];
@@ -448,6 +454,8 @@ class HolidayController extends Controller
                     //基準日～
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $day_min)
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
                     ->get();
                 // ->toSQL();
                 // var_dump($get_holiday);
@@ -531,6 +539,8 @@ class HolidayController extends Controller
                     //基準日～
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $day_min)
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
                     ->get();
                 // ->toSQL();
                 // var_dump($get_holiday);
@@ -616,6 +626,8 @@ class HolidayController extends Controller
                     //基準日～
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $day_min)
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
                     ->get();
                 // ->toSQL();
                 // var_dump($get_holiday);
@@ -701,6 +713,8 @@ class HolidayController extends Controller
                     //基準日～
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $day_min)
                     ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
                     ->get();
                 // ->toSQL();
                 // var_dump($get_holiday);
@@ -708,12 +722,14 @@ class HolidayController extends Controller
 
             //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]月別消化日数/[8]年度最後の年月/[9]年度終わりの3ヶ月前
             $array[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $get_holiday, $day_max, $warning];
+
         }
+    
 
-
-        // var_dump("ここみろ！");
-        // var_dump($array[11]);
-        // var_dump("ここみろ！ここまで");
+        var_dump("ここみろ！");
+        var_dump($array[0][9]);
+        var_dump($array[1][9]);
+        var_dump("ここみろ！ここまで");
 
 
 
@@ -742,7 +758,7 @@ class HolidayController extends Controller
         //初回基準日に達していない場合・・・
         $array2 = [];
 
-        var_dump($year_month_b . ">=" . $nyushabi_year_month . "AND" . $year_month_b . "<" . $kijunbi_year_month);
+        // var_dump($year_month_b . ">=" . $nyushabi_year_month . "AND" . $year_month_b . "<" . $kijunbi_year_month);
         if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
 
             // var_dump("ここは研修期間");
@@ -797,6 +813,8 @@ class HolidayController extends Controller
                 //入社日から～基準日
                 ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '>=', $nyushabi_year_month)
                 ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $kijunbi_year_month)
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
                 ->get();
             // ->toSQL();
             // var_dump($get_holiday);
@@ -812,10 +830,24 @@ class HolidayController extends Controller
 
 
 
+        //準社員の人は有給がないので表示しない
+        $jun_shain_pre = DB::table('employees')
+            ->where('remarks', 'LIKE', "%準社員%")
+            ->where('shain_cd', $id)
+            ->first();
+
+        if (isset($jun_shain_pre)) {
+            $jun_shain = "準社員";
+            // var_dump($jun_shain);
+        } else {
+            // var_dump("正社員");
+            $jun_shain = "正社員";
+        }
 
 
 
-        if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
+
+        if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
             $array_count = -1;
         } else {
             //選択した年度と配列を結ぶ
@@ -838,66 +870,15 @@ class HolidayController extends Controller
         $month = date("m");
 
 
-        // $collection = collect($array[$array_count][7]);
-
-        // if ($collection->contains("month",$year_month_a2)) {
-        //     var_dump("OK");
-        // } else {
-        //     var_dump("NG");
-        // }
-
 
 
         //今月と先月が基準日の人を求める(入社日に+6か月)　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
-        var_dump($kijunbi);
-        foreach ($kijunbi as $kijunbis) {
-            $kijunbi2 = $kijunbis;
-        }
-        var_dump($kijunbi2);
-
-
-        // for ($i = date("m") - 1; $i <= 12; $i++) {
-        //     // $kijunbi_now_pre = $i;
-
-
-
-        //     if (preg_match('/-' . $i . '-/', $kijunbi2)) {
-        //         $kijunbi_now = "in";
-        //     } else {
-        //         $kijunbi_now = "out";
-        //     }
-
+        // var_dump($kijunbi);
+        // foreach ($kijunbi as $kijunbis) {
+        //     $kijunbi2 = $kijunbis;
         // }
+        // var_dump($kijunbi2);
 
-        // if($kijunbi_now == 'in'){
-        //     var_dump("oK");
-        // }else{
-        //     var_dump("no");
-        // }
-
-        // var_dump("年度終わりの三ヶ月前");
-        // var_dump($array[0][8]);
-
-        //10月時点
-        // if (preg_match('/-09-/', $kijunbi2) or preg_match('/-10-/', $kijunbi2) or preg_match('/-11-/', $kijunbi2) or preg_match('/-12-/', $kijunbi2)) {
-        //     //$kijunbi2のなかに-10-か-09-が含まれている場合
-        //     $kijunbi_now = "in";
-        // } else {
-        //     $kijunbi_now = "out";
-        // }
-
-        //準社員の人は有給がないので表示しない
-        $jun_shain_pre = DB::table('employees')
-            ->where('remarks', 'LIKE', "%準社員%")
-            ->where('shain_cd', $id)
-            ->first();
-
-        if (isset($jun_shain_pre)) {
-            $jun_shain = true;
-        } else {
-            var_dump("正社員");
-            $jun_shain = false;
-        }
 
 
         // select year,lpad(month, 2, "0") as month from holidays WHERE shain_cd = 2018041011 order by year desc, month desc
@@ -910,7 +891,7 @@ class HolidayController extends Controller
             ->first();
         // ->toSQL();
 
-        var_dump($latest_date);
+        // var_dump($latest_date);
 
 
         if (is_null($latest_date)) {
@@ -929,30 +910,15 @@ class HolidayController extends Controller
         // var_dump($latest_date->day);
 
 
-        var_dump("個人の最新データ" . $latest_year);
-        var_dump("個人の最新データ" . $latest_month);
-        var_dump("個人の最新データ" . $latest_day);
-
-
-
-        // if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
-        //     $kijunbi_now = "in";
-
-        // } else {
-        //     $count_get_holiday_pre = count($array[$array_count][7]) - 1;
-        //     $count_get_holiday = $array[$array_count][7][$count_get_holiday_pre];
-
-        //     if ($latest_date->year == $count_get_holiday->year and $latest_date->month == $count_get_holiday->month and $latest_date->day == $count_get_holiday->day) {
-        //         $kijunbi_now = "in";
-        //     } else {
-        //         $kijunbi_now = "out";
-        //     }
-        // }
+        // var_dump("個人の最新データ" . $latest_year);
+        // var_dump("個人の最新データ" . $latest_month);
+        // var_dump("個人の最新データ" . $latest_day);
 
 
 
 
 
+        $top_url = $_POST['top_url'];
 
 
 
@@ -985,8 +951,10 @@ class HolidayController extends Controller
             'nyushabi_year_month' => $nyushabi_year_month,
             //準社員かどうか
             'jun_shain' => $jun_shain,
-            //個人の最新データ
-            '$latest_date' => $latest_date,
+            // //個人の最新データ
+            // 'latest_date' => $latest_date,
+            //基準月の一か月前（年度終わりの月）
+            'first_day_max2' => $first_day_max2,
 
 
             'latest_year' => $latest_year,
@@ -1006,6 +974,8 @@ class HolidayController extends Controller
             'array2' => $array2,
             //配列の指定
             'array_count' => $array_count,
+
+            'top_url' => $top_url,
 
 
 

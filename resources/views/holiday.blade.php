@@ -13,10 +13,11 @@
                 <div class="mt-4 text-center">
                     <!-- トップに戻るボタン -->
                     <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+                    <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
                     <!-- 詳細画面に戻るボタン -->
-                    <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
+                    <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
+                        <input type="hidden" name="url" value={{$top_url}}>
                         <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
                     </form>
                 </div>
@@ -34,14 +35,14 @@
 
 
                 <?php
-                if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
+                if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
                     echo '<div>
-                        <p style="font-size:20px; color:red;">※'  .$year_month_a . '末時点のデータです。</p>
+                        <p style="font-size:20px; color:red;">※'  . $year_month_a . '末時点のデータです。</p>
                         </div>';
                 } else {
-                    if($latest_year == 0000 AND $latest_month == 00 AND $latest_day == 00){
+                    if ($latest_year == 0000 and $latest_month == 00 and $latest_day == 00) {
                         echo '<div>
-                        <p style="font-size:20px; color:red;">※' .$year_month_a . '末時点のデータです。</p>
+                        <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
                         </div>';
                     }
                     $count_get_holiday_pre = count($array[$array_count][7]) - 1;
@@ -49,9 +50,8 @@
 
                     if ($latest_year == $count_get_holiday->year and $latest_month == $count_get_holiday->month and $latest_day == $count_get_holiday->day) {
                         echo '<div>
-                        <p style="font-size:20px; color:red;">※' .$year_month_a . '末時点のデータです。</p>
+                        <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
                         </div>';
-
                     } else {
                         echo '<div>
                             <p style="font-size:20px; color:red;"></p>
@@ -65,16 +65,58 @@
             </div>
 
 
-            
+
             <div class="panel-body">
                 <div class="text-center mb-5">
                     <p>社員コード：　{{ $employee -> shain_cd }} </p>
                     <p>社員名：　{{ $employee -> shain_mei }} </p>
                 </div>
+
+                <!-- 準社員の場合 -->
+                @if($jun_shain == "準社員")
+                <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
+                    <p style="color:red" class="text-center">※準社員には有給がつきません。</p>
+                    <tbody>
+                        <tr>
+                            <th class="text-center">有給基準月</th>
+                            @if(empty($kijunbi_month))
+                            <td>データがありません</td>
+                            @else
+                            <td>{{ $kijunbi_month }}　月</td>
+                            @endif
+                        </tr>
+
+                        <tr>
+                            <th class="text-center">期首残高</th>
+                            <td> 0　日</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-center">消化日数</th>
+                            <td> 0　日　</td>
+                        </tr>
+
+
+                        <tr>
+                            <th class="text-center">消化残</th>
+                            <td>0　日</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-center">月別有給取得日数</th>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-center"> </th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <!-- 初回基準月に達していない場合 -->
                 <!-- 基準日が現在の月-2よりも大きい場合・・・　現在の月が2019/10、基準日が10月だとすると　10 > 8 -->
-
-                @if($year_month_b >= $nyushabi_year_month AND $year_month_b < $kijunbi_year_month) <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
+                @elseif($year_month_b >= $nyushabi_year_month AND $year_month_b < $kijunbi_year_month) <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <tbody>
                         <tr>
                             <th class="text-center">有給基準月</th>
@@ -132,48 +174,6 @@
                     </tbody>
                     </table>
 
-                    <!-- 準社員の場合 -->
-                    @elseif($jun_shain == true)
-                    <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
-                        <p style="color:red" class="text-center">※準社員には有給がつきません。</p>
-                        <tbody>
-                            <tr>
-                                <th class="text-center">有給基準月</th>
-                                @if(empty($kijunbi_month))
-                                <td>データがありません</td>
-                                @else
-                                <td>{{ $kijunbi_month }}　月</td>
-                                @endif
-                            </tr>
-
-                            <tr>
-                                <th class="text-center">期首残高</th>
-                                <td> 0　日</td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-center">消化日数</th>
-                                <td> 0　日　</td>
-                            </tr>
-
-
-                            <tr>
-                                <th class="text-center">消化残</th>
-                                <td>0　日</td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-center">月別有給取得日数</th>
-                                <td></td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-center"> </th>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
 
                     @else
                     <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -199,16 +199,14 @@
 
                             <tr>
                                 <th class="text-center">消化日数</th>
-
-                                @if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5) <td style="color:red"> {{$array[$array_count][4]}} 　日　<small> ※残り期間({{$kijunbi_month}}月まで)で最低5日取得する必要があります！</small></td>
+{{$array[$array_count][9]}}
+                                @if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5) <td style="color:red"> {{$array[$array_count][4]}} 　日　
+                                    <small> ※残り期間({{$first_day_max2}}月末まで)で最低5日取得する必要があります！</small></td>
                                     @else
                                     <td> {{$array[$array_count][4]}} 　日　</td>
                                     @endif
-
-
                             </tr>
 
-                            </tr>
 
                             <tr>
                                 <th class="text-center">消化残</th>
@@ -218,7 +216,6 @@
                                         @else
                                         <td>{{$array[$array_count][5]}}　日</td>
                                         @endif
-
                             </tr>
 
                             <tr>
@@ -245,10 +242,11 @@
             <div class="mt-5 text-center">
                 <!-- トップに戻るボタン -->
                 <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+                <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
                 <!-- 詳細画面に戻るボタン -->
-                <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
+                <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                     {{ csrf_field() }}
+                    <input type="hidden" name="url" value={{$top_url}}>
                     <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
                 </form>
             </div>
