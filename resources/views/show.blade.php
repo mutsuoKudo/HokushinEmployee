@@ -13,11 +13,13 @@
 
                 <div class="mt-4 text-center">
                     <!-- トップに戻るボタン -->
-                    <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+                    <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+
                     <!-- 編集ボタン -->
-                    <form action="/employee/public/edit/{{$employee->shain_cd}}" method="GET">
+                    <form action="/employee/public/edit/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
+                        <!-- トップに戻る用url -->
+                        <input type="hidden" name="top_url" value={{$post_url}}>
                         <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
                     </form>
                 </div>
@@ -38,7 +40,7 @@
                         <?php
 
                         $year_month = date("Ym");
-                        if ($kijunbi_year_month > $year_month) {
+                        if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
                             echo '<option value="00" selected >初回基準月未満</option>';
                         } else {
 
@@ -60,11 +62,12 @@
                                 //退職日が入力されていない場合・・・
                             } else {
                                 //現在年月が基準年月に達していない場合・・・
+
                                 if ($year_month_a2 < $kijunbi_month) {
                                     //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/4、基準日が10月の場合、2016年度・2017年度・2018年度まで表示する)
                                     //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/3、基準日が9月の場合、2016年度・2017年度・2018年度・2019年度まで表示する)
                                     for ($i = $kijunbi_year; $i < $year; $i++) {
-                                        if ($i == $year-1) {
+                                        if ($i == $year - 1) {
                                             //現在の年にselected
                                             echo '<option value="', $i, '" selected >', $i, '年度</option>';
                                         } elseif ($i < $year) {
@@ -89,11 +92,9 @@
 
                         ?>
                     </select>
-                    @if($kijunbi_year_month > $year_month)
+                    <input type="hidden" name="top_url" value={{$post_url}}>
                     <input type="submit" class="btn btn-info m-2" value="有給取得日明細">
-                    @else
-                    <input type="submit" class="btn btn-info m-2" value="有給取得日明細">
-                    @endif
+
                 </form>
 
             </div>
@@ -214,13 +215,14 @@
 
             </div>
 
-            <div class="mt-5 text-center">
+            <div class="mt-5 text-center mb-5">
                 <!-- トップに戻るボタン -->
-                <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+                <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                <!-- <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button> -->
                 <!-- 編集ボタン -->
-                <form action="/employee/public/edit/{{$employee->shain_cd}}" method="GET">
+                <form action="/employee/public/edit/{{$employee->shain_cd}}" method="POST">
                     {{ csrf_field() }}
+                    <input type="hidden" name="url" value={{$_SERVER['HTTP_REFERER']}}>
                     <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
                 </form>
             </div>

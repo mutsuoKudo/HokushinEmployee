@@ -9,10 +9,11 @@
                 <div class="col-12 mt-2 text-center">
                     <!-- トップに戻るボタン -->
                     <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+                    <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
                     <!-- 詳細画面に戻るボタン -->
-                    <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
-                    {{ csrf_field() }}
+                    <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="url" value={{$top_url}}>
                         <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
                     </form>
 
@@ -22,7 +23,7 @@
 
         <!-- Books -->
         <div class="panel panel-default mt-5">
-        <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
+            <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 編集
                 <p style="font-size:20px">社員名：{{ $employee->shain_mei }}</p>
             </div>
@@ -35,7 +36,7 @@
                     <tbody>
                         <!-- 更新ボタン -->
                         <form class="form-signin" role="form" method="post" action="/employee/public/update/{{ $employee->shain_cd }}">
-                        {{ csrf_field() }}
+                            {{ csrf_field() }}
                             <tr>
                                 <th>社員コード<small class="float-right text-danger">※必須</small></th>
                                 <td class="width:50%">
@@ -386,12 +387,13 @@
         </div>
 
         <div class="mt-3 p-0 text-center">
-            <!-- トップに戻る -->
+            <!-- トップに戻るボタン -->
             <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-            <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button>
+            <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
             <!-- 詳細画面に戻るボタン -->
-            <form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
-            {{ csrf_field() }}
+            <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
+                {{ csrf_field() }}
+                <input type="hidden" name="url" value={{$top_url}}>
                 <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
             </form>
         </div>

@@ -61,6 +61,7 @@ class ButtonController extends Controller
 
         $title = "代表取締役";
 
+
         return view('employees')->with([
             'title' => $title,
             'employees' => $employees,
@@ -96,6 +97,7 @@ class ButtonController extends Controller
             'employees' => $employees,
             'select_nyusha_year' => $select_nyusha_year,
             'select_taishoku_year' => $select_taishoku_year,
+
         ]);
     }
 
@@ -374,7 +376,7 @@ class ButtonController extends Controller
             ->whereBetween('nyushabi', ["2020-01-01", "2020-12-31"])
             ->get();
 
-            $select_nyusha_year = DB::table('employees')
+        $select_nyusha_year = DB::table('employees')
             ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
             ->whereNull('taishokubi')
             ->orderBy('nyushanen', 'asc')
@@ -589,6 +591,406 @@ class ButtonController extends Controller
         ]);
     }
 
+
+
+    //有給基準月1月
+    public function kijun_month01()
+    {
+
+        //入社日が7月の人は基準月が1月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-07-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 1月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月2月
+    public function kijun_month02()
+    {
+
+        //入社日が8月の人は基準月が2月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-08-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 2月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月3月
+    public function kijun_month03()
+    {
+
+        //入社日が9月の人は基準月が3月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-09-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 3月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月4月
+    public function kijun_month04()
+    {
+
+        //入社日が10月の人は基準月が4月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-10-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 4月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月5月
+    public function kijun_month05()
+    {
+
+        //入社日が11月の人は基準月が5月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-11-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 5月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月6月
+    public function kijun_month06()
+    {
+
+        //入社日が12月の人は基準月が6月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-12-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 6月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月7月
+    public function kijun_month07()
+    {
+
+        //入社日が1月の人は基準月が7月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-01-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 7月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月8月
+    public function kijun_month08()
+    {
+
+        //入社日が2月の人は基準月が8月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-02-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 8月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月9月
+    public function kijun_month09()
+    {
+
+        //入社日が3月の人は基準月が9月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-03-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 9月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月10月
+    public function kijun_month10()
+    {
+
+        //入社日が4月の人は基準月が10月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-04-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 10月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月11月
+    public function kijun_month11()
+    {
+
+        //入社日が5月の人は基準月が11月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-05-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 11月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+    //有給基準月12月
+    public function kijun_month12()
+    {
+
+        //入社日が6月の人は基準月が12月
+        $employees = DB::table('employees')
+            ->where('nyushabi', 'LIKE', "%-06-%")
+            ->whereNull('taishokubi')
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+
+        $title = "有給基準月 12月";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
+
+
     //退職者
     public function retirement()
     {
@@ -747,17 +1149,17 @@ class ButtonController extends Controller
             ->whereBetween('taishokubi', ["2020-01-01", "2020-12-31"])
             ->get();
 
-    $select_nyusha_year = DB::table('employees')
+        $select_nyusha_year = DB::table('employees')
             ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
             ->whereNull('taishokubi')
             ->orderBy('nyushanen', 'asc')
-    ->get();
+            ->get();
 
-    $select_taishoku_year = DB::table('employees')
+        $select_taishoku_year = DB::table('employees')
             ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
             ->whereNotNull('taishokubi')
             ->orderBy('taishokunen', 'asc')
-    ->get();
+            ->get();
 
         $title = "2020年退社";
 
@@ -787,7 +1189,7 @@ class ButtonController extends Controller
         // $employees = Employee::all();
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
-            ->get(); 
+            ->get();
 
         $select_nyusha_year = DB::table('employees')
             ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
@@ -846,8 +1248,8 @@ class ButtonController extends Controller
 
         // $employees = Employee::all();
         $employees = DB::table('employees')
-        ->whereNull('taishokubi')
-        ->get(); 
+            ->whereNull('taishokubi')
+            ->get();
 
         $title = "在籍者";
 
@@ -893,8 +1295,8 @@ class ButtonController extends Controller
 
         // $employees = Employee::all();
         $employees = DB::table('employees')
-        ->whereNull('taishokubi')
-        ->get(); 
+            ->whereNull('taishokubi')
+            ->get();
 
 
         $title = "在籍者";
@@ -931,8 +1333,8 @@ class ButtonController extends Controller
 
         // $employees = Employee::all();
         $employees = DB::table('employees')
-        ->whereNull('taishokubi')
-        ->get(); 
+            ->whereNull('taishokubi')
+            ->get();
 
         $title = "在籍者";
 
@@ -988,8 +1390,8 @@ class ButtonController extends Controller
 
         // $employees = Employee::all();
         $employees = DB::table('employees')
-        ->whereNull('taishokubi')
-        ->get(); 
+            ->whereNull('taishokubi')
+            ->get();
 
         $title = "在籍者";
 
@@ -1034,8 +1436,8 @@ class ButtonController extends Controller
 
         // $employees = Employee::all();
         $employees = DB::table('employees')
-        ->whereNull('taishokubi')
-        ->get(); 
+            ->whereNull('taishokubi')
+            ->get();
 
         $title = "在籍者";
 
@@ -1106,8 +1508,8 @@ class ButtonController extends Controller
 
         // $employees = Employee::all();
         $employees = DB::table('employees')
-        ->whereNull('taishokubi')
-        ->get(); 
+            ->whereNull('taishokubi')
+            ->get();
 
         $title = "在籍者";
 

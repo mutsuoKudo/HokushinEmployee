@@ -72,7 +72,7 @@
 							入社年別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
 
 							@foreach ($select_nyusha_year as $select_nyusha_years)
 							<form action="/employee/public/nyushabi{{$select_nyusha_years->nyushanen}}" method="GET" class="mt-2">
@@ -121,6 +121,67 @@
 					</div><!-- /.dropdown -->
 
 
+					<!-- 有給基準月別 -->
+					<div class="dropdown">
+						<!-- 切替ボタンの設定 -->
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						有給基準月別
+						</button>
+						<!-- ドロップメニューの設定 -->
+						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
+							<form action="/employee/public/kijun_month01" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="1月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month02" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="2月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month03" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="3月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month04" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="4月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month05" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="5月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month06" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="6月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month07" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="7月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month08" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="8月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month09" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="9月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month10" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="10月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month11" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="11月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							<form action="/employee/public/kijun_month12" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="kijun_month" value="12月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+							</form>
+							
+						</div><!-- /.dropdown-menu -->
+					</div><!-- /.dropdown -->
+
+
 					<!-- 退職者 -->
 					<form action="/employee/public/retirement" method="GET">
 						{{ csrf_field() }}
@@ -136,7 +197,7 @@
 						<!-- ドロップメニューの設定 -->
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-						@foreach ($select_taishoku_year as $select_taishoku_years)
+							@foreach ($select_taishoku_year as $select_taishoku_years)
 							<form action="/employee/public/taishokubi{{$select_taishoku_years->taishokunen}}" method="GET" class="mt-2">
 								{{ csrf_field() }}
 								<input type="submit" name="taishokubi" value="{{$select_taishoku_years->taishokunen}}年" class="mr-2 mt-1" style="border:none; background-color:#fff">
@@ -300,8 +361,12 @@
 		<!-- テーブル -->
 		@if(isset($title))
 		<div class="mt-5">
-			<form action="/employee/public/add" method="GET">
+			<form action="/employee/public/add" method="POST">
 				{{ csrf_field() }}
+				<?php
+				$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+				?>
+				<input type="hidden" name="url" value={{$url}}>
 				<button type="submit" class="btn btn-info btn-lg">新規作成</button>
 			</form>
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
@@ -406,8 +471,12 @@
 						<tr>
 							<!-- Task Delete Button -->
 							<td>
-								<form action="/employee/public/show/{{$employee->shain_cd}}" method="GET">
+								<form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
 									{{ csrf_field() }}
+									<?php
+									$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+									?>
+									<input type="hidden" name="url" value={{$url}}>
 									<button type="submit" class="btn btn-info mr-2">詳細</button>
 								</form>
 
