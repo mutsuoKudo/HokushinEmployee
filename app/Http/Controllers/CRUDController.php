@@ -25,11 +25,13 @@ class CRUDController extends Controller
     {
 
         $post_url = $_POST['url'];
+        $scroll_top = $_POST['scroll_top'];
 
         // return view('/create');
 
         return view('/create')->with([
             'post_url' => $post_url,
+            'scroll_top' => $scroll_top,
 
         ]);
     }
@@ -151,6 +153,10 @@ class CRUDController extends Controller
 
         $post_url = $_POST['url'];
 
+        $scroll_top = $_POST['scroll_top'];
+
+
+
 
 
 
@@ -167,6 +173,7 @@ class CRUDController extends Controller
             'year_month_a2' => $year_month_a2,
             'year_month_b' => $year_month_b,
             'post_url' => $post_url,
+            'scroll_top' => $scroll_top,
 
 
 
@@ -187,11 +194,13 @@ class CRUDController extends Controller
         // return view('/edit')->with('employee', $employee);
 
         $top_url = $_POST['top_url'];
+        $scroll_top = $_POST['scroll_top2'];
 
 
         return view('/edit')->with([
             'employee' => $employee,
             'top_url' => $top_url,
+            'scroll_top' => $scroll_top,
 
         ]);
     }

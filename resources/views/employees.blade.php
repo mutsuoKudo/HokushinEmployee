@@ -28,8 +28,8 @@
 
 					<!-- 在籍者 -->
 					<form action="/employee/public/all" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="all" value="在籍者" class="mr-2 mt-1 function-button">
+
+						<input type="submit" name="all" value="在籍者" class="mr-2 mt-1 function-button" id="reset">
 					</form>
 
 
@@ -43,23 +43,23 @@
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<form action="/employee/public/department1" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="department" value="代表取締役" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="department" value="代表取締役" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/department2" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="department" value="管理部" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="department" value="管理部" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/department3" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="department" value="営業部" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="department" value="営業部" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/department4" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="department" value="システム開発部" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="department" value="システム開発部" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/department5" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="department" value="研修生" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="department" value="研修生" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 						</div><!-- /.dropdown-menu -->
 					</div><!-- /.dropdown -->
@@ -125,7 +125,7 @@
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
 						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						有給基準月別
+							有給基準月別
 						</button>
 						<!-- ドロップメニューの設定 -->
 						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
@@ -177,7 +177,7 @@
 								{{ csrf_field() }}
 								<input type="submit" name="kijun_month" value="12月" class="mr-2 mt-1" style="border:none; background-color:#fff">
 							</form>
-							
+
 						</div><!-- /.dropdown-menu -->
 					</div><!-- /.dropdown -->
 
@@ -367,6 +367,7 @@
 				$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
 				?>
 				<input type="hidden" name="url" value={{$url}}>
+				<input type="hidden" name="scroll_top" value="" class="st">
 				<button type="submit" class="btn btn-info btn-lg">新規作成</button>
 			</form>
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
@@ -477,6 +478,7 @@
 									$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
 									?>
 									<input type="hidden" name="url" value={{$url}}>
+									<input type="hidden" name="scroll_top" value="" class="st">
 									<button type="submit" class="btn btn-info mr-2">詳細</button>
 								</form>
 
@@ -581,4 +583,27 @@
 
 	</div>
 </div>
+<script>
+	$('form').submit(function() {
+		var scroll_top = $(window).scrollTop(); //送信時の位置情報を取得
+		$('input.st', this).prop('value', scroll_top); //隠しフィールドに位置情報を設定
+	});
+	window.onload = function() {
+		//ロード時に隠しフィールドから取得した値で位置をスクロール
+		$(window).scrollTop(<?php echo @$_REQUEST['post_scroll_top']; ?>);
+		var scroll_top = 0;
+	}
+	// document.getElementById('reset').onclick = function() {
+	// 	window.alert("クリックしたよ");
+	// 	$('#data-teble').DataTable().state.clear();
+	// 	window.location.reload();
+	// }
+
+	// 	$("#reset").on("click", function(){
+	//   $('#data-teble').DataTable().state.clear();
+	//   window.alert("クリックしたよ");
+	// });
+
+</script>
+
 @endsection

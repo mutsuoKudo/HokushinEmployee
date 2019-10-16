@@ -13,11 +13,17 @@
                 <div class="mt-4 text-center">
                     <!-- トップに戻るボタン -->
                     <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                    <form action="{{$top_url}}" method="GET">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                        <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                    </form>
                     <!-- 詳細画面に戻るボタン -->
                     <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="url" value={{$top_url}}>
+                        <input type="hidden" name="scroll_top" value="{{$scroll_top}}">
                         <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
                     </form>
                 </div>
@@ -35,29 +41,35 @@
 
 
                 <?php
-                if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
-                    echo '<div>
-                        <p style="font-size:20px; color:red;">※'  . $year_month_a . '末時点のデータです。</p>
-                        </div>';
-                } else {
-                    if ($latest_year == 0000 and $latest_month == 00 and $latest_day == 00) {
-                        echo '<div>
-                        <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
-                        </div>';
-                    }
-                    $count_get_holiday_pre = count($array[$array_count][7]) - 1;
-                    $count_get_holiday = $array[$array_count][7][$count_get_holiday_pre];
+                // 入社してから3ヶ月未満の人と準社員のひと
+                // if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
+                //     echo '<div>
+                //         <p style="font-size:20px; color:red;">※'  . $year_month_a . '末時点のデータです。</p>
+                //         </div>';
 
-                    if ($latest_year == $count_get_holiday->year and $latest_month == $count_get_holiday->month and $latest_day == $count_get_holiday->day) {
-                        echo '<div>
+                // } else {
+                //     if ($latest_year == 0000 and $latest_month == 00 and $latest_day == 00) {
+                //         echo '<div>
+                //         <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
+                //         </div>';
+                //     }
+
+                //     $count_get_holiday_pre = count($array[$array_count][7]) - 1;
+                //     $count_get_holiday = $array[$array_count][7][$count_get_holiday_pre];
+
+                //     if ($latest_year == $count_get_holiday->year and $latest_month == $count_get_holiday->month and $latest_day == $count_get_holiday->day) {
+                //         echo '<div>
+                //         <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
+                //         </div>';
+                //     } else {
+                //         echo '<div>
+                //             <p style="font-size:20px; color:red;"></p>
+                //         </div>';
+                //     }
+                // }
+                echo '<div>
                         <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
-                        </div>';
-                    } else {
-                        echo '<div>
-                            <p style="font-size:20px; color:red;"></p>
-                        </div>';
-                    }
-                }
+                         </div>';
                 ?>
 
 
@@ -177,6 +189,7 @@
 
                     @else
                     <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
+
                         <tbody>
                             <tr>
                                 <th class="text-center">有給基準月</th>
@@ -199,7 +212,7 @@
 
                             <tr>
                                 <th class="text-center">消化日数</th>
-{{$array[$array_count][9]}}
+
                                 @if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5) <td style="color:red"> {{$array[$array_count][4]}} 　日　
                                     <small> ※残り期間({{$first_day_max2}}月末まで)で最低5日取得する必要があります！</small></td>
                                     @else
@@ -242,11 +255,17 @@
             <div class="mt-5 text-center">
                 <!-- トップに戻るボタン -->
                 <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                <!-- <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                <form action="{{$top_url}}" method="GET">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                    <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                </form>
                 <!-- 詳細画面に戻るボタン -->
                 <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="url" value={{$top_url}}>
+                    <input type="hidden" name="scroll_top" value="{{$scroll_top}}">
                     <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
                 </form>
             </div>

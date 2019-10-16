@@ -13,13 +13,19 @@
 
                 <div class="mt-4 text-center">
                     <!-- トップに戻るボタン -->
-                    <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <form action="{{$post_url}}" method="GET">
+                    {{ csrf_field() }}
+                        <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                        <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                    </form>
+                    <!-- <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
 
                     <!-- 編集ボタン -->
                     <form action="/employee/public/edit/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
                         <!-- トップに戻る用url -->
                         <input type="hidden" name="top_url" value={{$post_url}}>
+                        <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
                         <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
                     </form>
                 </div>
@@ -93,9 +99,10 @@
                         ?>
                     </select>
                     <input type="hidden" name="top_url" value={{$post_url}}>
+                    <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
                     <input type="submit" class="btn btn-info m-2" value="有給取得日明細">
-
                 </form>
+
 
             </div>
 
@@ -217,14 +224,21 @@
 
             <div class="mt-5 text-center mb-5">
                 <!-- トップに戻るボタン -->
-                <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                <!-- <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
                 <!-- <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button> -->
+                <form action="{{$post_url}}" method="GET">
+                    {{ csrf_field() }}
+                        <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                        <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                    </form>
                 <!-- 編集ボタン -->
                 <form action="/employee/public/edit/{{$employee->shain_cd}}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="url" value={{$_SERVER['HTTP_REFERER']}}>
-                    <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
-                </form>
+                        {{ csrf_field() }}
+                        <!-- トップに戻る用url -->
+                        <input type="hidden" name="top_url" value={{$post_url}}>
+                        <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
+                        <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
+                    </form>
             </div>
 
         </div>
