@@ -8,13 +8,18 @@
             <div class="panel-body">
                 <div class="mt-2 text-center">
                     <!-- トップに戻るボタン -->
+                    <form action="{{$post_url}}" method="GET">
+
+                        <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                        <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                    </form>
                     <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
                 </div>
             </div>
         </div>
     </div>
-{{$post_url}}
+    
     <!-- Books -->
     <div class="panel panel-default mt-5 col-12">
         <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">

@@ -9,11 +9,17 @@
                 <div class="col-12 mt-2 text-center">
                     <!-- トップに戻るボタン -->
                     <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+                    <!-- <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                    <form action="{{$top_url}}" method="GET">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                        <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                    </form>
                     <!-- 詳細画面に戻るボタン -->
                     <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="url" value={{$top_url}}>
+                        <input type="hidden" name="scroll_top" value="{{$scroll_top}}">
                         <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
                     </form>
 
@@ -389,11 +395,17 @@
         <div class="mt-3 p-0 text-center">
             <!-- トップに戻るボタン -->
             <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-            <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+            <!-- <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+            <form action="{{$top_url}}" method="GET">
+                {{ csrf_field() }}
+                <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+            </form>
             <!-- 詳細画面に戻るボタン -->
             <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="url" value={{$top_url}}>
+                <input type="hidden" name="scroll_top" value="{{$scroll_top}}">
                 <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>
             </form>
         </div>

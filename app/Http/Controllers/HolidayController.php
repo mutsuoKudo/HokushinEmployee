@@ -102,9 +102,15 @@ class HolidayController extends Controller
 
 
         // 勤続年数を計算(計算の仕方間違ってる！！修正必要)
-        // $kinzoku_year = date("Ym") - $kijunbi_year_month;
-        $kinzoku_year = 30;
-        // var_dump('勤続年数:' . $kinzoku_year);
+        $year_pre = date('Ym') - 2;
+        $year = substr($year_pre, 0, 4);
+
+        // $kinzoku_year = date("Y") - $kijunbi_year;
+        $kinzoku_year = $year - $kijunbi_year;
+        // $kinzoku_year = 30;
+        var_dump('勤続年数:' . $year_pre);
+        var_dump('勤続年数:' . $year . "-" .$kijunbi_year);
+        var_dump('勤続年数:' . $kinzoku_year);
 
 
         //配列の作成
@@ -726,10 +732,10 @@ class HolidayController extends Controller
         }
     
 
-        var_dump("ここみろ！");
-        var_dump($array[0][9]);
-        var_dump($array[1][9]);
-        var_dump("ここみろ！ここまで");
+        // var_dump("ここみろ！");
+        // var_dump($array[0][9]);
+        // var_dump($array[1][9]);
+        // var_dump("ここみろ！ここまで");
 
 
 
@@ -846,7 +852,7 @@ class HolidayController extends Controller
 
 
 
-
+        
         if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
             $array_count = -1;
         } else {
@@ -862,12 +868,13 @@ class HolidayController extends Controller
                 }
             }
         }
+        
 
-
-        //現在の年を作成
-        $year = date("Y");
-        //現在の月を作成
-        $month = date("m");
+        
+        // //現在の年を作成
+        // $year = date("Y");
+        // //現在の月を作成
+        // $month = date("m");
 
 
 
@@ -910,15 +917,17 @@ class HolidayController extends Controller
         // var_dump($latest_date->day);
 
 
-        // var_dump("個人の最新データ" . $latest_year);
-        // var_dump("個人の最新データ" . $latest_month);
-        // var_dump("個人の最新データ" . $latest_day);
+        var_dump("個人の最新データ" . $latest_year);
+        var_dump("個人の最新データ" . $latest_month);
+        var_dump("個人の最新データ" . $latest_day);
+      
 
 
 
 
 
         $top_url = $_POST['top_url'];
+        $scroll_top = $_POST['scroll_top2'];
 
 
 
@@ -943,10 +952,10 @@ class HolidayController extends Controller
             'year_month_a1' => $year_month_a1,
             //現在の年月-2か月（月のみ）
             'year_month_a2' => $year_month_a2,
-            //現在の年
-            'year' => $year,
-            //現在の月
-            'month' => $month,
+            // //現在の年
+            // 'year' => $year,
+            // //現在の月
+            // 'month' => $month,
             //入社日年月
             'nyushabi_year_month' => $nyushabi_year_month,
             //準社員かどうか
@@ -962,8 +971,7 @@ class HolidayController extends Controller
             'latest_day' => $latest_day,
 
 
-            //現在の月
-            'month' => $month,
+
             //今月と先月が基準日の人を求める
             // 'kijunbi_now' => $kijunbi_now,
 
@@ -976,6 +984,7 @@ class HolidayController extends Controller
             'array_count' => $array_count,
 
             'top_url' => $top_url,
+            'scroll_top' => $scroll_top,
 
 
 
