@@ -174,6 +174,7 @@ Route::group(['middleware' => ['web']], function () {
 
     //平均年齢（在籍者）ボタンクリック→平均年齢（在籍者）表示
     Route::get('/all_avg', 'ButtonController@all_avg');
+ ;
     //平均年齢（部門別）ボタンクリック→平均年齢（部門別）表示
     Route::get('/department_avg', 'ButtonController@department_avg');
     //平均年齢（男女別）ボタンクリック→平均年齢（男女別）表示
