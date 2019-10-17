@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use DB;
+use Response;
 
 class ButtonController extends Controller
 {
@@ -1175,6 +1176,45 @@ class ButtonController extends Controller
 
 
     //全社員の平均年齢
+    // public function all_avg()
+    // {
+    // // テーブルを指定
+    // // $employees = DB::table('employees');
+    // $employees = DB::table('employees');
+    // $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+
+    // $all_avg = $employees
+    //     ->whereNull('taishokubi')
+    //     ->avg($birthday);
+
+    // // $employees = Employee::all();
+    // $employees = DB::table('employees')
+    //     ->whereNull('taishokubi')
+    //     ->get();
+
+    // $select_nyusha_year = DB::table('employees')
+    //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+    //     ->whereNull('taishokubi')
+    //     ->orderBy('nyushanen', 'asc')
+    //     ->get();
+
+    // $select_taishoku_year = DB::table('employees')
+    //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+    //     ->whereNotNull('taishokubi')
+    //     ->orderBy('taishokunen', 'asc')
+    //     ->get();
+
+    // $title = "在籍者";
+
+    //     return view('employees')->with([
+    //         'all_avg' => round(($all_avg), 1, PHP_ROUND_HALF_UP),
+    //         'title' => $title,
+    //         'employees' => $employees,
+    //         'select_nyusha_year' => $select_nyusha_year,
+    //         'select_taishoku_year' => $select_taishoku_year,
+    //     ]);
+    // }
+
     public function all_avg()
     {
         // テーブルを指定
@@ -1186,33 +1226,14 @@ class ButtonController extends Controller
             ->whereNull('taishokubi')
             ->avg($birthday);
 
-        // $employees = Employee::all();
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->get();
-
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
-
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
-
-        $title = "在籍者";
-
-        return view('employees')->with([
-            'all_avg' => round(($all_avg), 1, PHP_ROUND_HALF_UP),
-            'title' => $title,
-            'employees' => $employees,
-            'select_nyusha_year' => $select_nyusha_year,
-            'select_taishoku_year' => $select_taishoku_year,
-        ]);
+        $response = array();
+        $response["all_avg"] = $all_avg;
+        return Response::json($response);
     }
+
+ 
+
+
 
     //部門別の平均年齢
     public function department_avg()

@@ -158,9 +158,6 @@ class CRUDController extends Controller
 
 
 
-
-
-
         return view('/show')->with([
             'employee' => $employee,
             'kijunbi_year' => $kijunbi_year,

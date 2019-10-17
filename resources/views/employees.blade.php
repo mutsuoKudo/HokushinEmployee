@@ -28,8 +28,7 @@
 
 					<!-- 在籍者 -->
 					<form action="/employee/public/all" method="GET">
-
-						<input type="submit" name="all" value="在籍者" class="mr-2 mt-1 function-button" id="reset">
+						<input type="submit" name="all" value="在籍者" class="mr-2 mt-1 function-button table_reset">
 					</form>
 
 
@@ -77,7 +76,7 @@
 							@foreach ($select_nyusha_year as $select_nyusha_years)
 							<form action="/employee/public/nyushabi{{$select_nyusha_years->nyushanen}}" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="nyushabi" value="{{$select_nyusha_years->nyushanen}}年" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="nyushabi" value="{{$select_nyusha_years->nyushanen}}年" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							@endforeach
 
@@ -95,27 +94,27 @@
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<form action="/employee/public/age20" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="age" value="20代" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="age" value="20代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
-							<form action="/employee/public/age30" method="GET" class="mt-2">
+							<form action="/employee/public/age30" method="GET" class="mt-2 table_reset">
 								{{ csrf_field() }}
-								<input type="submit" name="age" value="30代" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="age" value="30代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
-							<form action="/employee/public/age40" method="GET" class="mt-2">
+							<form action="/employee/public/age40" method="GET" class="mt-2 table_reset">
 								{{ csrf_field() }}
-								<input type="submit" name="age" value="40代" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="age" value="40代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
-							<form action="/employee/public/age50" method="GET" class="mt-2">
+							<form action="/employee/public/age50" method="GET" class="mt-2 table_reset">
 								{{ csrf_field() }}
-								<input type="submit" name="age" value="50代" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="age" value="50代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
-							<form action="/employee/public/age60" method="GET" class="mt-2">
+							<form action="/employee/public/age60" method="GET" class="mt-2 table_reset">
 								{{ csrf_field() }}
-								<input type="submit" name="age" value="60代" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="age" value="60代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
-							<form action="/employee/public/age_other" method="GET" class="mt-2">
+							<form action="/employee/public/age_other" method="GET" class="mt-2 table_reset">
 								{{ csrf_field() }}
-								<input type="submit" name="age" value="その他の年代" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="age" value="その他の年代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 						</div><!-- /.dropdown-menu -->
 					</div><!-- /.dropdown -->
@@ -131,51 +130,51 @@
 						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
 							<form action="/employee/public/kijun_month01" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="1月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="1月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month02" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="2月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="2月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month03" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="3月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="3月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month04" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="4月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="4月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month05" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="5月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="5月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month06" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="6月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="6月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month07" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="7月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="7月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month08" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="8月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="8月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month09" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="9月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="9月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month10" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="10月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="10月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month11" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="11月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="11月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							<form action="/employee/public/kijun_month12" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="kijun_month" value="12月" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="kijun_month" value="12月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 
 						</div><!-- /.dropdown-menu -->
@@ -185,7 +184,7 @@
 					<!-- 退職者 -->
 					<form action="/employee/public/retirement" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button">
+						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset">
 					</form>
 
 					<!-- 退職者年代別 -->
@@ -200,7 +199,7 @@
 							@foreach ($select_taishoku_year as $select_taishoku_years)
 							<form action="/employee/public/taishokubi{{$select_taishoku_years->taishokunen}}" method="GET" class="mt-2">
 								{{ csrf_field() }}
-								<input type="submit" name="taishokubi" value="{{$select_taishoku_years->taishokunen}}年" class="mr-2 mt-1" style="border:none; background-color:#fff">
+								<input type="submit" name="taishokubi" value="{{$select_taishoku_years->taishokunen}}年" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
 							@endforeach
 
@@ -215,7 +214,7 @@
 				<div class="col-12 mt-2 d-inline-flex">
 					<form action="/employee/public/all_avg" method="GET">
 						{{ csrf_field() }}
-						<button type="submit" class="mr-2 mt-1 function-button">平均年齢（在籍者）</button>
+						<button type="submit" class="mr-2 mt-1 function-button" id="ajax1">平均年齢（在籍者）</button>
 					</form>
 
 					<form action="/employee/public/department_avg" method="GET">
@@ -273,7 +272,7 @@
 						<input type="submit" name="shain_update" value="shainテーブルアップデート" class="mr-2 mt-3 function-button2">
 					</form>
 				</div> -->
-
+				<div id="example"></div>
 				<!-- 平均年齢（在籍者） -->
 				@if(isset($all_avg))
 				<p class="mt-5 p-3" style="background-color: #F7F7EE">全在籍者の平均年齢は　{{ $all_avg }}　歳です</p>
@@ -593,17 +592,26 @@
 		$(window).scrollTop(<?php echo @$_REQUEST['post_scroll_top']; ?>);
 		var scroll_top = 0;
 	}
+
+
+	
+	
 	// document.getElementById('reset').onclick = function() {
 	// 	window.alert("クリックしたよ");
-	// 	$('#data-teble').DataTable().state.clear();
-	// 	window.location.reload();
+	// table.state.clear();
+	// table.destroy();
+	// $("#data-table tbody > tr").remove();
 	// }
 
-	// 	$("#reset").on("click", function(){
-	//   $('#data-teble').DataTable().state.clear();
-	//   window.alert("クリックしたよ");
-	// });
+	// document.getElementById('reset').onclick = function() {
+	// 	var table = $('#data-teble').DataTable();
+	// 	table.page('first').draw('page');
+	// };
 
+	// document.getElementsByClassName('table_reset').onclick = function() {
+	// 	var table = $('#data-teble').DataTable();
+	// 	table.page('first').draw('page');
+	// };
 </script>
 
 @endsection
