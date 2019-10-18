@@ -98,6 +98,7 @@
     </script>
 
     <script>
+        //dataTablesの設定
         jQuery(function($) {
             // デフォルトの設定を変更
             $.extend($.fn.dataTable.defaults, {
@@ -110,112 +111,110 @@
 
                 stateSave: true,
                 stateDuration: -1,
-                // // 横スクロールバーを有効にする (scrollXはtrueかfalseで有効無効を切り替えます)
-                // scrollX: true,
-                // // 縦スクロールバーを有効にする (scrollYは200, "200px"など「最大の高さ」を指定します)
-                // scrollY: 1000
+
                 columnDefs: [
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 社員名（ローマ字）を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 4,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 社員メールを表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 5,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 性別を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 6,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 郵便番号を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 7,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 住所を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 8,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 住所（建物）を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 9,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 入社日を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 11,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 正社員転換日を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 12,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 転籍日を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 13,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 退職日を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 14,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 携帯番号を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 15,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 電話番号を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 16,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 雇用保険番号を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 17,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 社会保険番号を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 18,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 基礎年金番号を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 19,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 月給を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 20,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 名刺を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 22,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // IDカードを表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 23,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 扶養家族を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 24,
                         visible: false
                     },
-                    // 1列目を消す(visibleをfalseにすると消えます)
+                    // 入社試験点数を表示しない(visibleをfalseにすると消えます)
                     {
                         targets: 25,
                         visible: false
                     },
                     {
+                        // 操作・社員名・誕生日・部門・備考のソート機能をオフ
                         "orderable": false,
                         "targets": [0, 2, 10, 21, 26]
                     }
@@ -233,6 +232,224 @@
             window.alert("空にしたよ");
             window.location.reload();
         })
+
+
+
+
+
+        jQuery(document).ready(function($) {
+            // 前在籍者の平均年齢ajax
+            $("#ajax_all_avg").clickToggle(
+                function() {
+                    $.ajax({
+                            type: 'get',
+                            datatype: 'json',
+                            url: '/employee/public/all_avg'
+                        })
+                        .done(function(data) { //ajaxの通信に成功した場合
+                            // alert("success!");
+                            $("#result_pre").before("<p id='result_all_avg'></p>");
+                            $("#ajax_all_avg").css("color", "#D9534F");
+                            $("#result_all_avg").append("<p class='mt-5 p-3 mb-0' style='background-color: #F7F7EE; font-weight:bold;'>≪全在籍者の平均年齢≫</p>");
+                            $("#result_all_avg").append("<p class='pl-3 pr-3 pb-3 pt-0' style='background-color: #F7F7EE'>全在籍者の平均年齢は" + data['all_avg'] + "歳です</p>");
+                        })
+                        .fail(function(data) { //ajaxの通信に失敗した場合
+                            alert("error!");
+                        });
+
+                },
+                function() {
+                    $("#ajax_all_avg").css("color", "black");
+                    $("#result_all_avg").remove();
+                }
+            );
+
+            // 部門別の平均年齢ajax
+            $("#ajax_department_avg").clickToggle(
+                function() {
+                    $.ajax({
+                            type: 'get',
+                            datatype: 'json',
+                            url: '/employee/public/department_avg'
+                        })
+                        .done(function(data) { //ajaxの通信に成功した場合
+                            // alert("success!");
+                            $("#result_pre").before("<p id='result_department_avg'></p>");
+                            $("#ajax_department_avg").css("color", "#D9534F");
+                            $("#result_department_avg").append("<p class='mt-5 p-3 mb-0' style='background-color: #F7F7EE; font-weight:bold;'>≪部門別の平均年齢≫</p>");
+                            $("#result_department_avg").append("<p class='pl-3 pr-3 pb-3 pt-0 mb-0' style='background-color: #F7F7EE'>代表取締役の平均年齢は" + data['department_avg1'] + "歳です</p>");
+                            $("#result_department_avg").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>管理部の平均年齢は" + data['department_avg2'] + "歳です</p>");
+                            $("#result_department_avg").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>営業部の平均年齢は　" + data['department_avg3'] + "歳です</p>");
+                            $("#result_department_avg").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>システム開発部の平均年齢は　" + data['department_avg4'] + "歳です</p>");
+                            $("#result_department_avg").append("<p class='p-3' style='background-color: #F7F7EE'>研修生の平均年齢は　" + data['department_avg5'] + "歳です</p>");
+                        })
+                        .fail(function(data) { //ajaxの通信に失敗した場合
+                            alert("error!");
+                        });
+
+                },
+                function() {
+                    $("#ajax_department_avg").css("color", "black");
+                    $("#result_department_avg").remove();
+                }
+            );
+
+            // 男女の平均年齢ajax
+            $("#ajax_gender_avg").clickToggle(
+                function() {
+                    $.ajax({
+                            type: 'get',
+                            datatype: 'json',
+                            url: '/employee/public/gender_avg'
+                        })
+                        .done(function(data) { //ajaxの通信に成功した場合
+                            // alert("success!");
+                            $("#result_pre").before("<p id='result_gender_avg'></p>");
+                            $("#ajax_gender_avg").css("color", "#D9534F");
+                            $("#result_gender_avg").append("<p class='mt-5 p-3 mb-0' style='background-color: #F7F7EE; font-weight:bold;'>≪男女別の平均年齢≫</p>");
+                            $("#result_gender_avg").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>男性の平均年齢は" + data['gender_avg1'] + "歳です</p>");
+                            $("#result_gender_avg").append("<p class='p-3' style='background-color: #F7F7EE'>女性の平均年齢は" + data['gender_avg2'] + "歳です </p>");
+                        })
+                        .fail(function(data) { //ajaxの通信に失敗した場合
+                            alert("error!");
+                        });
+
+                },
+                function() {
+                    $("#ajax_gender_avg").css("color", "black");
+                    $("#result_gender_avg").remove();
+                }
+            );
+
+            // 前在籍者の人数ajax
+            $("#ajax_all_count").clickToggle(
+                function() {
+                    $.ajax({
+                            type: 'get',
+                            datatype: 'json',
+                            url: '/employee/public/all_count'
+                        })
+                        .done(function(data) { //ajaxの通信に成功した場合
+                            // alert("success!");
+                            $("#result_pre").before("<p id='result_all_count'></p>");
+                            $("#ajax_all_count").css("color", "#D9534F");
+                            $("#result_all_count").append("<p class='mt-5 p-3 mb-0' style='background-color: #F7F7EE; font-weight:bold;'>≪全在籍者の人数≫</p>");
+                            $("#result_all_count").append("<p class='p-3' style='background-color: #F7F7EE'>全在籍者の人数は" + data['all_count'] + "人です</p>");
+                        })
+                        .fail(function(data) { //ajaxの通信に失敗した場合
+                            alert("error!");
+                        });
+
+                },
+                function() {
+                    $("#ajax_all_count").css("color", "black");
+                    $("#result_all_count").remove();
+                }
+            );
+
+            // 部門別の人数ajax
+            $("#ajax_department_count").clickToggle(
+                function() {
+                    $.ajax({
+                            type: 'get',
+                            datatype: 'json',
+                            url: '/employee/public/department_count'
+                        })
+                        .done(function(data) { //ajaxの通信に成功した場合
+                            // alert("success!");
+                            $("#result_pre").before("<p id='result_department_count'></p>");
+                            $("#ajax_department_count").css("color", "#D9534F");
+                            $("#result_department_count").append("<p class='mt-5 p-3 mb-0' style='background-color: #F7F7EE; font-weight:bold;'>≪部門別の人数≫</p>");
+                            $("#result_department_count").append("<p class='pl-3 pr-3 pb-3 pt-0 mb-0' style='background-color: #F7F7EE'>代表取締役の人数は" + data['all_department1'] + "人です</p>");
+                            $("#result_department_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>管理部の人数は" + data['all_department2'] + "人です</p>");
+                            $("#result_department_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>営業部の人数は　" + data['all_department3'] + "人です</p>");
+                            $("#result_department_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>システム開発部の人数は　" + data['all_department4'] + "人です</p>");
+                            $("#result_department_count").append("<p class='p-3' style='background-color: #F7F7EE'>研修生の人数は　" + data['all_department5'] + "人です</p>");
+                        })
+                        .fail(function(data) { //ajaxの通信に失敗した場合
+                            alert("error!");
+                        });
+
+                },
+                function() {
+                    $("#ajax_department_count").css("color", "black");
+                    $("#result_department_count").remove();
+                }
+            );
+
+            // 男女別の人数ajax
+            $("#ajax_gender_count").clickToggle(
+                function() {
+                    $.ajax({
+                            type: 'get',
+                            datatype: 'json',
+                            url: '/employee/public/gender_count'
+                        })
+                        .done(function(data) { //ajaxの通信に成功した場合
+                            // alert("success!");
+                            $("#result_pre").before("<p id='result_gender_count'></p>");
+                            $("#ajax_gender_count").css("color", "#D9534F");
+                            $("#result_gender_count").append("<p class='mt-5 p-3 mb-0' style='background-color: #F7F7EE; font-weight:bold;'>≪男女別の人数≫</p>");
+                            $("#result_gender_count").append("<p class='pl-3 pr-3 pb-3 pt-0 mb-0' style='background-color: #F7F7EE'>男性の人数は" + data['all_gender1'] + "人です</p>");
+                            $("#result_gender_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>女性の人数は" + data['all_gender2'] + "人です</p>");
+                        })
+                        .fail(function(data) { //ajaxの通信に失敗した場合
+                            alert("error!");
+                        });
+
+                },
+                function() {
+                    $("#ajax_gender_count").css("color", "black");
+                    $("#result_gender_count").remove();
+                }
+            );
+
+            // 年代別の人数ajax
+            $("#ajax_age_count").clickToggle(
+                function() {
+                    $.ajax({
+                            type: 'get',
+                            datatype: 'json',
+                            url: '/employee/public/age_count'
+                        })
+                        .done(function(data) { //ajaxの通信に成功した場合
+                            // alert("success!");
+                            $("#result_pre").before("<p id='result_age_count'></p>");
+                            $("#ajax_age_count").css("color", "#D9534F");
+                            $("#result_age_count").append("<p class='mt-5 p-3 mb-0' style='background-color: #F7F7EE; font-weight:bold;'>≪年代別の人数≫</p>");
+                            $("#result_age_count").append("<p class='pl-3 pr-3 pb-3 pt-0 mb-0' style='background-color: #F7F7EE'>20代の人数は　" + data['age1'] + "人です</p>");
+                            $("#result_age_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>30代の人数は　" + data['age2'] + "人です</p>");
+                            $("#result_age_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>40代の人数は　" + data['age3'] + "人です</p>");
+                            $("#result_age_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>50代の人数は　" + data['age4'] + "人です</p>");
+                            $("#result_age_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>60代の人数は　" + data['age5'] + "人です</p>");
+                            $("#result_age_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>その他の人数は　" + data['age6'] + "人です</p>");
+                        })
+                        .fail(function(data) { //ajaxの通信に失敗した場合
+                            alert("error!");
+                        });
+
+                },
+                function() {
+                    $("#ajax_age_count").css("color", "black");
+                    $("#result_age_count").remove();
+                }
+            );
+
+        });
+
+        // ajaxで使用するボタンがトグルになるよう設定
+        $.fn.clickToggle = function(a, b) {
+            return this.each(function() {
+                var clicked = false;
+                $(this).on('click', function() {
+                    clicked = !clicked;
+                    if (clicked) {
+                        return a.apply(this, arguments);
+                    }
+                    return b.apply(this, arguments);
+                });
+            });
+        };
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

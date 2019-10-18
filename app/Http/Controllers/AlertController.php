@@ -117,16 +117,16 @@ class AlertController extends Controller
             // var_dump($kijunbi_year_array[$i]);
             // var_dump("計算結果");
             // var_dump($kinzoku_year);
-            $kinzoku_year_array[] = [$kinzoku_year];
+            // $kinzoku_year_array[] = [$kinzoku_year];
         }
-        var_dump($kinzoku_year_array);
+        // var_dump($kinzoku_year_array);
 
 
         for ($i = 0; $i <= $kijunbi_count - 1; $i++) {
-            // var_dump($kijunbi_year_array[$i]);
-            // var_dump($kinzoku_year);
+            var_dump($kijunbi_year_array[$i]);
+            var_dump($kinzoku_year);
 
-            if (($kijunbi_year_array[$i] + $kinzoku_year) <= date('Ym')) {
+            if (($kijunbi_year_array[$i] + (array)$kinzoku_year) <= date('Ym')) {
                 $this_year_kijunbi = $kijunbi_year_array[$i] + $kinzoku_year;
             } else {
                 $this_year_kijunbi = $kijunbi_year_array[$i] + $kinzoku_year - 1;
