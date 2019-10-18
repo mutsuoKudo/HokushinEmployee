@@ -930,6 +930,14 @@ class HolidayController extends Controller
         $scroll_top = $_POST['scroll_top2'];
 
 
+        if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5){
+            $mishouka_alert = "yes";
+        }else{
+            $mishouka_alert = "no";
+        }
+                                   
+
+
 
         return view('/holiday')->with([
             //社員名で使用する
@@ -964,6 +972,8 @@ class HolidayController extends Controller
             // 'latest_date' => $latest_date,
             //基準月の一か月前（年度終わりの月）
             'first_day_max2' => $first_day_max2,
+            //未消化アラート
+            'mishouka_alert' => $mishouka_alert,
 
 
             'latest_year' => $latest_year,
@@ -985,9 +995,8 @@ class HolidayController extends Controller
 
             'top_url' => $top_url,
             'scroll_top' => $scroll_top,
-
-
-
+            
         ]);
+
     }
 }

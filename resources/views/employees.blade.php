@@ -212,43 +212,36 @@
 				<p class="mt-4 mb-0 font-weight-bold">その他の機能</p>
 
 				<div class="col-12 mt-2 d-inline-flex">
-					<form action="/employee/public/all_avg" method="GET">
-						{{ csrf_field() }}
-						<button type="submit" class="mr-2 mt-1 function-button" id="ajax1">平均年齢（在籍者）</button>
-					</form>
+					<!-- <form action="/employee/public/all_avg" method="GET"> -->
+					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_avg">平均年齢（在籍者）</button>
+					<!-- </form> -->
 
-					<form action="/employee/public/department_avg" method="GET">
-						{{ csrf_field() }}
-						<button type="submit" class="mr-2 mt-1 function-button">平均年齢（部門別）</button>
-					</form>
+					<!-- <form action="/employee/public/department_avg" method="GET"> -->
+					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_department_avg">平均年齢（部門別）</button>
+					<!-- </form> -->
 
-					<form action="/employee/public/gender_avg" method="GET">
-						{{ csrf_field() }}
-						<button type="submit" class="mr-2 mt-1 function-button">平均年齢（男女別）</button>
-					</form>
+					<!-- <form action="/employee/public/gender_avg" method="GET"> -->
+					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_gender_avg">平均年齢（男女別）</button>
+					<!-- </form> -->
 				</div>
 
 
 				<div class="col-12 mt-2 d-inline-flex mt-3">
-					<form action="/employee/public/all_count" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="all_count" value="人数（在籍者）" class="mr-2 mt-1 function-button">
-					</form>
+					<!-- <form action="/employee/public/all_count" method="GET"> -->
+					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_count">人数（在籍者）</button>
+					<!-- </form> -->
 
-					<form action="/employee/public/department_count" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="all_department" value="人数（部門別）" class="mr-2 mt-1 function-button">
-					</form>
+					<!-- <form action="/employee/public/department_count" method="GET"> -->
+					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_department_count">人数（部門別）</button>
+					<!-- </form> -->
 
-					<form action="/employee/public/gender_count" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="all_gender" value="人数（男女別）" class="mr-2 mt-1 function-button">
-					</form>
+					<!-- <form action="/employee/public/gender_count" method="GET"> -->
+					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_gender_count">人数（男女別）</button>
+					<!-- </form> -->
 
-					<form action="/employee/public/age_count" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="age_count" value="人数（年代別）" class="mr-2 mt-1 function-button">
-					</form>
+					<!-- <form action="/employee/public/age_count" method="GET"> -->
+					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_age_count">人数（年代別）</button>
+					<!-- </form> -->
 				</div>
 
 
@@ -265,6 +258,7 @@
 				</div>
 
 
+
 				<!-- shainテーブルに上書き -->
 				<!-- <div class="col-12 mt-2 d-inline-flex">
 					<form action="/shain_update" method="GET">
@@ -272,87 +266,8 @@
 						<input type="submit" name="shain_update" value="shainテーブルアップデート" class="mr-2 mt-3 function-button2">
 					</form>
 				</div> -->
-				<div id="example"></div>
-				<!-- 平均年齢（在籍者） -->
-				@if(isset($all_avg))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">全在籍者の平均年齢は　{{ $all_avg }}　歳です</p>
-				@endif
 
-				<!-- 平均年齢（部門別） -->
-				@if(isset($department_avg1))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">代表取締役の平均年齢は　{{ $department_avg1 }}　歳です</p>
-				@endif
-				@if(isset($department_avg2))
-				<p class="p-3" style="background-color: #F7F7EE">管理部の平均年齢は　{{ $department_avg2 }}　歳です</p>
-				@endif
-				@if(isset($department_avg3))
-				<p class="p-3" style="background-color: #F7F7EE">営業部の平均年齢は　{{ $department_avg3 }}　歳です</p>
-				@endif
-				@if(isset($department_avg4))
-				<p class="p-3" style="background-color: #F7F7EE">システム開発部の平均年齢は　{{ $department_avg4 }}　歳です</p>
-				@endif
-				@if(isset($department_avg5))
-				<p class="p-3" style="background-color: #F7F7EE">研修生の平均年齢は　{{ $department_avg5 }}　歳です</p>
-				@endif
-
-				<!-- 平均年齢（男女別） -->
-				@if(isset($gender_avg1))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">男性の平均年齢は　{{ $gender_avg1 }}　歳です</p>
-				@endif
-				@if(isset($gender_avg2))
-				<p class="p-3" style="background-color: #F7F7EE">女性の平均年齢は　{{ $gender_avg2 }}　歳です</p>
-				@endif
-
-
-				<!-- 人数（在籍者） -->
-				@if(isset($all_count))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">全在籍者の人数は　{{ $all_count }}　人です</p>
-				@endif
-
-				<!-- 人数（部門別） -->
-				@if(isset($all_department1))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">代表取締役の人数は　{{ $all_department1 }}　人です</p>
-				@endif
-				@if(isset($all_department2))
-				<p class="p-3" style="background-color: #F7F7EE">管理部の人数は　{{ $all_department2 }}　人です</p>
-				@endif
-				@if(isset($all_department3))
-				<p class="p-3" style="background-color: #F7F7EE">営業部の人数は　{{ $all_department3 }}　人です</p>
-				@endif
-				@if(isset($all_department4))
-				<p class="p-3" style="background-color: #F7F7EE">システム開発部の人数は　{{ $all_department4 }}　人です</p>
-				@endif
-				@if(isset($all_department5))
-				<p class="p-3" style="background-color: #F7F7EE">研修生の人数は　{{ $all_department5 }}　人です</p>
-				@endif
-
-				<!-- 人数（男女別） -->
-				@if(isset($all_gender1))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">男性の人数は　{{ $all_gender1 }}　人です</p>
-				@endif
-				@if(isset($all_gender2))
-				<p class="p-3" style="background-color: #F7F7EE">女性の人数は　{{ $all_gender2 }}　人です</p>
-				@endif
-
-
-				@if(isset($age1))
-				<p class="mt-5 p-3" style="background-color: #F7F7EE">20代の人数は　{{ $age1 }}　人です</p>
-				@endif
-				@if(isset($age2))
-				<p class="p-3" style="background-color: #F7F7EE">30代の人数は　{{ $age2 }}　人です</p>
-				@endif
-				@if(isset($age3))
-				<p class="p-3" style="background-color: #F7F7EE">40代の人数は　{{ $age3 }}　人です</p>
-				@endif
-				@if(isset($age4))
-				<p class="p-3" style="background-color: #F7F7EE">50代の人数は　{{ $age4 }}　人です</p>
-				@endif
-				@if(isset($age5))
-				<p class="p-3" style="background-color: #F7F7EE">60代の人数は　{{ $age5 }}　人です</p>
-				@endif
-				@if(isset($age6))
-				<p class="p-3" style="background-color: #F7F7EE">その他の人数は　{{ $age6 }}　人です</p>
-				@endif
+				<div id="result_pre"></div>
 
 			</div>
 		</div>
@@ -594,8 +509,8 @@
 	}
 
 
-	
-	
+
+
 	// document.getElementById('reset').onclick = function() {
 	// 	window.alert("クリックしたよ");
 	// table.state.clear();

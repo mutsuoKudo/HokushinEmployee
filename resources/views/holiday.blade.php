@@ -213,7 +213,7 @@
                             <tr>
                                 <th class="text-center">消化日数</th>
 
-                                @if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5) <td style="color:red"> {{$array[$array_count][4]}} 　日　
+                                @if($mishouka_alert = "yes") <td style="color:red"> {{$array[$array_count][4]}} 　日　
                                     <small> ※残り期間({{$first_day_max2}}月末まで)で最低5日取得する必要があります！</small></td>
                                     @else
                                     <td> {{$array[$array_count][4]}} 　日　</td>
