@@ -917,9 +917,9 @@ class HolidayController extends Controller
         // var_dump($latest_date->day);
 
 
-        var_dump("個人の最新データ" . $latest_year);
-        var_dump("個人の最新データ" . $latest_month);
-        var_dump("個人の最新データ" . $latest_day);
+        // var_dump("個人の最新データ" . $latest_year);
+        // var_dump("個人の最新データ" . $latest_month);
+        // var_dump("個人の最新データ" . $latest_day);
       
 
 
@@ -929,12 +929,15 @@ class HolidayController extends Controller
         $top_url = $_POST['top_url'];
         $scroll_top = $_POST['scroll_top2'];
 
-
-        if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5){
-            $mishouka_alert = "yes";
-        }else{
-            $mishouka_alert = "no";
-        }
+if($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month){
+    $mishouka_alert = "no";
+}else{
+    if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5){
+        $mishouka_alert = "yes";
+    }else{
+        $mishouka_alert = "no";
+    }
+}
                                    
 
 

@@ -434,6 +434,7 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+
     //30代
     public function age30()
     {
@@ -465,6 +466,7 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+
     //40代
     public function age40()
     {
@@ -496,6 +498,7 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+
     //50代
     public function age50()
     {
@@ -527,6 +530,7 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+
     //60代
     public function age60()
     {
@@ -558,6 +562,7 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+
     //その他の年代
     public function age_other()
     {
@@ -1053,6 +1058,7 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+    
     //退社2017年
     public function taishokubi2017()
     {
@@ -1082,6 +1088,7 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+
     //退社2018年
     public function taishokubi2018()
     {
