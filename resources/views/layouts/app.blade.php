@@ -113,110 +113,110 @@
                 stateDuration: -1,
 
                 columnDefs: [
-                    // 社員名（ローマ字）を表示しない(visibleをfalseにすると消えます)
+                    // // 社員名（ローマ字）を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 4,
+                    //     visible: false
+                    // },
+                    // // 社員メールを表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 5,
+                    //     visible: false
+                    // },
+                    // // 性別を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 6,
+                    //     visible: false
+                    // },
+                    // // 郵便番号を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 7,
+                    //     visible: false
+                    // },
+                    // // 住所を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 8,
+                    //     visible: false
+                    // },
+                    // // 住所（建物）を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 9,
+                    //     visible: false
+                    // },
+                    // // 入社日を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 11,
+                    //     visible: false
+                    // },
+                    // // 正社員転換日を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 12,
+                    //     visible: false
+                    // },
+                    // // 転籍日を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 13,
+                    //     visible: false
+                    // },
+                    // // 退職日を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 14,
+                    //     visible: false
+                    // },
+                    // // 携帯番号を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 15,
+                    //     visible: false
+                    // },
+                    // // 電話番号を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 16,
+                    //     visible: false
+                    // },
+                    // // 雇用保険番号を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 17,
+                    //     visible: false
+                    // },
+                    // // 社会保険番号を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 18,
+                    //     visible: false
+                    // },
+                    // // 基礎年金番号を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 19,
+                    //     visible: false
+                    // },
+                    // // 月給を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 20,
+                    //     visible: false
+                    // },
+                    // // 名刺を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 22,
+                    //     visible: false
+                    // },
+                    // // IDカードを表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 23,
+                    //     visible: false
+                    // },
+                    // // 扶養家族を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 24,
+                    //     visible: false
+                    // },
+                    // // 入社試験点数を表示しない(visibleをfalseにすると消えます)
+                    // {
+                    //     targets: 25,
+                    //     visible: false
+                    // },
                     {
-                        targets: 4,
-                        visible: false
-                    },
-                    // 社員メールを表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 5,
-                        visible: false
-                    },
-                    // 性別を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 6,
-                        visible: false
-                    },
-                    // 郵便番号を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 7,
-                        visible: false
-                    },
-                    // 住所を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 8,
-                        visible: false
-                    },
-                    // 住所（建物）を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 9,
-                        visible: false
-                    },
-                    // 入社日を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 11,
-                        visible: false
-                    },
-                    // 正社員転換日を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 12,
-                        visible: false
-                    },
-                    // 転籍日を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 13,
-                        visible: false
-                    },
-                    // 退職日を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 14,
-                        visible: false
-                    },
-                    // 携帯番号を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 15,
-                        visible: false
-                    },
-                    // 電話番号を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 16,
-                        visible: false
-                    },
-                    // 雇用保険番号を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 17,
-                        visible: false
-                    },
-                    // 社会保険番号を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 18,
-                        visible: false
-                    },
-                    // 基礎年金番号を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 19,
-                        visible: false
-                    },
-                    // 月給を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 20,
-                        visible: false
-                    },
-                    // 名刺を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 22,
-                        visible: false
-                    },
-                    // IDカードを表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 23,
-                        visible: false
-                    },
-                    // 扶養家族を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 24,
-                        visible: false
-                    },
-                    // 入社試験点数を表示しない(visibleをfalseにすると消えます)
-                    {
-                        targets: 25,
-                        visible: false
-                    },
-                    {
-                        // 操作・社員名・誕生日・部門・備考のソート機能をオフ
+                        // 操作・社員名・メール・備考のソート機能をオフ
                         "orderable": false,
-                        "targets": [0, 2, 10, 21, 26]
+                        "targets": [0, 2, 3, 5]
                     }
                 ]
             });
