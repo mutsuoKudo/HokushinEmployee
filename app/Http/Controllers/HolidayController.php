@@ -108,8 +108,8 @@ class HolidayController extends Controller
         // $kinzoku_year = date("Y") - $kijunbi_year;
         $kinzoku_year = $year - $kijunbi_year;
         // $kinzoku_year = 30;
-        var_dump('勤続年数:' . $year_pre);
-        var_dump('勤続年数:' . $year . "-" .$kijunbi_year);
+        // var_dump('勤続年数:' . $year_pre);
+        // var_dump('勤続年数:' . $year . "-" .$kijunbi_year);
         var_dump('勤続年数:' . $kinzoku_year);
 
 

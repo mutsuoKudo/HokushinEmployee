@@ -288,6 +288,14 @@
 			</form>
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
+				@if($mishouka_title == 'on')
+				<p style="color:red; font-size:20px;" class="mt-2 mb-1">
+					基準月が3か月以内にくる人で、有給を5日以上取得していない人が対象です
+				</p>
+				<p style="color:red; font-size:15px;">
+					※{{$month}}月末時点のデータです
+				</p>
+				@endif
 			</div>
 		</div>
 		@endif
@@ -308,88 +316,92 @@
 							<th class="table-text hs-md-th3" style="min-width:50px">
 								<div>社員名</div>
 							</th>
-							<th class="table-text" style="min-width:50px">
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>社員名（カナ）</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>社員名（ローマ字）</div>
-							</th>
+							</th> -->
 							<th class="table-text" style="min-width:50px">
 								<div>メール</div>
 							</th>
-							<th class="table-text" style="min-width:50px">
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>性別</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>郵便番号</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>住所</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>住所（建物）</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>誕生日</div>
-							</th>
+							</th> -->
 							<th class="table-text" style="min-width:50px">
 								<div>入社日</div>
 							</th>
-							<th class="table-text" style="min-width:50px">
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>正社員転換日</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>転籍日</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>退職日</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>社員携帯</div>
-							</th>
-							<th class="table-text">
+							</th> -->
+							<!-- <th class="table-text">
 								<div>電話番号</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>雇用保険番号</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>社会保険番号</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>基礎年金番号</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>月給</div>
-							</th>
-							<th class="table-text hs-md-th4" style="min-width:30px">
+							</th> -->
+							<!-- <th class="table-text hs-md-th4" style="min-width:30px">
 								<div>部門</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>名刺</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>idカード</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>扶養家族</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
 								<div>入社試験点数</div>
+							</th> -->
+							<!-- <th class="table-text" style="min-width:50px">
+								<div>備考</div>
+							</th> -->
+							<th class="table-text" style="min-width:50px">
+								<div>基準月</div>
 							</th>
 							<th class="table-text" style="min-width:50px">
-								<div>備考</div>
+								<div>取得日数</div>
 							</th>
-
+							<th class="table-text" style="min-width:50px">
+								<div>残日数</div>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
-						@for ($i=0; $i < count($select_shain_cd2); $i++) <tr>
-							@if($employees2[$i][1][0]->first_kijunbi > '2016-08-01')
-							<?php
-							var_dump($employees2[$i][1][0]->first_kijunbi);
-							var_dump($employees2[$i][1][0]->first_kijunbi >= '2019-08-01');
-							?>
+						@for ($i=0; $i < count($select_shain_cd3); $i++) <tr>
+
 							<!-- Task Delete Button -->
 							<td>
 								<form action="/employee/public/show/{{$employees2[$i][0][0]->shain_cd}}" method="POST">
@@ -417,81 +429,90 @@
 							<td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_mei }}</div>
 							</td>
-							<td class="table-text">
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_mei_kana }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_mei_romaji }}</div>
-							</td>
+							</td> -->
 							<td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_mail }}</div>
 							</td>
-							<td class="table-text">
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->gender }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_zip_code }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_jyusho }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_jyusho_tatemono }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_birthday }}</div>
-							</td>
+							</td> -->
 							<td class="table-text">
 								<div>{{ $employees2[$i][0][0]->nyushabi }}</div>
 							</td>
-							<td class="table-text">
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->seishain_tenkanbi }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->tensekibi }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->taishokubi }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_keitai }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shain_tel }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->koyohoken_bango }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->shakaihoken_bango }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->kisonenkin_bango }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->monthly_saraly }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->department }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->name_card }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->id_card }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->fuyo_kazoku }}</div>
-							</td>
-							<td class="table-text">
+							</td> -->
+							<!-- <td class="table-text">
 								<div>{{ $employees2[$i][0][0]->test }}</div>
+							</td> -->
+							<!-- <td class="table-text">
+								<div>{{ $employees2[$i][0][0]->remarks }}</div>
+							</td> -->
+							<td class="table-text" style="color:red">
+								<div>{{ $employees2[$i][1] }} 月</div>
+							</td>
+							<td class="table-text" style="color:red">
+								<div>{{ $employees2[$i][2][0]->sumday }} 日</div>
 							</td>
 							<td class="table-text">
-								<div>{{ $employees2[$i][0][0]->remarks }}</div>
+								<div>{{ $array[$i][5] }} 日</div>
 							</td>
 
 							</tr>
-							@endif
+
 							@endfor
 					</tbody>
 				</table>
@@ -511,26 +532,6 @@
 		$(window).scrollTop(<?php echo @$_REQUEST['post_scroll_top']; ?>);
 		var scroll_top = 0;
 	}
-
-
-
-
-	// document.getElementById('reset').onclick = function() {
-	// 	window.alert("クリックしたよ");
-	// table.state.clear();
-	// table.destroy();
-	// $("#data-table tbody > tr").remove();
-	// }
-
-	// document.getElementById('reset').onclick = function() {
-	// 	var table = $('#data-teble').DataTable();
-	// 	table.page('first').draw('page');
-	// };
-
-	// document.getElementsByClassName('table_reset').onclick = function() {
-	// 	var table = $('#data-teble').DataTable();
-	// 	table.page('first').draw('page');
-	// };
 </script>
 
 @endsection
