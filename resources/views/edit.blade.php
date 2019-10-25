@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+<?php
+$top_url_edit = $top_url;
+var_dump($top_url_edit);
+?>
 <div class="container">
     <div class="col-sm-12">
         <div class="panel panel-default">
@@ -35,13 +40,14 @@
             </div>
 
             <div class="panel-body">
-                <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
-                    <thead>
+                <!-- 更新ボタン -->
+                <form class="form-signin" role="form" method="post" action="/employee/public/update/{{ $employee->shain_cd }}">
+                    <input type="hidden" name="top_url_edit" value="{{$top_url_edit}}">
+                    <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
+                        <thead>
 
-                    </thead>
-                    <tbody>
-                        <!-- 更新ボタン -->
-                        <form class="form-signin" role="form" method="post" action="/employee/public/update/{{ $employee->shain_cd }}">
+                        </thead>
+                        <tbody>
                             {{ csrf_field() }}
                             <tr>
                                 <th>社員コード<small class="float-right text-danger">※必須</small></th>
@@ -382,11 +388,11 @@
                                 </td>
                             </tr>
 
-                    </tbody>
-                </table>
-                <div class="text-center">
-                    <button class="btn btn-lg btn-primary mt-5" type="submit">更新</button>
-                </div>
+                        </tbody>
+                    </table>
+                    <div class="text-center">
+                        <button class="btn btn-lg btn-primary mt-5" type="submit">更新</button>
+                    </div>
                 </form>
 
             </div>

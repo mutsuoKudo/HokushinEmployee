@@ -252,6 +252,37 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
+
+    //2015年
+    public function nyushabi2015()
+    {
+        $employees = DB::table('employees')
+            ->whereNull('taishokubi')
+            ->whereBetween('nyushabi', ["2015-01-01", "2015-12-31"])
+            ->get();
+
+        $select_nyusha_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+            ->whereNull('taishokubi')
+            ->orderBy('nyushanen', 'asc')
+            ->get();
+
+        $select_taishoku_year = DB::table('employees')
+            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+            ->whereNotNull('taishokubi')
+            ->orderBy('taishokunen', 'asc')
+            ->get();
+
+        $title = "2015年入社";
+
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
+
     //2016年
     public function nyushabi2016()
     {

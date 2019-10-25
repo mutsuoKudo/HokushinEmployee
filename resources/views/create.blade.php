@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+<?php
+$post_url_create = $post_url;
+var_dump($post_url_create);
+?>
 <div class="container">
     <div class="mb-5">
         <div class="panel panel-default">
@@ -19,7 +24,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Books -->
     <div class="panel panel-default mt-5 col-12">
         <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
@@ -27,14 +32,15 @@
         </div>
 
         <div class="panel-body">
-            <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
-                <thead>
+            <form class="form-signin" role="form" method="post" action="/employee/public/submit">
+            <input type="hidden" name="post_url_create" value="{{$post_url_create}}">
+                {{ csrf_field() }}
+                <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
+                    <thead>
 
-                </thead>
-                <tbody>
-                    <!-- 新規登録ボタン -->
-                    <form class="form-signin" role="form" method="post" action="/employee/public/submit">
-                        {{ csrf_field() }}
+                    </thead>
+                    <tbody>
+                        <!-- 新規登録ボタン -->
                         <tr>
                             <th>社員コード<small class="float-right text-danger">※必須</small></th>
                             <td class="width:50%">
@@ -197,11 +203,11 @@
                             </td>
                         </tr>
 
-                </tbody>
-            </table>
-            <div class="text-center">
-                <button class="btn btn-lg btn-primary mt-4" type="submit">登録</button>
-            </div>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-primary mt-4" type="submit">登録</button>
+                </div>
             </form>
         </div>
     </div>

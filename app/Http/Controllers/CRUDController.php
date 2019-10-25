@@ -75,7 +75,9 @@ class CRUDController extends Controller
 
         $employee->save();
 
-        return redirect('/')->with('create', '新規登録完了!');
+        $post_url_create = $_POST['post_url_create'];
+
+        return redirect($post_url_create)->with('create', '新規登録完了!');
     }
 
     /**
@@ -243,6 +245,15 @@ class CRUDController extends Controller
         $employee->remarks = $request->input('remarks');
         $employee->save();
 
-        return redirect('/')->with('status', 'UPDATE完了!');
+        $top_url_edit = $_POST['top_url_edit'];
+        // // $scroll_top = $_POST['scroll_top2'];
+
+        // var_dump($top_url_edit);
+        // $day_max1 = substr($top_url_edit, 16, 100);
+        // var_dump($day_max1);
+
+        return redirect($top_url_edit)->with('status', 'UPDATE完了!');
+
+        
     }
 }

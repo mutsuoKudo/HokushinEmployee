@@ -110,7 +110,7 @@ class HolidayController extends Controller
         // $kinzoku_year = 30;
         // var_dump('勤続年数:' . $year_pre);
         // var_dump('勤続年数:' . $year . "-" .$kijunbi_year);
-        var_dump('勤続年数:' . $kinzoku_year);
+        // var_dump('勤続年数:' . $kinzoku_year);
 
 
         //配列の作成
@@ -218,8 +218,11 @@ class HolidayController extends Controller
                 //最大繰り越し日数
                 $max_carry_over = "11";
                 //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
-                $carry_over = $array[$i - 1][6];
-                // var_dump($i . "年目のcarry_overは" . $carry_over);
+                if ($array[$i - 1][6] > $max_carry_over) {
+                    $carry_over = $max_carry_over;
+                } else {
+                    $carry_over = $array[$i - 1][6];
+                }
 
                 // 期首残高
                 $kisyu_nokori = $huyo_holiday + $carry_over;
@@ -303,8 +306,13 @@ class HolidayController extends Controller
 
                 $huyo_holiday = "12";
                 $max_carry_over = "12";
-                $carry_over = $array[$i - 1][6];
-                // var_dump($i . "年目のcarry_overは" . $carry_over);
+
+                //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                if ($array[$i - 1][6] > $max_carry_over) {
+                    $carry_over = $max_carry_over;
+                } else {
+                    $carry_over = $array[$i - 1][6];
+                }
 
                 // 期首残高
                 $kisyu_nokori = $huyo_holiday + $carry_over;
@@ -387,7 +395,13 @@ class HolidayController extends Controller
                 // var_dump("ここは" . $i . "年目");
                 $huyo_holiday = "14";
                 $max_carry_over = "14";
-                $carry_over = $array[$i - 1][6];
+
+                //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                if ($array[$i - 1][6] > $max_carry_over) {
+                    $carry_over = $max_carry_over;
+                } else {
+                    $carry_over = $array[$i - 1][6];
+                }
                 // var_dump($i . "年目のcarry_overは" . $carry_over);
 
 
@@ -472,8 +486,12 @@ class HolidayController extends Controller
                 // var_dump("ここは" . $i . "年目");
                 $huyo_holiday = "16";
                 $max_carry_over = "16";
-                $carry_over = $array[$i - 1][6];
-                // var_dump($i . "年目のcarry_overは" . $carry_over);
+                //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                if ($array[$i - 1][6] > $max_carry_over) {
+                    $carry_over = $max_carry_over;
+                } else {
+                    $carry_over = $array[$i - 1][6];
+                }
 
 
                 // 期首残高
@@ -558,9 +576,12 @@ class HolidayController extends Controller
 
                 $huyo_holiday = "18";
                 $max_carry_over = "18";
-                $carry_over = $array[$i - 1][6];
-                // var_dump($i . "年目のcarry_overは" . $carry_over);
-
+                //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                if ($array[$i - 1][6] > $max_carry_over) {
+                    $carry_over = $max_carry_over;
+                } else {
+                    $carry_over = $array[$i - 1][6];
+                }
 
                 // 期首残高
                 $kisyu_nokori = $huyo_holiday + $carry_over;
@@ -645,9 +666,12 @@ class HolidayController extends Controller
 
                 $huyo_holiday = "20";
                 $max_carry_over = "20";
-                $carry_over = $array[$i - 1][6];
-                // var_dump($i . "年目のcarry_overは" . $carry_over);
-
+                //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                if ($array[$i - 1][6] > $max_carry_over) {
+                    $carry_over = $max_carry_over;
+                } else {
+                    $carry_over = $array[$i - 1][6];
+                }
 
                 // 期首残高
                 $kisyu_nokori = $huyo_holiday + $carry_over;
@@ -728,9 +752,8 @@ class HolidayController extends Controller
 
             //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]月別消化日数/[8]年度最後の年月/[9]年度終わりの3ヶ月前
             $array[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $get_holiday, $day_max, $warning];
-
         }
-    
+
 
         // var_dump("ここみろ！");
         // var_dump($array[0][9]);
@@ -852,7 +875,7 @@ class HolidayController extends Controller
 
 
 
-        
+
         if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
             $array_count = -1;
         } else {
@@ -868,9 +891,9 @@ class HolidayController extends Controller
                 }
             }
         }
-        
 
-        
+
+
         // //現在の年を作成
         // $year = date("Y");
         // //現在の月を作成
@@ -920,7 +943,7 @@ class HolidayController extends Controller
         // var_dump("個人の最新データ" . $latest_year);
         // var_dump("個人の最新データ" . $latest_month);
         // var_dump("個人の最新データ" . $latest_day);
-      
+
 
 
 
@@ -929,16 +952,16 @@ class HolidayController extends Controller
         $top_url = $_POST['top_url'];
         $scroll_top = $_POST['scroll_top2'];
 
-if($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month){
-    $mishouka_alert = "no";
-}else{
-    if($array[$array_count][9] <= $year_month_b AND $array[$array_count][4] <=5){
-        $mishouka_alert = "yes";
-    }else{
-        $mishouka_alert = "no";
-    }
-}
-                                   
+        if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
+            $mishouka_alert = "no";
+        } else {
+            if ($array[$array_count][9] <= $year_month_b and $array[$array_count][4] <= 5) {
+                $mishouka_alert = "yes";
+            } else {
+                $mishouka_alert = "no";
+            }
+        }
+
 
 
 
@@ -998,8 +1021,7 @@ if($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month
 
             'top_url' => $top_url,
             'scroll_top' => $scroll_top,
-            
-        ]);
 
+        ]);
     }
 }
