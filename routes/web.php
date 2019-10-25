@@ -109,6 +109,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/nyushabi2007', 'ButtonController@nyushabi2007');
     //入社年別ボタンクリック→2014年ボタンクリック→2014年入社のテーブル表示
     Route::get('/nyushabi2014', 'ButtonController@nyushabi2014');
+    //入社年別ボタンクリック→2015年ボタンクリック→2015年入社のテーブル表示
+    Route::get('/nyushabi2015', 'ButtonController@nyushabi2015');
     //入社年別ボタンクリック→2016年ボタンクリック→2016年入社のテーブル表示
     Route::get('/nyushabi2016', 'ButtonController@nyushabi2016');
     //入社年別ボタンクリック→2017年ボタンクリック→2017年入社のテーブル表示

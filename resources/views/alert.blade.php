@@ -208,6 +208,19 @@
 
 				</div>
 
+				<div class="col-12 mt-3 d-inline-flex">
+					<!-- 未消化アラート -->
+					<form action="/employee/public/mishouka" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="all_count" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
+					</form>
+					<!-- 残数僅少アラート -->
+					<form action="/employee/public/zansu_kinshou" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="all_department" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
+					</form>
+				</div>
+
 
 				<p class="mt-4 mb-0 font-weight-bold">その他の機能</p>
 
@@ -226,7 +239,7 @@
 				</div>
 
 
-				<div class="col-12 mt-2 d-inline-flex mt-3">
+				<div class="col-12 mt-3 d-inline-flex">
 					<!-- <form action="/employee/public/all_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_count">人数（在籍者）</button>
 					<!-- </form> -->
@@ -245,17 +258,7 @@
 				</div>
 
 
-				<div class="col-12 mt-2 d-inline-flex mt-3">
-					<form action="/employee/public/mishouka" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="all_count" value="未消化アラート一覧" class="mr-2 mt-1 function-button">
-					</form>
 
-					<form action="/employee/public/zansu_kinshou" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="all_department" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button">
-					</form>
-				</div>
 
 
 
@@ -508,7 +511,7 @@
 								<div>{{ $employees2[$i][2][0]->sumday }} 日</div>
 							</td>
 							<td class="table-text">
-								<div>{{ $array[$i][5] }} 日</div>
+								<div>{{$zan_holiday_personal[$select_shain_cd3[$i][0]][0]}} 日</div>
 							</td>
 
 							</tr>

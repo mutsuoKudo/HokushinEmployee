@@ -437,24 +437,24 @@ class AlertController extends Controller
             // var_dump('基準月:' . $kijunbi_month);
 
 
-            //  勤続年数を計算(計算の仕方間違ってる！！修正必要)
+            //  勤続年数を計算
             $year_pre =  date("Ym", strtotime("-2 month"));
             $year = substr($year_pre, 0, 4);
             $month = substr($year_pre, 4, 2);
             // var_dump('現在年:' . $year);
             // var_dump('現在月:' . $month);
 
-            if ($kijunbi_year +1 >= $year AND $kijunbi_month >= $month) {
-                var_dump('初年度');
+            if ($kijunbi_year + 1 >= $year and $kijunbi_month >= $month) {
+                // var_dump('初年度');
                 $kinzoku_year = 0;
             } else {
-                var_dump('初年度以降');
-                $kinzoku_year = $year - $kijunbi_year;
+                // var_dump('初年度以降');
+                $kinzoku_year = $year - $kijunbi_year - 1;
             }
 
             // $kinzoku_year = $year - $kijunbi_year;
 
-            var_dump($kinzoku_year);
+            // var_dump($kinzoku_year);
 
 
             //入社日の取得
@@ -470,6 +470,7 @@ class AlertController extends Controller
             $nyushabi_year = substr($nyushabi[0]->nyushabi, 0, 4);
             $nyushabi_month = substr($nyushabi[0]->nyushabi, 5, 2);
             $nyushabi_year_month = $nyushabi_year . $nyushabi_month;
+
 
 
             //初年度最後の月
@@ -495,15 +496,16 @@ class AlertController extends Controller
             // var_dump("入社年月" . $nyushabi_year_month);
             // echo ('</pre>');
 
-            $kinzoku_array[] = $kinzoku_year;
+            $kinzoku_array[] = [$kinzoku_year, $nyushabi_year_month];
         }
 
-        var_dump($kinzoku_array);
-
-        // var_dump('勤続年数');
+        // echo ('<pre>');
+        // var_dump('勤続年数と入社日');
         // var_dump($kinzoku_array[0]);
         // var_dump($kinzoku_array[1]);
         // var_dump($kinzoku_array[2]);
+        // var_dump($kinzoku_array);
+        // echo ('</pre>');
 
 
 
@@ -516,7 +518,8 @@ class AlertController extends Controller
             // var_dump($i);
             // echo ('</pre>');
             //勤続年数分繰り返す。$kinzoku_arrayは[0]から始まるので、2人分の勤続年数データが入っている場合、勤続年数配列は0～1までしか入っていないので、人数-1回分となる。
-            for ($d = 0; $d <= $kinzoku_array[$i]; $d++) {
+            // for ($d = 0; $d <= $kinzoku_array[$i]; $d++) {
+            for ($d = 0; $d <= $kinzoku_array[$i][0]; $d++) {
                 // for ($d = 0; $d <= $kinzoku_array[2]; $d++) {
                 // echo ('<pre>');
                 // var_dump('$dの動き');
@@ -549,11 +552,21 @@ class AlertController extends Controller
                     //年度最後の年月
                     $day_max = $day_max1 . $day_max2;
 
+                    // echo ('<pre>');
+                    // var_dump('0年目');
+                    // var_dump($select_shain_cd3[$i]);
+                    // var_dump($day_max_pre);
+                    // var_dump($nyushabi_year_month);
+                    // var_dump($kinzoku_array[$i][1]);
+                    // var_dump($day_max);
+                    // echo ('</pre>');
+
 
                     $holiday_count = DB::table('holidays')
                         ->select(DB::raw('sum(day) AS sumday'))
                         //入社日から～基準日に1年度分（11ヶ月）足したもの(ex:2016/10/1入社なら、2016/10/1~（基準日が2017/4/1なので）2018/3/1まで))
-                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $nyushabi_year_month)
+                        // ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $nyushabi_year_month)
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $kinzoku_array[$i][1])
                         ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
                         ->where('shain_cd', $select_shain_cd3[$i])
                         ->get();
@@ -591,16 +604,20 @@ class AlertController extends Controller
                     $huyo_holiday = "11";
                     //最大繰り越し日数
                     $max_carry_over = "11";
+
                     //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
-                    $carry_over = $array[$i - 1][6];
-                    // var_dump($i . "年目のcarry_overは" . $carry_over);
+                    if ($array[$i][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$i][6];
+                    }
 
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
                     //消化日数
                     //年度初めの年月（基準日に$i($i=1)年足したもの(ex:2016/10が基準日の場合、2017/10になる))
-                    $day_min_pre = $kijunbi_year + $i;
+                    $day_min_pre = $kijunbi_year + $d;
                     $day_min = $day_min_pre . $kijunbi_month;
                     // var_dump($i . "年度初めの年月" . $day_min);
 
@@ -608,8 +625,14 @@ class AlertController extends Controller
                     $day_max_year = substr($first_day_max, 0, 4);
                     $day_max_month = substr($first_day_max, 4, 2);
 
-                    $day_max = $day_max_year + $i . $day_max_month;
+                    $day_max = $day_max_year + $d . $day_max_month;
                     // var_dump($i . "年度最後の年月" . $day_max);
+
+                    // echo ('<pre>');
+                    // var_dump('一年目');
+                    // var_dump($day_min);
+                    // var_dump($day_max);
+                    // echo ('</pre>');
 
 
                     $holiday_count = DB::table('holidays')
@@ -648,15 +671,30 @@ class AlertController extends Controller
 
                     $huyo_holiday = "12";
                     $max_carry_over = "12";
-                    $carry_over = $array[$i - 1][6];
-                    // var_dump($i . "年目のcarry_overは" . $carry_over);
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d + 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d + 1][6];
+                    }
+
+
+                    // var_dump('ここから');
+                    // echo ('<pre>');
+                    // var_dump($d);
+                    // var_dump($array[$d+1][6]);
+                    // var_dump($max_carry_over);
+                    // var_dump('付与日数'.$huyo_holiday);
+                    // var_dump('前期繰越'.$carry_over);
+                    // echo ('</pre>');
+
 
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
                     //消化日数
                     //年度初めの年月（基準日に$i($i=2)年足したもの(ex:2016/10が基準日の場合、2018/10になる))
-                    $day_min_pre = $kijunbi_year + $i;
+                    $day_min_pre = $kijunbi_year + $d;
                     $day_min = $day_min_pre . $kijunbi_month;
                     // var_dump($i . "年度初めの年月" . $day_min);
 
@@ -664,8 +702,13 @@ class AlertController extends Controller
                     $day_max_year = substr($first_day_max, 0, 4);
                     $day_max_month = substr($first_day_max, 4, 2);
 
-                    $day_max = $day_max_year + $i . $day_max_month;
+                    $day_max = $day_max_year + $d . $day_max_month;
                     // var_dump($i . "年度最後の年月" . $day_max);
+
+                    // echo ('<pre>');
+                    // var_dump($day_min);
+                    // var_dump($day_max);
+                    // echo ('</pre>');
 
                     $holiday_count = DB::table('holidays')
                         ->select(DB::raw('sum(day) AS sumday'))
@@ -702,16 +745,19 @@ class AlertController extends Controller
                     // var_dump("ここは" . $i . "年目");
                     $huyo_holiday = "14";
                     $max_carry_over = "14";
-                    $carry_over = $array[$i - 1][6];
-                    // var_dump($i . "年目のcarry_overは" . $carry_over);
-
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d + 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d + 1][6];
+                    }
 
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
                     //消化日数
                     //年度初めの年月（基準日に$i($i=3)年足したもの(ex:2016/10が基準日の場合、2019/10になる))
-                    $day_min_pre = $kijunbi_year + $i;
+                    $day_min_pre = $kijunbi_year + $d;
                     $day_min = $day_min_pre . $kijunbi_month;
                     // var_dump($i . "年度初めの年月" . $day_min);
 
@@ -719,8 +765,13 @@ class AlertController extends Controller
                     $day_max_year = substr($first_day_max, 0, 4);
                     $day_max_month = substr($first_day_max, 4, 2);
 
-                    $day_max = $day_max_year + $i . $day_max_month;
+                    $day_max = $day_max_year + $d . $day_max_month;
                     // var_dump($i . "年度最後の年月" . $day_max);
+
+                    // echo ('<pre>');
+                    // var_dump($day_min);
+                    // var_dump($day_max);
+                    // echo ('</pre>');
 
 
                     $holiday_count = DB::table('holidays')
@@ -758,16 +809,19 @@ class AlertController extends Controller
                     // var_dump("ここは" . $i . "年目");
                     $huyo_holiday = "16";
                     $max_carry_over = "16";
-                    $carry_over = $array[$i - 1][6];
-                    // var_dump($i . "年目のcarry_overは" . $carry_over);
-
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d + 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d + 1][6];
+                    }
 
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
                     //消化日数
                     //年度初めの年月（基準日に$i($i=4)年足したもの(ex:2016/10が基準日の場合、2020/10になる))
-                    $day_min_pre = $kijunbi_year + $i;
+                    $day_min_pre = $kijunbi_year + $d;
                     $day_min = $day_min_pre . $kijunbi_month;
                     // var_dump($i . "年度初めの年月" . $day_min);
 
@@ -775,8 +829,13 @@ class AlertController extends Controller
                     $day_max_year = substr($first_day_max, 0, 4);
                     $day_max_month = substr($first_day_max, 4, 2);
 
-                    $day_max = $day_max_year + $i . $day_max_month;
+                    $day_max = $day_max_year + $d . $day_max_month;
                     // var_dump($i . "年度最後の年月" . $day_max);
+
+                    // echo ('<pre>');
+                    // var_dump($day_min);
+                    // var_dump($day_max);
+                    // echo ('</pre>');
 
 
                     $holiday_count = DB::table('holidays')
@@ -815,16 +874,19 @@ class AlertController extends Controller
 
                     $huyo_holiday = "18";
                     $max_carry_over = "18";
-                    $carry_over = $array[$i - 1][6];
-                    // var_dump($i . "年目のcarry_overは" . $carry_over);
-
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d + 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d + 1][6];
+                    }
 
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
                     //消化日数
                     //年度初めの年月（基準日に$i($i=5)年足したもの(ex:2016/10が基準日の場合、2021/10になる))
-                    $day_min_pre = $kijunbi_year + $i;
+                    $day_min_pre = $kijunbi_year + $d;
                     $day_min = $day_min_pre . $kijunbi_month;
                     // var_dump($i . "年度初めの年月" . $day_min);
 
@@ -832,8 +894,13 @@ class AlertController extends Controller
                     $day_max_year = substr($first_day_max, 0, 4);
                     $day_max_month = substr($first_day_max, 4, 2);
 
-                    $day_max = $day_max_year + $i . $day_max_month;
+                    $day_max = $day_max_year + $d . $day_max_month;
                     // var_dump($i . "年度最後の年月" . $day_max);
+
+                    // echo ('<pre>');
+                    // var_dump($day_min);
+                    // var_dump($day_max);
+                    // echo ('</pre>');
 
                     $holiday_count = DB::table('holidays')
                         ->select(DB::raw('sum(day) AS sumday'))
@@ -872,16 +939,19 @@ class AlertController extends Controller
 
                     $huyo_holiday = "20";
                     $max_carry_over = "20";
-                    $carry_over = $array[$i - 1][6];
-                    // var_dump($i . "年目のcarry_overは" . $carry_over);
-
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d + 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d + 1][6];
+                    }
 
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
                     //消化日数
                     //年度初めの年月（基準日に$i($i>=6)年足したもの(ex:2016/10が基準日の場合、2022/10~になる))
-                    $day_min_pre = $kijunbi_year + $i;
+                    $day_min_pre = $kijunbi_year + $d;
                     $day_min = $day_min_pre . $kijunbi_month;
                     // var_dump($i . "年度初めの年月" . $day_min);
 
@@ -889,8 +959,13 @@ class AlertController extends Controller
                     $day_max_year = substr($first_day_max, 0, 4);
                     $day_max_month = substr($first_day_max, 4, 2);
 
-                    $day_max = $day_max_year + $i . $day_max_month;
+                    $day_max = $day_max_year + $d . $day_max_month;
                     // var_dump($i . "年度最後の年月" . $day_max);
+
+                    // echo ('<pre>');
+                    // var_dump($day_min);
+                    // var_dump($day_max);
+                    // echo ('</pre>');
 
 
                     $holiday_count = DB::table('holidays')
@@ -929,56 +1004,69 @@ class AlertController extends Controller
                 //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]年度最後の年月/
                 $array[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $day_max, $select_shain_cd3[$i]];
             }
+        }
+        // echo ('<pre>');
+        // var_dump($array);
+        // var_dump($res);
+        // var_dump($pu);
+        // echo ('</pre>');
 
+        // $zan_holiday = [];
+
+        for ($i = 0; $i < count($select_shain_cd3); $i++) {
+            //社員の有給情報の入ったはいれつの数分だけ繰り返す
             for ($y = 0; $y < count($array); $y++) {
 
-                // if($array[$y][8][0] == $select_shain_cd3[$i][0]){
-                //     echo ('<pre>');
-                //     var_dump('はいってるよ！');
-                //     var_dump($select_shain_cd3[$i][0]);
-                //     var_dump($array[$y][8][0]);
-                //     var_dump($array[$y][8][0] == $select_shain_cd3[$i][0]);
-                //     echo ('</pre>');
+                if ($array[$y][8][0] == $select_shain_cd3[$i][0]) {
+                    // echo ('<pre>');
+                    // var_dump('はいってるよ！');
+                    // var_dump($select_shain_cd3[$i][0]);
+                    // var_dump($array[$y][8][0]);
+                    //     var_dump($array[$y][8][0] == $select_shain_cd3[$i][0]);
+                    // echo ('</pre>');
 
-                //     $pu[] = [$array[$y][5], $select_shain_cd3[$i][0],$y];
-                    
-                    
-                // }else{
-                //     echo ('<pre>');
-                //     var_dump('はいってないよ！');
-                //     var_dump($select_shain_cd3[$i][0]);
-                //     var_dump($array[$y][8][0]);
-                //     var_dump($array[$y][8][0] == $select_shain_cd3[$i][0]);
-                //     echo ('</pre>');
-    
-                // }
-                echo ('<pre>');
-                    var_dump($select_shain_cd3[$i][0]);
-                    var_dump($array[$y][8]);
-                    echo ('</pre>');
-                $res = array_search($select_shain_cd3[$i][0], $array[$y][8]);
+                    // $zan_holiday_personal_pre = [
+                    //     $select_shain_cd3[$i][0] =>
+                    //     [$array[$y][5], $select_shain_cd3[$i][0]]
+                    // ];
+
+                    $zan_holiday_personal[$select_shain_cd3[$i][0]] = [$array[$y][5], $select_shain_cd3[$i][0]];
+                    // $zan_holiday_personal = array_merge($zan_holiday, $zan_holiday_personal_pre);
+
+                    // var_dump('配列名');
+                    // var_dump($zan_holiday_personal);
+                } else {
+                    // echo ('<pre>');
+                    // var_dump('はいってないよ！');
+                    // var_dump($select_shain_cd3[$i][0]);
+                    // var_dump($array[$y][8][0]);
+                    //     var_dump($array[$y][8][0] == $select_shain_cd3[$i][0]);
+                    // echo ('</pre>');
+                }
+                // echo ('<pre>');
+                // var_dump($select_shain_cd3[$i][0]);
+                // var_dump($array[$y][8]);
+                // echo ('</pre>');
+                // $res = array_search($select_shain_cd3[$i][0], $array[$y][8]);
 
 
             }
-            // echo ('<pre>');
-            // var_dump($pu);
-            // echo ('</pre>');
-            
         }
-        echo ('<pre>');
-        // var_dump($array);
-        var_dump($res);
-        // var_dump($pu);
-        echo ('</pre>');
-        echo ('<pre>');
-        var_dump($select_shain_cd3[0]);
-        var_dump($select_shain_cd3[1]);
+
+        // echo ('<pre>');
+        // var_dump('ここから');
+        //     var_dump($zan_holiday_personal);
+
+        // var_dump($pu[$select_shain_cd3[0][0]]);
+        // var_dump($select_shain_cd3[0]);
+        // var_dump($select_shain_cd3[1]);
         // var_dump($select_shain_cd3[2]);
-        echo ('</pre>');
+        // var_dump('ここまで');
+        // echo ('</pre>');
 
 
-        
-        
+
+
 
 
 
@@ -1028,6 +1116,9 @@ class AlertController extends Controller
             // 消化残等が入った配列
             'array' => $array,
 
+            'zan_holiday_personal' => $zan_holiday_personal,
+
+
 
 
         ]);
@@ -1045,7 +1136,7 @@ class AlertController extends Controller
 
 
     //残数僅少アラートが出ている人
-    public function zansu_kinshou($id)
+    public function zansu_kinshou()
     {
         // 必須項目ここから 
         $select_nyusha_year = DB::table('employees')
@@ -1065,11 +1156,725 @@ class AlertController extends Controller
 
 
         // $employees = Employee::all();
-        $employees = DB::table('employees')
+        $employees_count = DB::table('employees')
             ->whereNull('taishokubi')
             ->get();
 
+        for ($i = 0; $i < count($employees_count); $i++) {
+            $shain_cd_array[] = $employees_count[$i]->shain_cd;
+        }
 
+        // echo ('<pre>');
+        // var_dump($employees[0]->shain_cd);
+        // var_dump($shain_cd_array);
+        // echo ('</pre>');
+
+
+        // $kijunbi_array = [];
+
+        for ($i = 0; $i < count($employees_count); $i++) {
+
+            //入社日を求める
+            $nyushabi = DB::table('employees')
+                ->select('nyushabi')
+                ->whereNull('taishokubi')
+                ->get();
+
+            // echo ('<pre>');
+            // var_dump($nyushabi[$i]->nyushabi);
+            // var_dump($nyushabi);
+            // echo ('</pre>'); 
+
+            // 入社日フォーマット
+            // foreach ($nyushabi as $nyushabi_year_month) {
+            $nyushabi_year = substr($nyushabi[$i]->nyushabi, 0, 4);
+            $nyushabi_month = substr($nyushabi[$i]->nyushabi, 5, 2);
+            // }
+
+            $first_day_min = $nyushabi_year . $nyushabi_month;
+
+            // echo ('<pre>');
+            // var_dump($nyushabi[$i]->nyushabi);
+            // var_dump($first_day_min);
+            // echo ('</pre>');
+
+            //基準日を求める
+            $kijunbi = DB::table('employees')
+                ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi_first"'))
+                ->where('shain_cd', $shain_cd_array[$i])
+                ->whereNull('taishokubi')
+                ->get();
+
+            // echo ('<pre>');
+            // var_dump($kijunbi[0]->kijunbi_first);
+            // echo ('</pre>');
+
+            // 初回基準年月を抜き出す
+            foreach ($kijunbi as $first_kijunbi_year_month_pre) {
+                $first_kijunbi_year = substr($first_kijunbi_year_month_pre->kijunbi_first, 0, 4);
+                $first_kijunbi_month = substr($first_kijunbi_year_month_pre->kijunbi_first, 5, 2);
+            }
+
+            //初年度の終わり（=初回基準月）の作成
+            $first_day_max = $first_kijunbi_year . $first_kijunbi_month - 1;
+
+            // //1年目の年度終わり月を計算
+            // $day_max_pre = DB::table('employees')
+            //     ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +17 MONTH) AS "kijunbi"'))
+            //     ->where('shain_cd', $shain_cd_array[$i])
+            //     ->whereNull('taishokubi')
+            //     ->get();
+
+            // //  1年目の年度終わり年月を抜き出す
+            // foreach ($day_max_pre as $dmp) {
+            //     $day_max_pre_year = substr($dmp->kijunbi, 0, 4);
+            //     $day_max_pre_month = substr($dmp->kijunbi, 5, 2);
+            // }
+
+
+            // //1年目の年度終わりの作成
+            // $day_max_pre2 = $day_max_pre_year . $day_max_pre_month;
+
+            // echo ('<pre>');
+            //     var_dump($day_max_pre);
+            //     var_dump($day_max_pre_year);
+            //     var_dump($day_max_pre_month);
+            //     var_dump($day_max_pre2);
+            //     echo ('</pre>');
+
+
+
+            // [0]初年度の基準年/[1]初年度の基準月/[2]入社年月（=初年度の始まり）/[3]初年度の終わり/[4]１年目の年度終わり
+            $first_kijunbi_array[] = [$first_kijunbi_year, $first_kijunbi_month, $first_day_min, $first_day_max];
+
+            // [0]入社日（月と日）/[1]基準日（月と日）
+            $kijunbi_array[] = [$nyushabi[$i]->nyushabi, $kijunbi[0]->kijunbi_first];
+        }
+
+
+        echo ('<pre>');
+        // var_dump($kijunbi_array);
+        // var_dump("ここ");
+        // var_dump($first_kijunbi_array[4][4]);
+        // var_dump($first_kijunbi_array[0]);
+        echo ('</pre>');
+
+
+        //  勤続年数を計算
+        // 現在の年月を抜き出す
+        $year_pre =  date("Ym", strtotime("-2 month"));
+        $year = substr($year_pre, 0, 4);
+        $month = substr($year_pre, 4, 2);
+        // var_dump('現在年:' . $year);
+        // var_dump('現在月:' . $month);
+
+        for ($i = 0; $i < count($employees_count); $i++) {
+            // 初回基準年が現在年より大きいもしくは同じ　かつ　初回基準月が現在月より大きいもしくは同じの場合、勤続年数は0年（初年度になる）
+
+            // if ($first_kijunbi_array[$i][0] + 1 >= $year and $first_kijunbi_array[$i][1] >= $month) {
+            // if ($first_kijunbi_array[$i][0] + 1 > $year OR ($first_kijunbi_array[$i][0] + 1 == $year AND $first_kijunbi_array[$i][1] >= $month)) {
+
+            // echo ('<pre>');
+            // var_dump($first_kijunbi_array[$i][0] + 1);
+            // var_dump((int)$year);
+            // var_dump((int)$first_kijunbi_array[$i][1]);
+            // var_dump((int)$month);
+            // echo ('</pre>');
+
+            if ($first_kijunbi_array[$i][0] + 1 > (int) $year or ($first_kijunbi_array[$i][0] + 1 == $year and (int) $first_kijunbi_array[$i][1] > $month)) {
+                // echo ('<pre>');
+                // var_dump('初年度');
+                // echo ('</pre>');
+                $kinzoku_year[] = 0;
+            } else {
+                // echo ('<pre>');
+                // var_dump('初年度以降');
+                // echo ('</pre>');
+                $kinzoku_year[] = $year - $first_kijunbi_array[$i][0] - 1;
+            }
+
+            // echo ('<pre>');
+            // // var_dump($shain_cd_array[$i]);
+            // // var_dump($first_kijunbi_array[$i][0]);
+            // var_dump($first_kijunbi_array[32][0] + 1 .'>='. $year);
+            // // var_dump($year);
+            // var_dump($first_kijunbi_array[32][1] .'>='. $month);
+            // var_dump($kinzoku_year);
+            // // var_dump($month);
+            // echo ('</pre>');
+
+            $kinzoku_year_array[] = $kinzoku_year[$i];
+        }
+
+        // echo ('<pre>');
+        // var_dump($kinzoku_year_array);
+        // // var_dump(count($kinzoku_year));
+        // echo ('</pre>');
+
+
+        $array = [];
+
+        //対象者人数分繰り返す
+        // for ($i = 0; $i < count($employees_count); $i++) {
+        for ($i = 0; $i < 1; $i++) {
+            for ($d = 0; $d <= $kinzoku_year_array[$i]; $d++) {
+
+                if ($d == 0) {
+                    var_dump("ここは初年度");
+
+                    //付与日数
+                    $huyo_holiday = "10";
+                    //最大繰り越し日数
+                    $max_carry_over = "10";
+                    //前期繰越
+                    $carry_over = 0;
+
+                    // 期首残高（付与日数+前期繰越）
+                    $kisyu_nokori = $huyo_holiday + $carry_over;
+
+
+                    echo ('<pre>');
+                    // var_dump('0年目');
+                    var_dump('社員コード' . $shain_cd_array[$i]);
+                    var_dump('年度始まり' . $first_kijunbi_array[$i][2]);
+                    var_dump('年度終わり' . $first_kijunbi_array[$i][3]);
+                    echo ('</pre>');
+
+                    //消化日数
+                    $holiday_count = DB::table('holidays')
+                        ->select(DB::raw('sum(day) AS sumday'))
+                        //入社日から～基準日に1年度分（11ヶ月）足したもの(ex:2016/10/1入社なら、2016/10/1~（基準日が2017/4/1なので）2018/3/1まで))
+                        // ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $nyushabi_year_month)
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $first_kijunbi_array[$i][2])
+                        ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $first_kijunbi_array[$i][3])
+                        ->where('shain_cd', $shain_cd_array[$i])
+                        ->get();
+                    // ->toSQL();
+                    // var_dump('初年度の消化日数:');
+                    // var_dump($holiday_count);
+                    // var_dump($nyushabi_year_month);
+                    // var_dump($day_max);
+                    // dd($holiday_count);
+
+                    //配列で取得された消化日数の一番目を変数にいれる
+                    foreach ($holiday_count as $counts) {
+
+                        if (is_null($counts->sumday)) {
+                            $holiday_count_int = 0;
+                        } else {
+                            $holiday_count_int = $counts->sumday;
+                        }
+                    }
+
+                    //消化残（期首残高-消化日数）
+                    $nokori = $kisyu_nokori - $holiday_count_int;
+
+
+                    //繰越日数（消化残が最大繰り越し日数より大きい場合、繰り越し日数は最大繰り越し日数と同じになる。小さい場合、繰り越し日数は消化残と同じ日数になる。）
+                    if ($nokori > $max_carry_over) {
+                        $carry_over_count = $max_carry_over;
+                    } else {
+                        $carry_over_count = $nokori;
+                    }
+                } elseif ($d == 1) {
+                    var_dump("ここは" . $d . "年目");
+
+                    //付与日数
+                    $huyo_holiday = "11";
+                    //最大繰り越し日数
+                    $max_carry_over = "11";
+
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$i][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$i][6];
+                    }
+
+                    // 期首残高
+                    $kisyu_nokori = $huyo_holiday + $carry_over;
+
+                    //消化日数
+                    //年度初めの年月
+                    $day_min_pre = $first_kijunbi_array[$i][0];
+                    $day_min = $day_min_pre . $first_kijunbi_array[$i][1];
+                    // var_dump($d . "年度初めの年月" . $day_min);
+
+                    // //年度最後の年月
+                    // $day_max_year = substr($first_kijunbi_array[$i][4], 0, 4);
+                    // $day_max_month = substr($first_kijunbi_array[$i][4], 4, 2);
+
+                    // $day_max = (int) $day_max_year + $d . $day_max_month;
+                    // // var_dump($i . "年度最後の年月" . $day_max);
+
+
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1];
+
+                    $day_max = $day_max_year . $day_max_month;
+                    echo ('<pre>');
+                    // var_dump('一年目');
+                    var_dump('社員コード' . $shain_cd_array[$i]);
+                    var_dump('年度始まり' . $day_min);
+                    // var_dump($day_max);
+                    // var_dump($day_max_year);
+                    // var_dump($day_max_month);
+                    // var_dump($first_kijunbi_array[$i][4]);
+                    var_dump('年度終わり' . $day_max);
+                    var_dump('年度終わり年' . $day_max_year);
+                    var_dump('年度終わり月' . $day_max_month);
+
+                    echo ('</pre>');
+
+
+                    $holiday_count = DB::table('holidays')
+                        ->select(DB::raw('sum(day) AS sumday'))
+                        //二年目の計算の場合、基準日に1年足したもの～基準日に2年足して1ヶ月引いたもの
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+                        ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                        ->where('shain_cd', $shain_cd_array[$i])
+                        // ->first();
+                        ->get();
+                    // ->toSQL();
+                    // var_dump('消化日数:');
+                    // var_dump($holiday_count);
+
+                    //配列で取得された消化日数の一番目を変数にいれる
+                    foreach ($holiday_count as $counts) {
+
+                        if (is_null($counts->sumday)) {
+                            $holiday_count_int = 0;
+                        } else {
+                            $holiday_count_int = $counts->sumday;
+                        }
+                    }
+
+                    //消化残
+                    $nokori = $kisyu_nokori - $holiday_count_int;
+
+                    //繰越日数
+                    if ($nokori > $max_carry_over) {
+                        $carry_over_count = $max_carry_over;
+                    } else {
+                        $carry_over_count = $nokori;
+                    }
+                } elseif ($d == 2) {
+                    var_dump("ここは" . $d . "年目");
+
+                    $huyo_holiday = "12";
+                    $max_carry_over = "12";
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d - 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d - 1][6];
+                    }
+
+
+                    // var_dump('ここから');
+                    // echo ('<pre>');
+                    // var_dump($d);
+                    // var_dump($array[$d+1][6]);
+                    // var_dump($max_carry_over);
+                    // var_dump('付与日数'.$huyo_holiday);
+                    // var_dump('前期繰越'.$carry_over);
+                    // echo ('</pre>');
+
+
+                    // 期首残高
+                    $kisyu_nokori = $huyo_holiday + $carry_over;
+
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1];
+
+                    $day_max = $day_max_year . $day_max_month;
+                    echo ('<pre>');
+                    // var_dump('一年目');
+                    var_dump('社員コード' . $shain_cd_array[$i]);
+                    var_dump('年度始まり' . $day_min);
+                    // var_dump($day_max);
+                    // var_dump($day_max_year);
+                    // var_dump($day_max_month);
+                    // var_dump($first_kijunbi_array[$i][4]);
+                    var_dump('年度終わり' . $day_max);
+                    var_dump('年度終わり年' . $day_max_year);
+                    var_dump('年度終わり月' . $day_max_month);
+
+                    echo ('</pre>');
+
+                    $holiday_count = DB::table('holidays')
+                        ->select(DB::raw('sum(day) AS sumday'))
+                        //二年目の計算の場合、基準日に1年足したもの～基準日に2年足して1ヶ月引いたもの
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+                        ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                        ->where('shain_cd', $shain_cd_array[$i])
+                        // ->first();
+                        ->get();
+                    // ->toSQL();
+                    // var_dump('消化日数:');
+                    // var_dump($holiday_count);
+
+                    //配列で取得された消化日数の一番目を変数にいれる
+                    foreach ($holiday_count as $counts) {
+
+                        if (is_null($counts->sumday)) {
+                            $holiday_count_int = 0;
+                        } else {
+                            $holiday_count_int = $counts->sumday;
+                        }
+                    }
+
+                    //消化残
+                    $nokori = $kisyu_nokori - $holiday_count_int;
+
+                    //繰越日数
+                    if ($nokori > $max_carry_over) {
+                        $carry_over_count = $max_carry_over;
+                    } else {
+                        $carry_over_count = $nokori;
+                    }
+                } elseif ($d == 3) {
+                    var_dump("ここは" . $d . "年目");
+                    $huyo_holiday = "14";
+                    $max_carry_over = "14";
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d - 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d - 1][6];
+                    }
+
+
+                    // var_dump('ここから');
+                    // echo ('<pre>');
+                    // var_dump($d);
+                    // var_dump($array[$d+1][6]);
+                    // var_dump($max_carry_over);
+                    // var_dump('付与日数'.$huyo_holiday);
+                    // var_dump('前期繰越'.$carry_over);
+                    // echo ('</pre>');
+
+
+                    // 期首残高
+                    $kisyu_nokori = $huyo_holiday + $carry_over;
+
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1];
+
+                    $day_max = $day_max_year . $day_max_month;
+                    echo ('<pre>');
+                    // var_dump('3年目');
+                    var_dump('社員コード' . $shain_cd_array[$i]);
+                    var_dump('年度始まり' . $day_min);
+                    // var_dump($day_max);
+                    // var_dump($day_max_year);
+                    // var_dump($day_max_month);
+                    // var_dump($first_kijunbi_array[$i][4]);
+                    var_dump('年度終わり' . $day_max);
+                    var_dump('年度終わり年' . $day_max_year);
+                    var_dump('年度終わり月' . $day_max_month);
+
+                    echo ('</pre>');
+
+                    $holiday_count = DB::table('holidays')
+                        ->select(DB::raw('sum(day) AS sumday'))
+                        //二年目の計算の場合、基準日に1年足したもの～基準日に2年足して1ヶ月引いたもの
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+                        ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                        ->where('shain_cd', $shain_cd_array[$i])
+                        // ->first();
+                        ->get();
+                    // ->toSQL();
+                    // var_dump('消化日数:');
+                    // var_dump($holiday_count);
+
+                    //配列で取得された消化日数の一番目を変数にいれる
+                    foreach ($holiday_count as $counts) {
+
+                        if (is_null($counts->sumday)) {
+                            $holiday_count_int = 0;
+                        } else {
+                            $holiday_count_int = $counts->sumday;
+                        }
+                    }
+
+                    //消化残
+                    $nokori = $kisyu_nokori - $holiday_count_int;
+
+                    //繰越日数
+                    if ($nokori > $max_carry_over) {
+                        $carry_over_count = $max_carry_over;
+                    } else {
+                        $carry_over_count = $nokori;
+                    }
+                } elseif ($d == 4) {
+                    var_dump("ここは" . $d . "年目");
+                    $huyo_holiday = "16";
+                    $max_carry_over = "16";
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d - 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d - 1][6];
+                    }
+
+
+                    // var_dump('ここから');
+                    // echo ('<pre>');
+                    // var_dump($d);
+                    // var_dump($array[$d+1][6]);
+                    // var_dump($max_carry_over);
+                    // var_dump('付与日数'.$huyo_holiday);
+                    // var_dump('前期繰越'.$carry_over);
+                    // echo ('</pre>');
+
+
+                    // 期首残高
+                    $kisyu_nokori = $huyo_holiday + $carry_over;
+
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1];
+
+                    $day_max = $day_max_year . $day_max_month;
+                    echo ('<pre>');
+                    // var_dump('3年目');
+                    var_dump('社員コード' . $shain_cd_array[$i]);
+                    var_dump('年度始まり' . $day_min);
+                    // var_dump($day_max);
+                    // var_dump($day_max_year);
+                    // var_dump($day_max_month);
+                    // var_dump($first_kijunbi_array[$i][4]);
+                    var_dump('年度終わり' . $day_max);
+                    var_dump('年度終わり年' . $day_max_year);
+                    var_dump('年度終わり月' . $day_max_month);
+
+                    echo ('</pre>');
+
+                    $holiday_count = DB::table('holidays')
+                        ->select(DB::raw('sum(day) AS sumday'))
+                        //二年目の計算の場合、基準日に1年足したもの～基準日に2年足して1ヶ月引いたもの
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+                        ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                        ->where('shain_cd', $shain_cd_array[$i])
+                        // ->first();
+                        ->get();
+                    // ->toSQL();
+                    // var_dump('消化日数:');
+                    // var_dump($holiday_count);
+                    //配列で取得された消化日数の一番目を変数にいれる
+
+                    foreach ($holiday_count as $counts) {
+
+                        if (is_null($counts->sumday)) {
+                            $holiday_count_int = 0;
+                        } else {
+                            $holiday_count_int = $counts->sumday;
+                        }
+                    }
+
+                    //消化残
+                    $nokori = $kisyu_nokori - $holiday_count_int;
+
+                    //繰越日数
+                    if ($nokori > $max_carry_over) {
+                        $carry_over_count = $max_carry_over;
+                    } else {
+                        $carry_over_count = $nokori;
+                    }
+                } elseif ($d == 5) {
+                    var_dump("ここは" . $d . "年目");
+
+                    $huyo_holiday = "18";
+                    $max_carry_over = "18";
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d - 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d - 1][6];
+                    }
+
+
+                    // var_dump('ここから');
+                    // echo ('<pre>');
+                    // var_dump($d);
+                    // var_dump($array[$d+1][6]);
+                    // var_dump($max_carry_over);
+                    // var_dump('付与日数'.$huyo_holiday);
+                    // var_dump('前期繰越'.$carry_over);
+                    // echo ('</pre>');
+
+
+                    // 期首残高
+                    $kisyu_nokori = $huyo_holiday + $carry_over;
+
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1];
+
+                    $day_max = $day_max_year . $day_max_month;
+                    echo ('<pre>');
+                    // var_dump('3年目');
+                    var_dump('社員コード' . $shain_cd_array[$i]);
+                    var_dump('年度始まり' . $day_min);
+                    // var_dump($day_max);
+                    // var_dump($day_max_year);
+                    // var_dump($day_max_month);
+                    // var_dump($first_kijunbi_array[$i][4]);
+                    var_dump('年度終わり' . $day_max);
+                    var_dump('年度終わり年' . $day_max_year);
+                    var_dump('年度終わり月' . $day_max_month);
+
+                    echo ('</pre>');
+
+                    $holiday_count = DB::table('holidays')
+                        ->select(DB::raw('sum(day) AS sumday'))
+                        //二年目の計算の場合、基準日に1年足したもの～基準日に2年足して1ヶ月引いたもの
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+                        ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                        ->where('shain_cd', $shain_cd_array[$i])
+                        // ->first();
+                        ->get();
+                    // ->toSQL();
+                    // var_dump('消化日数:');
+                    // var_dump($holiday_count);
+                    //配列で取得された消化日数の一番目を変数にいれる
+
+                    //配列で取得された消化日数の一番目を変数にいれる
+                    foreach ($holiday_count as $counts) {
+
+                        if (is_null($counts->sumday)) {
+                            $holiday_count_int = 0;
+                        } else {
+                            $holiday_count_int = $counts->sumday;
+                        }
+                    }
+
+                    //消化残
+                    $nokori = $kisyu_nokori - $holiday_count_int;
+
+                    //繰越日数
+                    if ($nokori > $max_carry_over) {
+                        $carry_over_count = $max_carry_over;
+                    } else {
+                        $carry_over_count = $nokori;
+                    }
+                } elseif ($d >= 6) {
+                    var_dump("ここは" . $d . "年目");
+
+                    $huyo_holiday = "20";
+                    $max_carry_over = "20";
+                    //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
+                    if ($array[$d - 1][6] > $max_carry_over) {
+                        $carry_over = $max_carry_over;
+                    } else {
+                        $carry_over = $array[$d - 1][6];
+                    }
+
+
+                    // var_dump('ここから');
+                    // echo ('<pre>');
+                    // var_dump($d);
+                    // var_dump($array[$d+1][6]);
+                    // var_dump($max_carry_over);
+                    // var_dump('付与日数'.$huyo_holiday);
+                    // var_dump('前期繰越'.$carry_over);
+                    // echo ('</pre>');
+
+
+                    // 期首残高
+                    $kisyu_nokori = $huyo_holiday + $carry_over;
+
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1];
+
+                    $day_max = $day_max_year . $day_max_month;
+                    echo ('<pre>');
+                    // var_dump('3年目');
+                    var_dump('社員コード' . $shain_cd_array[$i]);
+                    var_dump('年度始まり' . $day_min);
+                    // var_dump($day_max);
+                    // var_dump($day_max_year);
+                    // var_dump($day_max_month);
+                    // var_dump($first_kijunbi_array[$i][4]);
+                    var_dump('年度終わり' . $day_max);
+                    var_dump('年度終わり年' . $day_max_year);
+                    var_dump('年度終わり月' . $day_max_month);
+
+                    echo ('</pre>');
+
+                    $holiday_count = DB::table('holidays')
+                        ->select(DB::raw('sum(day) AS sumday'))
+                        //二年目の計算の場合、基準日に1年足したもの～基準日に2年足して1ヶ月引いたもの
+                        ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+                        ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+                        ->where('shain_cd', $shain_cd_array[$i])
+                        // ->first();
+                        ->get();
+                    // ->toSQL();
+                    // var_dump('消化日数:');
+                    // var_dump($holiday_count);
+                    //配列で取得された消化日数の一番目を変数にいれる
+
+                    //配列で取得された消化日数の一番目を変数にいれる
+                    foreach ($holiday_count as $counts) {
+
+                        if (is_null($counts->sumday)) {
+                            $holiday_count_int = 0;
+                        } else {
+                            $holiday_count_int = $counts->sumday;
+                        }
+                    }
+
+                    //消化残
+                    $nokori = $kisyu_nokori - $holiday_count_int;
+
+                    //繰越日数
+                    if ($nokori > $max_carry_over) {
+                        $carry_over_count = $max_carry_over;
+                    } else {
+                        $carry_over_count = $nokori;
+                    }
+                }
+
+
+
+                //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]年度最後の年月/
+                $array[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $shain_cd_array[$i]];
+            }
+        }
+        // echo ('<pre>');
+        // var_dump($array[0]);
+        // var_dump($array[1]);
+        // var_dump(count($array));
+        // echo ('</pre>');
+
+        for ($i = 0; $i < count($shain_cd_array); $i++) {
+            //社員の有給情報の入ったはいれつの数分だけ繰り返す
+            for ($y = 0; $y < count($array); $y++) {
+
+                // echo ('<pre>');
+                // var_dump('判定');
+                // var_dump($array[0]);
+                // var_dump($array[$y][7]);
+                // var_dump($shain_cd_array[$i]);
+                // echo ('</pre>');
+                if ($array[$y][7] == $shain_cd_array[$i]) {
+
+
+                    // $zan_holiday_personal[$shain_cd_array[$i]] = [$array[$y][5], $shain_cd_array[$i]];
+                    $zan_holiday_personal[$shain_cd_array[$i]] = [$array[$y][5], $shain_cd_array[$i]];
+                    echo ('<pre>');
+                    var_dump('配列名');
+                    var_dump('$zan_holiday_personal' . $shain_cd_array[$i]);
+                    echo ('</pre>');
+                }
+            }
+        }
+        
+        echo ('<pre>');
+        var_dump($zan_holiday_personal[$shain_cd_array[0]]);
+        echo ('</pre>');
+
+        $employees = Employee::all();
 
         return view('employees')->with([
             'title' => $title,

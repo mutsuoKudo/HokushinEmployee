@@ -1,5 +1,3 @@
-import { type } from "os";
-
 // 社員名簿削除アラート
 function delete_alert(e) {
 
