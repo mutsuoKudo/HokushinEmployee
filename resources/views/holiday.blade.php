@@ -38,42 +38,9 @@
                 @else
                 {{$post_year}} 年度　有給取得日明細
                 @endif
-
-
-                <?php
-                // 入社してから3ヶ月未満の人と準社員のひと
-                // if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
-                //     echo '<div>
-                //         <p style="font-size:20px; color:red;">※'  . $year_month_a . '末時点のデータです。</p>
-                //         </div>';
-
-                // } else {
-                //     if ($latest_year == 0000 and $latest_month == 00 and $latest_day == 00) {
-                //         echo '<div>
-                //         <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
-                //         </div>';
-                //     }
-
-                //     $count_get_holiday_pre = count($array[$array_count][7]) - 1;
-                //     $count_get_holiday = $array[$array_count][7][$count_get_holiday_pre];
-
-                //     if ($latest_year == $count_get_holiday->year and $latest_month == $count_get_holiday->month and $latest_day == $count_get_holiday->day) {
-                //         echo '<div>
-                //         <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
-                //         </div>';
-                //     } else {
-                //         echo '<div>
-                //             <p style="font-size:20px; color:red;"></p>
-                //         </div>';
-                //     }
-                // }
-                echo '<div>
-                        <p style="font-size:20px; color:red;">※' . $year_month_a . '末時点のデータです。</p>
-                         </div>';
-                ?>
-
-
-
+                <div>
+                    <p style="font-size:20px; color:red;">※{{ $year_month_a }}末時点のデータです。</p>
+                </div>
             </div>
 
 
@@ -127,8 +94,10 @@
                 </table>
 
                 <!-- 初回基準月に達していない場合 -->
-                <!-- 基準日が現在の月-2よりも大きい場合・・・　現在の月が2019/10、基準日が10月だとすると　10 > 8 -->
-                @elseif($year_month_b >= $nyushabi_year_month AND $year_month_b < $kijunbi_year_month) <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
+                <!-- 基準日が最新データの月よりも大きい場合-->
+                @elseif($year_month_b >= $nyushabi_year_month AND $year_month_b < $kijunbi_year_month)
+                <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
+
                     <tbody>
                         <tr>
                             <th class="text-center">有給基準月</th>
@@ -141,11 +110,8 @@
 
                         <tr>
                             <th class="text-center">期首残高</th>
-                            @if($post_year == $kijunbi_year)
                             <td> {{$array2[0][3]}}　日</td>
-                            @else
-                            <td> {{$array2[0][3]}}　日</td>
-                            @endif
+
                         </tr>
 
                         <tr>
@@ -156,13 +122,15 @@
 
                         <tr>
                             <th class="text-center">消化残</th>
-                            @if($array2[0][5] <=2 AND $array2[0][5]>0)
+                            <!-- 消化残が0以上2以下の時 -->
+                            @if($array2[0][5] < 2 AND $array2[0][5]>0)
                                 <td style="color:green;">{{$array2[0][5]}}　日 <small> ※有給残り僅かです！</small></td>
                                 @elseif($array2[0][5] <=0) <td style="color:red;">{{$array2[0][5]}}　日 <small> ※有給なくなりました！</small></td>
                                     @else
                                     <td>{{$array2[0][5]}}　日</td>
                                     @endif
                         </tr>
+
 
                         <tr>
                             <th class="text-center">月別有給取得日数</th>
@@ -184,9 +152,11 @@
                         @endforeach
                         @endif
                     </tbody>
-                    </table>
+
+                </table>
 
 
+                <!-- 初回基準月以降かつ正社員の場合 -->
                     @else
                     <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
@@ -215,7 +185,7 @@
 
                                 @if($mishouka_alert == "yes") 
                                 <td style="color:red"> {{$array[$array_count][4]}} 　日　
-                                    <small> ※残り期間({{$first_day_max2}}月末まで)で最低5日取得する必要があります！</small>
+                                    <small> ※残り期間({{$first_day_max_month}}月末まで)で最低5日取得する必要があります！</small>
                                 </td>
                                     @else
                                     <td> {{$array[$array_count][4]}} 　日　</td>

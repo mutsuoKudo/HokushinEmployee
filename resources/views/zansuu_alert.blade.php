@@ -293,9 +293,9 @@
 			</form>
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
-				@if($mishouka_title == 'on')
+				@if($zansuu_title == 'on')
 				<p style="color:red; font-size:20px;" class="mt-2 mb-1">
-					基準月が3か月以内にくる人で、有給を5日以上取得していない人が対象です
+                有給残日数が3日以下になった人が対象です
 				</p>
 				<p style="color:red; font-size:15px;">
 					※{{$month}}月末時点のデータです

@@ -7,28 +7,45 @@ use App\Employee;
 use DB;
 use Response;
 
+use App\Library\BaseClass;
+
 class ButtonController extends Controller
 {
 
     //在籍者
     public function all()
     {
+
+        $class = new BaseClass();
+        // var_dump($common->test());
+
+        $employees = $class->all();
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        echo ('<pre>');
+        var_dump($select_nyusha_year);
+        var_dump($select_taishoku_year);
+        echo ('</pre>');
+
         // $employees = Employee::all();
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        // ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        // ->whereNull('taishokubi')
+        // ->orderBy('nyushanen', 'asc')
+        // ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        // ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        // ->whereNotNull('taishokubi')
+        // ->orderBy('taishokunen', 'asc')
+        // ->get();
 
         $title = "在籍者";
 
@@ -43,22 +60,31 @@ class ButtonController extends Controller
     //代表取締役
     public function department1()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where('department', 1)
-            ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $class = new BaseClass();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        $employees = $class->department(1);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->where('department', 1)
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "代表取締役";
 
@@ -74,22 +100,30 @@ class ButtonController extends Controller
     //管理部
     public function department2()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where('department', 2)
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->where('department', 2)
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->department(2);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "管理部";
 
@@ -105,22 +139,30 @@ class ButtonController extends Controller
     //営業部
     public function department3()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where('department', 3)
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->where('department', 3)
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->department(3);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
 
         $title = "営業部";
@@ -136,22 +178,30 @@ class ButtonController extends Controller
     //システム開発部
     public function department4()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where('department', 4)
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->where('department', 4)
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->department(4);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "システム開発部";
 
@@ -166,22 +216,30 @@ class ButtonController extends Controller
     //研修生
     public function department5()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where('department', 5)
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->where('department', 5)
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->department(5);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "研修生";
 
@@ -196,22 +254,31 @@ class ButtonController extends Controller
     //2007年
     public function nyushabi2007()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2007-01-01", "2007-12-31"])
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->nyushabi("2007-01-01", "2007-12-31");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2007-01-01", "2007-12-31"])
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
 
 
         $title = "2007年入社";
@@ -226,22 +293,30 @@ class ButtonController extends Controller
     //2014年
     public function nyushabi2014()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2014-01-01", "2014-12-31"])
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->nyushabi("2014-01-01", "2014-12-31");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2014-01-01", "2014-12-31"])
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "2014年入社";
 
@@ -256,22 +331,30 @@ class ButtonController extends Controller
     //2015年
     public function nyushabi2015()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2015-01-01", "2015-12-31"])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2015-01-01", "2015-12-31"])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->nyushabi("2015-01-01", "2015-12-31");
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "2015年入社";
 
@@ -286,22 +369,30 @@ class ButtonController extends Controller
     //2016年
     public function nyushabi2016()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2016-01-01", "2016-12-31"])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2016-01-01", "2016-12-31"])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->nyushabi("2016-01-01", "2016-12-31");
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "2016年入社";
 
@@ -315,22 +406,31 @@ class ButtonController extends Controller
     //2017年
     public function nyushabi2017()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2017-01-01", "2017-12-31"])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2017-01-01", "2017-12-31"])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->nyushabi("2017-01-01", "2017-12-31");
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
 
         $title = "2017年入社";
 
@@ -344,22 +444,30 @@ class ButtonController extends Controller
     //2018年
     public function nyushabi2018()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2018-01-01", "2018-12-31"])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2018-01-01", "2018-12-31"])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->nyushabi("2018-01-01", "2018-12-31");
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "2018年入社";
 
@@ -373,22 +481,30 @@ class ButtonController extends Controller
     //2019年
     public function nyushabi2019()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2019-01-01", "2019-12-31"])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2019-01-01", "2019-12-31"])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->nyushabi("2019-01-01", "2019-12-31");
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "2019年入社";
 
@@ -403,22 +519,31 @@ class ButtonController extends Controller
     //2020年
     public function nyushabi2020()
     {
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween('nyushabi', ["2020-01-01", "2020-12-31"])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween('nyushabi', ["2020-01-01", "2020-12-31"])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->nyushabi("2020-01-01", "2020-12-31");
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
 
         $title = "2020年入社";
 
@@ -435,26 +560,34 @@ class ButtonController extends Controller
     //20代
     public function age20()
     {
-        $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+        // $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+        
+        // $employees = DB::table('employees')
+        // ->whereNull('taishokubi')
+        // ->whereBetween($birthday, [20, 29])
+        // // ->orderBY($birthday, 'DESC')
+        // ->get();
 
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween($birthday, [20, 29])
-            // ->orderBY($birthday, 'DESC')
-            ->get();
+        
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        $class = new BaseClass();
 
+        $employees = $class->age(20, 29);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "20代";
 
@@ -469,24 +602,32 @@ class ButtonController extends Controller
     //30代
     public function age30()
     {
-        $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+        // $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
 
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween($birthday, [30, 39])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween($birthday, [30, 39])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->age(30, 39);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "30代";
 
@@ -501,24 +642,32 @@ class ButtonController extends Controller
     //40代
     public function age40()
     {
-        $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+        // $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
 
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween($birthday, [40, 49])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween($birthday, [40, 49])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->age(40, 49);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "40代";
 
@@ -533,24 +682,32 @@ class ButtonController extends Controller
     //50代
     public function age50()
     {
-        $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+        // $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
 
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween($birthday, [50, 59])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween($birthday, [50, 59])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->age(50, 59);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "50代";
 
@@ -565,24 +722,32 @@ class ButtonController extends Controller
     //60代
     public function age60()
     {
-        $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+        // $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
 
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->whereBetween($birthday, [60, 69])
-            ->get();
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->whereBetween($birthday, [60, 69])
+        //     ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
+
+        $class = new BaseClass();
+
+        $employees = $class->age(60, 69);
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
         $title = "60代";
 
@@ -597,25 +762,33 @@ class ButtonController extends Controller
     //その他の年代
     public function age_other()
     {
-        $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+        $class = new BaseClass();
 
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where($birthday, '<', 20)
-            ->where($birthday, '>', 69)
-            ->get();
+        $employees = $class->age_other(20, 69);
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
+
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->where($birthday, '<', 20)
+        //     ->where($birthday, '>', 69)
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "その他の年代";
@@ -633,24 +806,31 @@ class ButtonController extends Controller
     //有給基準月1月
     public function kijun_month01()
     {
+        $class = new BaseClass();
 
-        //入社日が7月の人は基準月が1月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-07-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $employees = $class->kijun_month("%-07-%");
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // //入社日が7月の人は基準月が1月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-07-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 1月";
@@ -666,24 +846,31 @@ class ButtonController extends Controller
     //有給基準月2月
     public function kijun_month02()
     {
+        $class = new BaseClass();
 
-        //入社日が8月の人は基準月が2月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-08-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $employees = $class->kijun_month("%-08-%");
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // //入社日が8月の人は基準月が2月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-08-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 2月";
@@ -700,23 +887,31 @@ class ButtonController extends Controller
     public function kijun_month03()
     {
 
-        //入社日が9月の人は基準月が3月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-09-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->kijun_month("%-09-%");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // //入社日が9月の人は基準月が3月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-09-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 3月";
@@ -732,24 +927,31 @@ class ButtonController extends Controller
     //有給基準月4月
     public function kijun_month04()
     {
+        $class = new BaseClass();
 
-        //入社日が10月の人は基準月が4月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-10-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $employees = $class->kijun_month("%-10-%");
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // //入社日が10月の人は基準月が4月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-10-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 4月";
@@ -766,23 +968,32 @@ class ButtonController extends Controller
     public function kijun_month05()
     {
 
-        //入社日が11月の人は基準月が5月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-11-%")
-            ->whereNull('taishokubi')
-            ->get();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $class = new BaseClass();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        $employees = $class->kijun_month("%-11-%");
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // //入社日が11月の人は基準月が5月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-11-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 5月";
@@ -798,24 +1009,31 @@ class ButtonController extends Controller
     //有給基準月6月
     public function kijun_month06()
     {
+        $class = new BaseClass();
 
-        //入社日が12月の人は基準月が6月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-12-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $employees = $class->kijun_month("%-12-%");
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // //入社日が12月の人は基準月が6月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-12-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 6月";
@@ -831,24 +1049,31 @@ class ButtonController extends Controller
     //有給基準月7月
     public function kijun_month07()
     {
+        $class = new BaseClass();
 
-        //入社日が1月の人は基準月が7月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-01-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $employees = $class->kijun_month("%-01-%");
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // //入社日が1月の人は基準月が7月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-01-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 7月";
@@ -865,23 +1090,31 @@ class ButtonController extends Controller
     public function kijun_month08()
     {
 
-        //入社日が2月の人は基準月が8月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-02-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->kijun_month("%-02-%");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // //入社日が2月の人は基準月が8月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-02-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 8月";
@@ -897,24 +1130,31 @@ class ButtonController extends Controller
     //有給基準月9月
     public function kijun_month09()
     {
+        $class = new BaseClass();
 
-        //入社日が3月の人は基準月が9月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-03-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $employees = $class->kijun_month("%-03-%");
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        // //入社日が3月の人は基準月が9月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-03-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 9月";
@@ -931,23 +1171,31 @@ class ButtonController extends Controller
     public function kijun_month10()
     {
 
-        //入社日が4月の人は基準月が10月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-04-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->kijun_month("%-04-%");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // //入社日が4月の人は基準月が10月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-04-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 10月";
@@ -964,23 +1212,31 @@ class ButtonController extends Controller
     public function kijun_month11()
     {
 
-        //入社日が5月の人は基準月が11月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-05-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->kijun_month("%-05-%");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // //入社日が5月の人は基準月が11月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-05-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 11月";
@@ -997,23 +1253,31 @@ class ButtonController extends Controller
     public function kijun_month12()
     {
 
-        //入社日が6月の人は基準月が12月
-        $employees = DB::table('employees')
-            ->where('nyushabi', 'LIKE', "%-06-%")
-            ->whereNull('taishokubi')
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->kijun_month("%-06-%");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // //入社日が6月の人は基準月が12月
+        // $employees = DB::table('employees')
+        //     ->where('nyushabi', 'LIKE', "%-06-%")
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "有給基準月 12月";
@@ -1032,21 +1296,29 @@ class ButtonController extends Controller
     public function retirement()
     {
 
-        $employees = DB::table('employees')
-            ->whereNotNull('taishokubi')
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->retirement();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNotNull('taishokubi')
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
 
         $title = "退職者";
@@ -1063,22 +1335,30 @@ class ButtonController extends Controller
     //退社2016年
     public function taishokubi2016()
     {
-        $employees = DB::table('employees')
-            ->whereNotNull('taishokubi')
-            ->whereBetween('taishokubi', ["2016-01-01", "2016-12-31"])
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->taishokubi("2016-01-01", "2016-12-31");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNotNull('taishokubi')
+        //     ->whereBetween('taishokubi', ["2016-01-01", "2016-12-31"])
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "2016年退社";
 
@@ -1089,26 +1369,34 @@ class ButtonController extends Controller
             'select_taishoku_year' => $select_taishoku_year,
         ]);
     }
-    
+
     //退社2017年
     public function taishokubi2017()
     {
-        $employees = DB::table('employees')
-            ->whereNotNull('taishokubi')
-            ->whereBetween('taishokubi', ["2017-01-01", "2017-12-31"])
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->taishokubi("2017-01-01", "2017-12-31");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNotNull('taishokubi')
+        //     ->whereBetween('taishokubi', ["2017-01-01", "2017-12-31"])
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "2017年退社";
 
@@ -1123,22 +1411,30 @@ class ButtonController extends Controller
     //退社2018年
     public function taishokubi2018()
     {
-        $employees = DB::table('employees')
-            ->whereNotNull('taishokubi')
-            ->whereBetween('taishokubi', ["2018-01-01", "2018-12-31"])
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->taishokubi("2018-01-01", "2018-12-31");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNotNull('taishokubi')
+        //     ->whereBetween('taishokubi', ["2018-01-01", "2018-12-31"])
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "2018年退社";
 
@@ -1153,22 +1449,30 @@ class ButtonController extends Controller
     //退社2019年
     public function taishokubi2019()
     {
-        $employees = DB::table('employees')
-            ->whereNotNull('taishokubi')
-            ->whereBetween('taishokubi', ["2019-01-01", "2019-12-31"])
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->taishokubi("2019-01-01", "2019-12-31");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNotNull('taishokubi')
+        //     ->whereBetween('taishokubi', ["2019-01-01", "2019-12-31"])
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "2019年退社";
 
@@ -1183,22 +1487,30 @@ class ButtonController extends Controller
     // 退社2020年
     public function taishokubi2020()
     {
-        $employees = DB::table('employees')
-            ->whereNotNull('taishokubi')
-            ->whereBetween('taishokubi', ["2020-01-01", "2020-12-31"])
-            ->get();
+        $class = new BaseClass();
 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
+        $employees = $class->taishokubi("2020-01-01", "2020-12-31");
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $employees = DB::table('employees')
+        //     ->whereNotNull('taishokubi')
+        //     ->whereBetween('taishokubi', ["2020-01-01", "2020-12-31"])
+        //     ->get();
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "2020年退社";
 
@@ -1212,6 +1524,8 @@ class ButtonController extends Controller
 
 
 
+
+    //↓ここから下はajax表示のためタイトルやemployeesデータなどいらない↓
 
     //全社員の平均年齢
     public function all_avg()
@@ -1269,7 +1583,7 @@ class ButtonController extends Controller
         $response["department_avg3"] = round(($department_avg3), 1, PHP_ROUND_HALF_UP);
         $response["department_avg4"] = round(($department_avg4), 1, PHP_ROUND_HALF_UP);
         $response["department_avg5"] = round(($department_avg5), 1, PHP_ROUND_HALF_UP);
-        
+
         return Response::json($response);
     }
 
@@ -1347,11 +1661,11 @@ class ButtonController extends Controller
         $response["all_department3"] = $all_department3;
         $response["all_department4"] = $all_department4;
         $response["all_department5"] = $all_department5;
-        
+
 
         return Response::json($response);
     }
-    
+
 
     //男女別の人数
     public function gender_count()
@@ -1419,7 +1733,7 @@ class ButtonController extends Controller
 
 
         $response = array();
-        
+
         $response["age1"] = $age1;
         $response["age2"] = $age2;
         $response["age3"] = $age3;

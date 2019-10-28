@@ -5,29 +5,45 @@ namespace App\Http\Controllers;
 use App\Holiday;
 use App\Employee;
 use DB;
+
 use Illuminate\Support\Carbon;
 
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Integer;
 use SebastianBergmann\Environment\Console;
 
+
+// use App\Library\BaseClass;
+use App\Library\BaseClass;
+
+
 class AlertController extends Controller
 {
     //未消化アラートが出ている人
     public function mishouka()
     {
-        // 必須項目ここから 
-        $select_nyusha_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
-            ->whereNull('taishokubi')
-            ->orderBy('nyushanen', 'asc')
-            ->get();
 
-        $select_taishoku_year = DB::table('employees')
-            ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
-            ->whereNotNull('taishokubi')
-            ->orderBy('taishokunen', 'asc')
-            ->get();
+
+        // 必須項目ここから 
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        // $select_nyusha_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
+        //     ->whereNull('taishokubi')
+        //     ->orderBy('nyushanen', 'asc')
+        //     ->get();
+
+        // $select_taishoku_year = DB::table('employees')
+        //     ->select(db::raw('distinct DATE_FORMAT(taishokubi, "%Y") as taishokunen'))
+        //     ->whereNotNull('taishokubi')
+        //     ->orderBy('taishokunen', 'asc')
+        //     ->get();
 
         $title = "未消化アラート対象者";
         $mishouka_title = "on";
@@ -35,77 +51,56 @@ class AlertController extends Controller
 
 
 
-        // $employees = Employee::all();
-        // $employees = DB::table('employees')
-        //     ->whereNull('taishokubi')
-        //     ->get();
+        // 基準日から三カ月前の期間を含む人を抽出（退職者以外）
 
-        //アラート用(基準月の3ヶ月前の時点で5日以上取得していないとき（＝未消化）)
-        // 基準月から３ヶ月前の計算(基準月の3ヶ月前の時点で5日以上取得していないとき（＝未消化）)
-
-        // 現在の月（現在10月ならデータは8月分なので8月とする）から3か月前の月を計算
-        // $before3_1_pre = date('m') - 2 - 3;
-        // $before3_1 = str_pad($before3_1_pre, 2, 0, STR_PAD_LEFT);
-        // var_dump('3か月前' . $before3_1);
-
-        // $before3_2_pre = date('m') - 2 + 1 - 3;
-        // $before3_2 = str_pad($before3_2_pre, 2, 0, STR_PAD_LEFT);
-        // var_dump('2か月前' . $before3_2);
-
-        // $before3_3_pre = date('m') - 2 + 2 - 3;
-        // $before3_3 = str_pad($before3_3_pre, 2, 0, STR_PAD_LEFT);
-        // var_dump('1か月前' . $before3_3);
-
-
-
-
-
+        // list($year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre) = $class->year_month();
+        // //一番最近のデータの月
+        // $year_month_a2 = $year_month_a2_pre;
 
 
         $employees_pre = DB::table('employees')
             ->whereNull('taishokubi')
             ->Where(function ($query) {
 
-                $before3_1_pre = date('m') - 2 - 5;
+                // クラスのインスタンス化
+                $class = new BaseClass();
+
+                list($year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre) = $class->year_month();
+                //一番最近のデータの月
+                $year_month_a2 = $year_month_a2_pre;
+
+                $before3_1_pre = $year_month_a2 - 5;
                 $before3_1 = str_pad($before3_1_pre, 2, 0, STR_PAD_LEFT);
-                // var_dump('入社月が' . $before3_1 . '月のひと');
+                var_dump('入社月が' . $before3_1 . '月のひとが対象');
 
-                $before3_2_pre = date('m') - 2 - 4;
+                $before3_2_pre = $year_month_a2 - 4;
                 $before3_2 = str_pad($before3_2_pre, 2, 0, STR_PAD_LEFT);
-                // var_dump('入社月が' . $before3_2 . '月のひと');
+                var_dump('入社月が' . $before3_2 . '月のひとが対象');
 
-                $before3_3_pre = date('m') - 2 - 3;
+                $before3_3_pre = $year_month_a2 - 3;
                 $before3_3 = str_pad($before3_3_pre, 2, 0, STR_PAD_LEFT);
-                // var_dump('入社月が' . $before3_3 . '月のひと');
+                var_dump('入社月が' . $before3_3 . '月のひとが対象');
 
                 $query->orwhere('nyushabi', 'LIKE', "%" . $before3_1 . "%")
                     ->orwhere('nyushabi', 'LIKE', "%" . $before3_2 . "%")
                     ->orWhere('nyushabi', 'LIKE', "%" . $before3_3 . "%");
             })
             ->get();
+            
         // ->toSQL();
         // dd($employees_pre);
         // var_dump($employees_pre);
 
 
-        // var_dump("date" . $year);
-
-        //  SELECT * FROM `employees`WHERE ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) > 20190801
-
-        // select nyushabi ,ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH), shain_mei from `employees` WHERE taishokubi is NULL AND ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) > '2019-08-01'
-
-        // select * from `employees` where ( `nyushabi` LIKE "%-05-%" or `nyushabi` LIKE "%-06-%" or `nyushabi` LIKE "%-07-%") AND taishokubi is Null
-
-
-        // 基準月が現在（10月時点でデータが8月末分までなので8月とする）から3か月以内に来る人
+        // 基準月が最新データから3か月以内に来る人の社員コードが入った配列
         foreach ($employees_pre as $employee) {
             $select_shain_cd[] = [$employee->shain_cd];
         }
 
-        // echo ('<pre>');
-        // var_dump("3ヶ月以内に基準月がくる人");
-        // var_dump($select_shain_cd);
-        // echo ('</pre>');
+        echo ('<pre>');
+        var_dump("3ヶ月以内に基準月がくる人");
+        var_dump($select_shain_cd);
+        echo ('</pre>');
 
 
         // echo ('<pre>');
@@ -115,71 +110,85 @@ class AlertController extends Controller
         // 3ヶ月以内に基準月がくる人の数分繰り返す
         for ($i = 0; $i < count($select_shain_cd); $i++) {
 
-            //基準日を求める
-            $kijunbi1 = DB::table('employees')
-                ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi_first"'))
-                ->where('shain_cd', $select_shain_cd[$i])
-                ->get();
+            // //基準日を求める
+            // $kijunbi1 = DB::table('employees')
+            //     ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi_first"'))
+            //     ->where('shain_cd', $select_shain_cd[$i])
+            //     ->get();
 
+            // // 基準月を抜き出す
+            // foreach ($kijunbi1 as $kijunbi_month_pre1) {
+            //     $kijunbi_month1 = substr($kijunbi_month_pre1->kijunbi_first, 5, 2);
+            // }
+
+            list($kijunbi_year_pre,$kijunbi_month_pre,$kijunbi_year_month_pre) = $class->kijunbi($select_shain_cd[$i]);
+    
             // 基準月を抜き出す
-            foreach ($kijunbi1 as $kijunbi_month_pre1) {
-                $kijunbi_month1 = substr($kijunbi_month_pre1->kijunbi_first, 5, 2);
-            }
+            $kijunbi_month = $kijunbi_month_pre;
+            echo ('<pre>');
+            var_dump('基準月:' . $kijunbi_month);
+            echo ('</pre>');
+
 
             //本年度の始まりを作成
-            $day_min = date('Y') - 1 . $kijunbi_month1;
+            $day_min = date('Y') - 1 . $kijunbi_month;
+
+            echo ('<pre>');
+            var_dump('アラート対象年度の始まり:' . $day_min);
+            echo ('</pre>');
 
 
             //本年度の終わりを計算
-            $kijunbi2 = DB::table('employees')
+            $end_kijunbi = DB::table('employees')
                 ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y%m01") , INTERVAL +17 MONTH) AS "kijunbi_end"'))
                 ->where('shain_cd', $select_shain_cd[$i])
                 ->get();
 
             // 本年度の終わりの年と月を抜き出す
-            foreach ($kijunbi2 as $kijunbi_month_pre2) {
-                $kijunbi_month2 = substr($kijunbi_month_pre2->kijunbi_end, 5, 2);
+            foreach ($end_kijunbi as $end_kijunbi2) {
+                $kijunbi_month = substr($end_kijunbi2->kijunbi_end, 5, 2);
             }
 
             //本年度終わりの年を計算
-            if ($kijunbi_month1 >= 7) {
+            if ($kijunbi_month >= 7) {
                 $kijunbi_year = date('Y') - 1 + 1;
             } else {
                 $kijunbi_year = date('Y') - 1;
             }
 
             //本年度の始まりを作成
-            $day_max = $kijunbi_year . $kijunbi_month2;
+            $day_max = $kijunbi_year . $kijunbi_month;
 
 
-            // var_dump("本年度の始まり" . $day_min);
-            // var_dump("本年度の終わり" . $day_max);
+            var_dump("本年度の始まり" . $day_min);
+            var_dump("本年度の終わり" . $day_max);
 
             // 本年度の有給取得数を計算
-            $holiday_count = DB::table('holidays')
-                ->select(DB::raw('sum(day) AS sumday'))
-                //基準日から一年分
-                ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
-                ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
-                ->where('shain_cd', $select_shain_cd[$i])
-                ->get();
-            // dd($holiday_count);
-            // ->toSQL();
+            $holiday_count_int = $class->holiday_count($day_min, $day_max, $select_shain_cd[$i]);
+        //     $holiday_count = DB::table('holidays')
+        //         ->select(DB::raw('sum(day) AS sumday'))
+        //         //基準日から一年分
+        //         ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+        //         ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+        //         ->where('shain_cd', $select_shain_cd[$i])
+        //         ->get();
+        //     // dd($holiday_count);
+        //     // ->toSQL();
+
+        //   // 1日も休んでいない場合、0を代入。休んでいる場合はその日数を取得。
+        //     foreach ($holiday_count as $counts) {
+        //         if (is_null($counts->sumday)) {
+        //             $holiday_count_int = "0";
+        //             // $test = "中身からっぽだ！";
+        //         } else {
+        //             $holiday_count_int = $counts->sumday;
+        //             // $test = "中身はいってる！";
+        //         }
+        //     }
 
 
-            // 1日も休んでいない場合、0を代入。休んでいる場合はその日数を取得。
-            foreach ($holiday_count as $counts) {
-                if (is_null($counts->sumday)) {
-                    $holiday_count_int = "0";
-                    // $test = "中身からっぽだ！";
-                } else {
-                    $holiday_count_int = $counts->sumday;
-                    // $test = "中身はいってる！";
-                }
-            }
 
-            // var_dump($test);
-            // var_dump("取得日数" . $holiday_count_int);
+            var_dump("取得日数" . $holiday_count_int);
 
             // 取得日数が5日未満の人は配列に社員コードを入れ、5日以上取得している人は0を入れる。
             if ($holiday_count_int < 5) {
@@ -438,9 +447,22 @@ class AlertController extends Controller
 
 
             //  勤続年数を計算
-            $year_pre =  date("Ym", strtotime("-2 month"));
-            $year = substr($year_pre, 0, 4);
-            $month = substr($year_pre, 4, 2);
+            //一番最近のデータの年月(0000-00)を作成(=現在日時になる)
+            $year_month_pre = DB::table('holidays')
+                // ->select('year', 'month')
+                ->select(db::raw('year,lpad(month, 2, "0") as month'))
+                ->orderBy('year', 'desc')
+                ->orderBy('month', 'desc')
+                // ->where('shain_cd', $select_shain_cd3[$i])
+                ->first();
+
+            // echo ('<pre>');
+            // var_dump($year_month_pre->year);
+            // var_dump($year_month_pre->month);
+            // echo ('</pre>');
+
+            $year = $year_month_pre->year;
+            $month = $year_month_pre->month;
             // var_dump('現在年:' . $year);
             // var_dump('現在月:' . $month);
 
@@ -449,7 +471,7 @@ class AlertController extends Controller
                 $kinzoku_year = 0;
             } else {
                 // var_dump('初年度以降');
-                $kinzoku_year = $year - $kijunbi_year - 1;
+                $kinzoku_year = $year - $kijunbi_year + 1;
             }
 
             // $kinzoku_year = $year - $kijunbi_year;
@@ -1094,6 +1116,7 @@ class AlertController extends Controller
         // var_dump($employees2[1][1]);
         // var_dump($employees2[2][1]);
         // var_dump($employees2[3][1]);
+        // var_dump($month);
         // echo ('</pre>');
 
 
@@ -1112,7 +1135,7 @@ class AlertController extends Controller
             // 該当する社員コードの入った配列
             'select_shain_cd3' => $select_shain_cd3,
             // 現在の月
-            'month' => date('m') - 2,
+            'month' => $month,
             // 消化残等が入った配列
             'array' => $array,
 
@@ -1152,6 +1175,9 @@ class AlertController extends Controller
             ->get();
 
         $title = "残数僅少アラート対象者";
+
+        $zansuu_title = "on";
+
         // 必須項目ここまで
 
 
@@ -1164,10 +1190,10 @@ class AlertController extends Controller
             $shain_cd_array[] = $employees_count[$i]->shain_cd;
         }
 
-        // echo ('<pre>');
+        echo ('<pre>');
         // var_dump($employees[0]->shain_cd);
-        // var_dump($shain_cd_array);
-        // echo ('</pre>');
+        var_dump($shain_cd_array[0]);
+        echo ('</pre>');
 
 
         // $kijunbi_array = [];
@@ -1252,19 +1278,36 @@ class AlertController extends Controller
         }
 
 
-        echo ('<pre>');
+        // echo ('<pre>');
         // var_dump($kijunbi_array);
         // var_dump("ここ");
         // var_dump($first_kijunbi_array[4][4]);
         // var_dump($first_kijunbi_array[0]);
-        echo ('</pre>');
+        // echo ('</pre>');
 
 
         //  勤続年数を計算
+        //一番最近のデータの年月(0000-00)を作成(=現在日時になる)
+        $year_month_pre = DB::table('holidays')
+            ->select(db::raw('year,lpad(month, 2, "0") as month'))
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            // ->where('shain_cd', $select_shain_cd3[$i])
+            ->first();
+
+        echo ('<pre>');
+        var_dump($year_month_pre->year);
+        var_dump($year_month_pre->month);
+        echo ('</pre>');
+
+        $year = $year_month_pre->year;
+        $month = $year_month_pre->month;
+        // var_dump('現在年:' . $year);
+        // var_dump('現在月:' . $month);
         // 現在の年月を抜き出す
-        $year_pre =  date("Ym", strtotime("-2 month"));
-        $year = substr($year_pre, 0, 4);
-        $month = substr($year_pre, 4, 2);
+        // $year_pre =  date("Ym", strtotime("-2 month"));
+        // $year = substr($year_pre, 0, 4);
+        // $month = substr($year_pre, 4, 2);
         // var_dump('現在年:' . $year);
         // var_dump('現在月:' . $month);
 
@@ -1289,8 +1332,9 @@ class AlertController extends Controller
             } else {
                 // echo ('<pre>');
                 // var_dump('初年度以降');
+                // var_dump($first_kijunbi_array[$i][0]);
                 // echo ('</pre>');
-                $kinzoku_year[] = $year - $first_kijunbi_array[$i][0] - 1;
+                $kinzoku_year[] = $year - $first_kijunbi_array[$i][0] + 1;
             }
 
             // echo ('<pre>');
@@ -1317,6 +1361,11 @@ class AlertController extends Controller
         //対象者人数分繰り返す
         // for ($i = 0; $i < count($employees_count); $i++) {
         for ($i = 0; $i < 1; $i++) {
+
+            // echo ('<pre>');
+            // var_dump($kinzoku_year_array);
+            // echo ('</pre>');
+
             for ($d = 0; $d <= $kinzoku_year_array[$i]; $d++) {
 
                 if ($d == 0) {
@@ -1409,9 +1458,9 @@ class AlertController extends Controller
 
 
                     $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
-                    $day_max_month = $first_kijunbi_array[$i][1];
+                    $day_max_month = $first_kijunbi_array[$i][1] - 1;
 
-                    $day_max = $day_max_year . $day_max_month;
+                    $day_max = $day_max_year . "0" . $day_max_month;
                     echo ('<pre>');
                     // var_dump('一年目');
                     var_dump('社員コード' . $shain_cd_array[$i]);
@@ -1484,14 +1533,21 @@ class AlertController extends Controller
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
-                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
-                    $day_max_month = $first_kijunbi_array[$i][1];
+                    //消化日数
+                    //年度初めの年月
+                    // $day_min_pre = $first_kijunbi_array[$i][0];
+                    $day_min = $day_min_pre + $d - 1 . $first_kijunbi_array[$i][1];
+                    // var_dump($d . "年度初めの年月" . $day_min);
 
-                    $day_max = $day_max_year . $day_max_month;
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1] - 1;
+
+                    $day_max = $day_max_year . "0" . $day_max_month;
                     echo ('<pre>');
                     // var_dump('一年目');
                     var_dump('社員コード' . $shain_cd_array[$i]);
                     var_dump('年度始まり' . $day_min);
+                    // var_dump($first_kijunbi_array);
                     // var_dump($day_max);
                     // var_dump($day_max_year);
                     // var_dump($day_max_month);
@@ -1501,6 +1557,13 @@ class AlertController extends Controller
                     var_dump('年度終わり月' . $day_max_month);
 
                     echo ('</pre>');
+
+
+
+
+
+
+
 
                     $holiday_count = DB::table('holidays')
                         ->select(DB::raw('sum(day) AS sumday'))
@@ -1558,10 +1621,12 @@ class AlertController extends Controller
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
-                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
-                    $day_max_month = $first_kijunbi_array[$i][1];
+                    $day_min = $day_min_pre + $d - 1 . $first_kijunbi_array[$i][1];
 
-                    $day_max = $day_max_year . $day_max_month;
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1] - 1;
+
+                    $day_max = $day_max_year . "0" . $day_max_month;
                     echo ('<pre>');
                     // var_dump('3年目');
                     var_dump('社員コード' . $shain_cd_array[$i]);
@@ -1632,10 +1697,12 @@ class AlertController extends Controller
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
-                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
-                    $day_max_month = $first_kijunbi_array[$i][1];
+                    $day_min = $day_min_pre + $d - 1 . $first_kijunbi_array[$i][1];
 
-                    $day_max = $day_max_year . $day_max_month;
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1] - 1;
+
+                    $day_max = $day_max_year . "0" . $day_max_month;
                     echo ('<pre>');
                     // var_dump('3年目');
                     var_dump('社員コード' . $shain_cd_array[$i]);
@@ -1707,10 +1774,13 @@ class AlertController extends Controller
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
-                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
-                    $day_max_month = $first_kijunbi_array[$i][1];
 
-                    $day_max = $day_max_year . $day_max_month;
+                    $day_min = $day_min_pre + $d - 1 . $first_kijunbi_array[$i][1];
+
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1] - 1;
+
+                    $day_max = $day_max_year . "0" . $day_max_month;
                     echo ('<pre>');
                     // var_dump('3年目');
                     var_dump('社員コード' . $shain_cd_array[$i]);
@@ -1783,10 +1853,12 @@ class AlertController extends Controller
                     // 期首残高
                     $kisyu_nokori = $huyo_holiday + $carry_over;
 
-                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
-                    $day_max_month = $first_kijunbi_array[$i][1];
+                    $day_min = $day_min_pre + $d - 1 . $first_kijunbi_array[$i][1];
 
-                    $day_max = $day_max_year . $day_max_month;
+                    $day_max_year = (int) $first_kijunbi_array[$i][0] + $d;
+                    $day_max_month = $first_kijunbi_array[$i][1] - 1;
+
+                    $day_max = $day_max_year . "0" . $day_max_month;
                     echo ('<pre>');
                     // var_dump('3年目');
                     var_dump('社員コード' . $shain_cd_array[$i]);
@@ -1835,49 +1907,109 @@ class AlertController extends Controller
                     }
                 }
 
-
+                // echo ('<pre>');
+                // var_dump("ここみよ");
+                // var_dump($shain_cd_array);
+                // echo ('</pre>');
 
                 //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]年度最後の年月/
                 $array[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $shain_cd_array[$i]];
             }
         }
-        // echo ('<pre>');
-        // var_dump($array[0]);
+        echo ('<pre>');
+        var_dump($array);
+        // var_dump($shain_cd_array);
         // var_dump($array[1]);
-        // var_dump(count($array));
-        // echo ('</pre>');
+        var_dump(count($shain_cd_array));
+        var_dump(count($array));
+        echo ('</pre>');
 
         for ($i = 0; $i < count($shain_cd_array); $i++) {
             //社員の有給情報の入ったはいれつの数分だけ繰り返す
             for ($y = 0; $y < count($array); $y++) {
 
                 // echo ('<pre>');
+                // var_dump($i);
                 // var_dump('判定');
                 // var_dump($array[0]);
-                // var_dump($array[$y][7]);
-                // var_dump($shain_cd_array[$i]);
+                // var_dump($array);
+                // var_dump($array[$y][7] ."==". $shain_cd_array[$i]);
                 // echo ('</pre>');
+
                 if ($array[$y][7] == $shain_cd_array[$i]) {
 
 
+                    // var_dump($i);
+
                     // $zan_holiday_personal[$shain_cd_array[$i]] = [$array[$y][5], $shain_cd_array[$i]];
-                    $zan_holiday_personal[$shain_cd_array[$i]] = [$array[$y][5], $shain_cd_array[$i]];
-                    echo ('<pre>');
-                    var_dump('配列名');
-                    var_dump('$zan_holiday_personal' . $shain_cd_array[$i]);
-                    echo ('</pre>');
+                    // $zan_holiday_personal[$shain_cd_array[$i]] = [$array[$y][5], $shain_cd_array[$i]];
+                    $zan_holiday_personal[$i] = [$array[$y][5], $shain_cd_array[$i]];
+                    // echo ('<pre>');
+                    // var_dump('配列名');
+                    // var_dump('$zan_holiday_personal_' . $i);
+                    // echo ('</pre>');
                 }
             }
+            // echo ('<pre>');
+            // var_dump($zan_holiday_personal[$shain_cd_array[1]]);
+            // var_dump($zan_holiday_personal[$shain_cd_array[0]][0]);
+            // var_dump('$zan_holiday_personal_' . $i);
+            // var_dump($zan_holiday_personal[$i]);
+            // echo ('</pre>');
         }
-        
+
+        $select_employees = [];
+
+        for ($i = 0; $i < 1; $i++) {
+            if ($zan_holiday_personal[0][0] <= 5) {
+                // if($zan_holiday_personal['2007010021'][0] <= 5){
+                var_dump('5日以上休んでない');
+                $select_employees = [$zan_holiday_personal[0][1]];
+            } else {
+                var_dump('5日以上休んでる');
+            }
+        }
+
         echo ('<pre>');
-        var_dump($zan_holiday_personal[$shain_cd_array[0]]);
+        var_dump($select_employees);
+        var_dump($shain_cd_array);
         echo ('</pre>');
 
-        $employees = Employee::all();
+        // $employees = 0;
 
-        return view('employees')->with([
+        // // $employees = Employee::all();
+        //     for ($i = 0; $i < count($select_employees); $i++) {
+        //         $employees_pre = DB::table('employees')
+        //             ->where('shain_cd', $select_employees[$i])
+        //             ->whereNull('taishokubi')
+        //             ->get();
+
+        //             if(is_null($employees_pre)){
+        //                 $employees = 0;
+        //             }else{
+        //                 $employees = $employees_pre;
+        //             }
+        //     }
+
+        // employeesテーブルに入っている情報
+        $employees = DB::table('employees')
+            ->whereNull('taishokubi')
+            // ->where('shain_cd', $select_shain_cd3[$i])
+            ->get();
+        // ->toSQL();
+
+
+
+
+        // 社員情報と基準月、取得日数を配列に格納
+        // $employees2[] = [$employees_prepre, $select_employees_kijunbi_month, $select_holiday_count];
+
+
+        // return view('zansuu_alert')->with([
+        return view('/employees')->with([
             'title' => $title,
+            'zansuu_title' => $zansuu_title,
+            'month' => $month,
             'employees' => $employees,
             'select_nyusha_year' => $select_nyusha_year,
             'select_taishoku_year' => $select_taishoku_year,
