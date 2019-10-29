@@ -4,7 +4,7 @@
 
 <?php
 $top_url_edit = $top_url;
-var_dump($top_url_edit);
+// var_dump($top_url_edit);
 ?>
 <div class="container">
     <div class="col-sm-12">

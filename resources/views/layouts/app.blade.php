@@ -30,7 +30,11 @@
     <!-- DataTablesプラグイン -->
     <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css" />
 
-
+    <style>
+        .off {
+            display: none;
+        }
+    </style>
 
 
 
@@ -450,6 +454,47 @@
                 });
             });
         };
+
+
+        $(function() {
+
+            //個別印刷ボタンをクリックした時
+            $('#print').on('click', function() {
+                //プリントしたいエリアの取得
+                var printPage = $(this).closest('#table-area').html();
+
+                //プリント用の要素「#print」を作成
+                $('body').append('<div id="print-alert"></div>');
+                $('#print-alert').append(printPage);
+
+                //「#print-alert」以外の要素に非表示用のclass「off」を指定
+                $('body > :not(#print-alert)').addClass('off');
+                window.print();
+
+                //window.print()の実行後、作成した「#print-alert」と、非表示用のclass「off」を削除
+                $('#print-alert').remove();
+                $('.off').removeClass('off');
+            });
+
+            //一括印刷ボタンをクリックした時
+            $('.print-all').on('click', function() {
+                window.print();
+            });
+
+        });
+
+        // $(function() {
+        //     $('#print a[href=#]').click(function(e) {
+        //         e.preventDefault(); //リンクとして動作させない  
+        //         var data = $("#table-area").html(); //#table-areaの内容を変数dataに格納  
+        //         $("#content").after('<div id="print-alert"></div>'); //#contentの後に#print-alertを追加  
+        //         $("#print-alert").append(data); //追加した#print-alert内に変数dataの内容を格納  
+        //         $("body *:not(#print-alert,#print-alert *)").addClass("off"); //body以下の#print-alert以外の要素にoffクラスを追加（#print-alert以外非表示となる）  
+        //         window.print(); //印刷を実行  
+        //         $("#print-alert").remove(); //追加した要素#print-couponを削除  
+        //         $(".off").removeClass("off"); //追加したクラスoffを削除  
+        //     });
+        // });
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

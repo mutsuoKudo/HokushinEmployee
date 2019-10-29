@@ -7,26 +7,6 @@ use DB;
 
 class BaseClass
 {
-    // public static function test()
-    // {
-    //     return 'BaseClass!';
-    // }
-
-    // public static function test2()
-    // {
-    //     // 必須項目ここから 
-    //     $mo_pre = DB::table('employees')
-    //         ->select('nyushabi')
-    //         ->where('shain_cd', 2018100031)
-    //         ->get();
-    //     // ->toSQL();
-
-    //     $mo = $mo_pre[0]->nyushabi;
-
-    //     return $mo;
-
-    //     // dd($mo[0]->nyushabi);
-    // }
 
     //employeesテーブルのtaishokubiが入力されていないデータ全て（＝在籍者）
     public function all()
@@ -149,25 +129,25 @@ class BaseClass
     {
         //基準日の計算(入社日に+6か月)　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
         $kijunbi = DB::table('employees')
-        ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi"'))
-        ->where('shain_cd', $id)
-        ->first();
-    // ->toSQL();
-    // var_dump($kijunbi);
+            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi"'))
+            ->where('shain_cd', $id)
+            ->first();
+        // ->toSQL();
+        // var_dump($kijunbi);
 
-    // 基準年を抜き出す
-    $kijunbi_year_pre = substr($kijunbi->kijunbi, 0, 4);
-    // var_dump('基準年:' . $kijunbi_year);
+        // 基準年を抜き出す
+        $kijunbi_year_pre = substr($kijunbi->kijunbi, 0, 4);
+        // var_dump('基準年:' . $kijunbi_year);
 
-    // 基準月を抜き出す
-    $kijunbi_month_pre = substr($kijunbi->kijunbi, 5, 2);
-    // var_dump('基準月:' . $kijunbi_month);
+        // 基準月を抜き出す
+        $kijunbi_month_pre = substr($kijunbi->kijunbi, 5, 2);
+        // var_dump('基準月:' . $kijunbi_month);
 
-    // 基準年月を抜き出す
-    $kijunbi_year_month_pre = $kijunbi_year_pre . $kijunbi_month_pre;
-    // var_dump('基準年月:' . $kijunbi_year_month);
+        // 基準年月を抜き出す
+        $kijunbi_year_month_pre = $kijunbi_year_pre . $kijunbi_month_pre;
+        // var_dump('基準年月:' . $kijunbi_year_month);
 
-        return [$kijunbi_year_pre,$kijunbi_month_pre,$kijunbi_year_month_pre];
+        return [$kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre];
     }
 
     //初年度最後の月計算
@@ -182,6 +162,7 @@ class BaseClass
         $day_max2 = substr($day_max_pre->day_max_pre, 5, 2);
         //年度最後の年月
         $first_day_max = $day_max1 . $day_max2;
+
 
         return $first_day_max;
     }
@@ -212,7 +193,7 @@ class BaseClass
     }
 
     //消化日数を計算
-    public function holiday_count($nyushabi_year_month, $day_max, $id)
+    public function holiday_count_int($nyushabi_year_month, $day_max, $id)
     {
         $holiday_count = DB::table('holidays')
             ->select(DB::raw('sum(day) AS sumday'))
@@ -244,7 +225,7 @@ class BaseClass
         return $nokori;
     }
 
-    //消化残（期首残高-消化日数）
+    //繰越日数
     public function carry_over_count($nokori, $max_carry_over)
     {
         if ($nokori > $max_carry_over) {
@@ -305,11 +286,11 @@ class BaseClass
 
         return $day_max;
     }
-    
-   //一番最近のデータの年月(0000-00)を作成(=現在日時になる（◎月時点のデータですとか）)
+
+    //一番最近のデータの年月(0000-00)を作成(=現在日時になる（◎月時点のデータですとか）)
     public function year_month()
     {
-        
+
         $year_month_a_pre = DB::table('holidays')
             // ->select('year', 'month')
             ->select(db::raw('year,lpad(month, 2, "0") as month'))
@@ -327,8 +308,115 @@ class BaseClass
         //一番最近のデータの年月（000000：文字なし）
         $year_month_b_pre = $year_month_a1_pre . $year_month_a2_pre;
 
-        return [$year_month_a1_pre, $year_month_a2_pre,$year_month_a_pre,$year_month_b_pre];
+        return [$year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre];
+    }
+
+
+
+    // 主にアラートで使用
+    //IDで抜き出す社員情報
+    public function employees($id)
+    {
+
+        // employeesテーブルに入っている情報
+        $employees = DB::table('employees')
+            ->whereNull('taishokubi')
+            ->where('shain_cd', $id)
+            ->get();
+        // ->toSQL();
+
+        return [$employees];
+    }
+
+    //年度の終わりを計算
+    public function end_kijunbi($id)
+    {
+
+        //本年度の終わりを計算
+        $end_kijunbi_pre = DB::table('employees')
+            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y%m01") , INTERVAL +17 MONTH) AS "end_kijunbi"'))
+            ->where('shain_cd', $id)
+            ->get();
+
+            //     echo ('<pre>');
+            // var_dump($end_kijunbi_pre);
+            // echo ('</pre>');
+
+            foreach ($end_kijunbi_pre as $end_kijunbi2) {
+
+                // echo ('<pre>');
+                // var_dump($end_kijunbi2);
+                // echo ('</pre>');
+
+                $end_kijunbi_year_pre = substr($end_kijunbi2->end_kijunbi, 0, 4);
+                $end_kijunbi_month_pre = substr($end_kijunbi2->end_kijunbi, 5, 2);
+                $end_kijunbi_pre = $end_kijunbi_year_pre . $end_kijunbi_month_pre ;
+            }
+
+
+        return [$end_kijunbi_year_pre,$end_kijunbi_month_pre,$end_kijunbi_pre];
+    }
+
+    //消化日数を計算
+    public function holiday_count($day_min, $day_max, $id)
+    {
+        // 本年度の有給取得数を計算
+        $holiday_count = DB::table('holidays')
+            ->select(DB::raw('sum(day) AS sumday'))
+            //基準日から一年分
+            ->where(DB::raw('CONCAT(year, lpad(month, 2, "0"))'), '>=', $day_min)
+            ->where(DB::raw('CONCAT(year,lpad(month, 2, "0"))'), '<=', $day_max)
+            ->where('shain_cd', $id)
+            ->get();
+
+
+        return $holiday_count;
+    }
+
+    //入社年・入社月・入社年月の取得
+    // IDで抜き出す
+    public function nyushabi_year_month($id)
+    {
+        //入社日の取得
+        $nyushabi = DB::table('employees')
+            ->select('nyushabi')
+            ->where('shain_cd', $id)
+            ->whereNull('taishokubi')
+            ->get();
+
+        // var_dump('入社日');
+        // var_dump($nyushabi);
+
+        //入社年月の抜き出し
+        $nyushabi_year_pre = substr($nyushabi[0]->nyushabi, 0, 4);
+        $nyushabi_month_pre = substr($nyushabi[0]->nyushabi, 5, 2);
+        $nyushabi_year_month_pre = $nyushabi_year_pre . $nyushabi_month_pre;
+
+
+        return [$nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre];
+    }
+
+    //全在籍社員の入社年・入社月・入社年月(20191001)・入社年月(2019-10-01)の取得
+    // データ数指定
+    public function all_nyushabi_year_month($i)
+    {
+        //入社日の取得
+        $nyushabi_pre = DB::table('employees')
+            ->select('nyushabi')
+            ->whereNull('taishokubi')
+            ->get();
+
+            // echo ('<pre>');
+        // var_dump('入社日');
+        // var_dump($nyushabi_pre);
+        // echo ('</pre>');
+
+        //入社年月の抜き出し
+        $nyushabi_year_pre = substr($nyushabi_pre[$i]->nyushabi, 0, 4);
+        $nyushabi_month_pre = substr($nyushabi_pre[$i]->nyushabi, 5, 2);
+        $nyushabi_year_month_pre = $nyushabi_year_pre . $nyushabi_month_pre;
+
+
+        return [$nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre,$nyushabi_pre];
     }
 }
-
-

@@ -25,10 +25,6 @@ class ButtonController extends Controller
         $select_nyusha_year = $select_nyusha_year_pre;
         $select_taishoku_year = $select_taishoku_year_pre;
 
-        echo ('<pre>');
-        var_dump($select_nyusha_year);
-        var_dump($select_taishoku_year);
-        echo ('</pre>');
 
         // $employees = Employee::all();
         // $employees = DB::table('employees')
