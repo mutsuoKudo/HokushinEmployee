@@ -4,7 +4,7 @@
 
 <?php
 $post_url_create = $post_url;
-var_dump($post_url_create);
+// var_dump($post_url_create);
 ?>
 <div class="container">
     <div class="mb-5">
