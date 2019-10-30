@@ -271,7 +271,7 @@
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
 				<p style="color:red; font-size:20px;" class="mt-2 mb-1">
-					基準月が3か月以内にくる人で、有給を5日以上取得していない人が対象です
+					基準月が4か月以内にくる人で、有給を5日以上取得していない人が対象です
 				</p>
 				<p style="color:red; font-size:15px;">
 					<!-- DBのholidayテーブルに入力されている最新のデータ月 -->
@@ -488,11 +488,11 @@
 								</td>
 								<!-- 取得日数 -->
 								<td class="table-text" style="color:red">
-									<div>{{ $employees2[$i][2][0]->sumday }} 日</div>
+									<div>{{ $zan_holiday_personal[$select_shain_cd3[$i][0]][0] }} 日</div>
 								</td>
 								<!-- 残日数 -->
 								<td class="table-text">
-									<div>{{$zan_holiday_personal[$select_shain_cd3[$i][0]][0]}} 日</div>
+									<div>{{$zan_holiday_personal[$select_shain_cd3[$i][0]][1]}} 日</div>
 								</td>
 
 								</tr>

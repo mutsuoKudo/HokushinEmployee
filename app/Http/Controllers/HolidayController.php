@@ -560,6 +560,7 @@ class HolidayController extends Controller
             $mishouka_alert = "no";
             //未消化アラート表示の対象者で基準月が3か月以内に迫っていて消化日数が5日以下の場合、アラートを表示する
         } else {
+
             if ($array[$array_count][9] <= $year_month_b and $array[$array_count][4] <= 5) {
                 $mishouka_alert = "yes";
             } else {

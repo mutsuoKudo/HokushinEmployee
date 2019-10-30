@@ -355,9 +355,6 @@ class BaseClass
             ->where('shain_cd', $id)
             ->get();
 
-        //     echo ('<pre>');
-        // var_dump($end_kijunbi_pre);
-        // echo ('</pre>');
 
         foreach ($end_kijunbi_pre as $end_kijunbi2) {
 
