@@ -10,14 +10,11 @@
 @if (session('create'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('create') }}</div>@endif
 
 <div class="container">
-	<div class="col-sm-12">
+	<div class="col-12">
 		<div class="panel panel-default">
-			<!-- <div class="panel-heading">
-					New Book
-				</div> -->
 
 			<div class="panel-body">
-				<!-- Display Validation Errors -->
+
 				@include('common.errors')
 
 				<!-- Button -->
@@ -208,6 +205,7 @@
 
 				</div>
 
+				<!-- アラート -->
 				<div class="col-12 mt-3 d-inline-flex">
 					<!-- 未消化アラート -->
 					<form action="/employee/public/mishouka" method="GET">
@@ -224,58 +222,33 @@
 
 
 				<p class="mt-4 mb-0 font-weight-bold">その他の機能</p>
-
 				<div class="col-12 mt-2 d-inline-flex">
-					<!-- <form action="/employee/public/all_avg" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_avg">平均年齢（在籍者）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/department_avg" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_department_avg">平均年齢（部門別）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/gender_avg" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_gender_avg">平均年齢（男女別）</button>
-					<!-- </form> -->
 				</div>
 
 
 				<div class="col-12 mt-3 d-inline-flex">
-					<!-- <form action="/employee/public/all_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_count">人数（在籍者）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/department_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_department_count">人数（部門別）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/gender_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_gender_count">人数（男女別）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/age_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_age_count">人数（年代別）</button>
-					<!-- </form> -->
 				</div>
 
 
-
-
-
-				<!-- shainテーブルに上書き -->
-				<!-- <div class="col-12 mt-2 d-inline-flex">
-					<form action="/shain_update" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="shain_update" value="shainテーブルアップデート" class="mr-2 mt-3 function-button2">
-					</form>
-				</div> -->
-
-				<div id="result_pre"></div>
+				<!-- その他機能ボタン押下時、ajax表示する場所 -->
+			<div id="result_pre"></div>
 
 			</div>
 		</div>
 
-		<!-- テーブル -->
+		
 		@if(isset($title))
 		<div class="mt-5">
 			<form action="/employee/public/add" method="POST">
@@ -283,6 +256,7 @@
 				<?php
 				$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
 				?>
+				<!-- 現在のURLとスクロール位置を次のページに送る -->
 				<input type="hidden" name="url" value={{$url}}>
 				<input type="hidden" name="scroll_top" value="" class="st">
 				<button type="submit" class="btn btn-info btn-lg">新規作成</button>
@@ -293,6 +267,7 @@
 		</div>
 		@endif
 
+		<!-- テーブル -->
 		@if (count($employees) > 0)
 		<div class="panel panel-default mt-2">
 
@@ -387,13 +362,13 @@
 					<tbody>
 						@foreach ($employees as $employee)
 						<tr>
-							<!-- Task Delete Button -->
 							<td>
 								<form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
 									{{ csrf_field() }}
 									<?php
 									$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
 									?>
+									<!-- 現在のURLとスクロール位置を次のページに送る -->
 									<input type="hidden" name="url" value={{$url}}>
 									<input type="hidden" name="scroll_top" value="" class="st">
 									<button type="submit" class="btn btn-info mr-2">詳細</button>
@@ -500,6 +475,7 @@
 
 	</div>
 </div>
+
 <script>
 	$('form').submit(function() {
 		var scroll_top = $(window).scrollTop(); //送信時の位置情報を取得
@@ -511,25 +487,6 @@
 		var scroll_top = 0;
 	}
 
-
-
-
-	// document.getElementById('reset').onclick = function() {
-	// 	window.alert("クリックしたよ");
-	// table.state.clear();
-	// table.destroy();
-	// $("#data-table tbody > tr").remove();
-	// }
-
-	// document.getElementById('reset').onclick = function() {
-	// 	var table = $('#data-teble').DataTable();
-	// 	table.page('first').draw('page');
-	// };
-
-	// document.getElementsByClassName('table_reset').onclick = function() {
-	// 	var table = $('#data-teble').DataTable();
-	// 	table.page('first').draw('page');
-	// };
 </script>
 
 @endsection

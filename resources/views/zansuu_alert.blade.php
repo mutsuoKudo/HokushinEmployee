@@ -2,7 +2,7 @@
 
 @section('content')
 
-<!-- 未消化アラート用blade -->
+<!-- 未消化アラート画面 -->
 
 <!-- 更新完了時に表示されるメッセージ -->
 @if (session('status'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('status') }}</div>@endif
@@ -12,14 +12,10 @@
 @if (session('create'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('create') }}</div>@endif
 
 <div class="container">
-	<div class="col-sm-12">
+	<div class="col-12">
 		<div class="panel panel-default">
-			<!-- <div class="panel-heading">
-					New Book
-				</div> -->
 
 			<div class="panel-body">
-				<!-- Display Validation Errors -->
 				@include('common.errors')
 
 				<!-- Button -->
@@ -189,6 +185,7 @@
 						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset">
 					</form>
 
+
 					<!-- 退職者年代別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
@@ -210,6 +207,7 @@
 
 				</div>
 
+				<!-- アラート -->
 				<div class="col-12 mt-3 d-inline-flex">
 					<!-- 未消化アラート -->
 					<form action="/employee/public/mishouka" method="GET">
@@ -227,51 +225,26 @@
 				<p class="mt-4 mb-0 font-weight-bold">その他の機能</p>
 
 				<div class="col-12 mt-2 d-inline-flex">
-					<!-- <form action="/employee/public/all_avg" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_avg">平均年齢（在籍者）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/department_avg" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_department_avg">平均年齢（部門別）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/gender_avg" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_gender_avg">平均年齢（男女別）</button>
-					<!-- </form> -->
 				</div>
 
 
 				<div class="col-12 mt-3 d-inline-flex">
-					<!-- <form action="/employee/public/all_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_count">人数（在籍者）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/department_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_department_count">人数（部門別）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/gender_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_gender_count">人数（男女別）</button>
-					<!-- </form> -->
 
-					<!-- <form action="/employee/public/age_count" method="GET"> -->
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_age_count">人数（年代別）</button>
-					<!-- </form> -->
 				</div>
 
 
-
-
-
-
-				<!-- shainテーブルに上書き -->
-				<!-- <div class="col-12 mt-2 d-inline-flex">
-					<form action="/shain_update" method="GET">
-						{{ csrf_field() }}
-						<input type="submit" name="shain_update" value="shainテーブルアップデート" class="mr-2 mt-3 function-button2">
-					</form>
-				</div> -->
-
+				<!-- その他機能ボタン押下時、ajax表示する場所 -->
 				<div id="result_pre"></div>
 
 			</div>
@@ -279,7 +252,7 @@
 
 
 
-		<!-- テーブル -->
+
 		@if(isset($title))
 		<div class="mt-5">
 			<form action="/employee/public/add" method="POST">
@@ -293,26 +266,22 @@
 			</form>
 		</div>
 
-
 		<div id="table-area">
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
-				@if($zansuu_title == 'on')
-				<p style="color:red; font-size:20px;" class="mt-2 mb-1">
-					有給残日数が3日以下の人が対象です
-				</p>
-				<p style="color:red; font-size:15px;">
-					※{{$month}}月末時点のデータです
-				</p>
-				@endif
+
+				<p style="color:red; font-size:20px;" class="mt-2 mb-1">有給残日数が3日以下の人が対象です</p>
+				<!-- DBのholidayテーブルに入力されている最新のデータ月 -->
+				<p style="color:red; font-size:15px;">※{{$month}}月末時点のデータです</p>
 
 				<p id="print" width="150" height="30"><a href="#" class="btn btn-success btn-lg">このページを印刷</a></p>
 			</div>
 			@endif
 
 
+			<!-- テーブル -->
+			@if (count($employees2) > 0)
 			<div class="panel panel-default mt-2">
-
 				<div class="panel-body">
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
 						<thead>
@@ -327,77 +296,77 @@
 									<div>社員名</div>
 								</th>
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>社員名（カナ）</div>
-							</th> -->
+									<div>社員名（カナ）</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>社員名（ローマ字）</div>
-							</th> -->
+									<div>社員名（ローマ字）</div>
+								</th> -->
 								<th class="table-text" style="min-width:50px">
 									<div>メール</div>
 								</th>
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>性別</div>
-							</th> -->
+									<div>性別</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>郵便番号</div>
-							</th> -->
+									<div>郵便番号</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>住所</div>
-							</th> -->
+									<div>住所</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>住所（建物）</div>
-							</th> -->
+									<div>住所（建物）</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>誕生日</div>
-							</th> -->
+									<div>誕生日</div>
+								</th> -->
 								<th class="table-text" style="min-width:50px">
 									<div>入社日</div>
 								</th>
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>正社員転換日</div>
-							</th> -->
+									<div>正社員転換日</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>転籍日</div>
-							</th> -->
+									<div>転籍日</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>退職日</div>
-							</th> -->
+									<div>退職日</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>社員携帯</div>
-							</th> -->
+									<div>社員携帯</div>
+								</th> -->
 								<!-- <th class="table-text">
-								<div>電話番号</div>
-							</th> -->
+									<div>電話番号</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>雇用保険番号</div>
-							</th> -->
+									<div>雇用保険番号</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>社会保険番号</div>
-							</th> -->
+									<div>社会保険番号</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>基礎年金番号</div>
-							</th> -->
+									<div>基礎年金番号</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>月給</div>
-							</th> -->
+									<div>月給</div>
+								</th> -->
 								<!-- <th class="table-text hs-md-th4" style="min-width:30px">
-								<div>部門</div>
-							</th> -->
+									<div>部門</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>名刺</div>
-							</th> -->
+									<div>名刺</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>idカード</div>
-							</th> -->
+									<div>idカード</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>扶養家族</div>
-							</th> -->
+									<div>扶養家族</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>入社試験点数</div>
-							</th> -->
+									<div>入社試験点数</div>
+								</th> -->
 								<!-- <th class="table-text" style="min-width:50px">
-								<div>備考</div>
-							</th> -->
+									<div>備考</div>
+								</th> -->
 								<th class="table-text" style="min-width:50px">
 									<div>基準月</div>
 								</th>
@@ -410,15 +379,16 @@
 							</tr>
 						</thead>
 						<tbody>
+							<!-- 対象データ分繰り返します -->
 							@for ($i=0; $i < count($employees2); $i++) <tr>
 
-								<!-- Task Delete Button -->
 								<td>
 									<form action="/employee/public/show/{{$employees2[$i][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
 										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
 										?>
+										<!-- 現在のURLとスクロール位置を次のページに送る -->
 										<input type="hidden" name="url" value={{$url}}>
 										<input type="hidden" name="scroll_top" value="" class="st">
 										<button type="submit" class="btn btn-info mr-2">詳細</button>
@@ -440,77 +410,77 @@
 									<div>{{ $employees2[$i][0]->shain_mei }}</div>
 								</td>
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_mei_kana }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_mei_kana }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_mei_romaji }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_mei_romaji }}</div>
+								</td> -->
 								<td class="table-text">
 									<div>{{ $employees2[$i][0]->shain_mail }}</div>
 								</td>
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->gender }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->gender }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_zip_code }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_zip_code }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_jyusho }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_jyusho }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_jyusho_tatemono }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_jyusho_tatemono }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_birthday }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_birthday }}</div>
+								</td> -->
 								<td class="table-text">
 									<div>{{ $employees2[$i][0]->nyushabi }}</div>
 								</td>
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->seishain_tenkanbi }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->seishain_tenkanbi }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->tensekibi }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->tensekibi }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->taishokubi }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->taishokubi }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_keitai }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_keitai }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shain_tel }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shain_tel }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->koyohoken_bango }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->koyohoken_bango }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->shakaihoken_bango }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->shakaihoken_bango }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->kisonenkin_bango }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->kisonenkin_bango }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->monthly_saraly }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->monthly_saraly }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->department }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->department }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->name_card }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->name_card }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->id_card }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->id_card }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->fuyo_kazoku }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->fuyo_kazoku }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->test }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->test }}</div>
+								</td> -->
 								<!-- <td class="table-text">
-								<div>{{ $employees2[$i][0]->remarks }}</div>
-							</td> -->
+									<div>{{ $employees2[$i][0]->remarks }}</div>
+								</td> -->
 
 								<!-- 基準月 -->
 								<td class="table-text">
@@ -533,11 +503,15 @@
 
 				</div>
 			</div>
+			@else
+			<p class="mt-5 p-3" style="background-color: #F7F7EE">データはありません</p>
+			@endif
 
 		</div>
 
 	</div>
 </div>
+
 <script>
 	$('form').submit(function() {
 		var scroll_top = $(window).scrollTop(); //送信時の位置情報を取得
