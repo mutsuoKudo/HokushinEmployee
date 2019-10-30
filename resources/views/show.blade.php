@@ -2,30 +2,27 @@
 
 @section('content')
 
-
+<!-- 詳細画面 -->
 
 <div class="container">
-    <div class="col-sm-12">
+    <div class="col-12">
         <div class="panel panel-default">
 
             <div class="panel-body">
-
-                <!-- Display Validation Errors -->
                 @include('common.errors')
 
                 <div class="mt-4 text-center">
-                    <!-- トップに戻るボタン -->
+
+                    <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置に戻る -->
                     <form action="{{$post_url}}" method="GET">
-                    {{ csrf_field() }}
+                        {{ csrf_field() }}
                         <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
                         <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
                     </form>
-                    <!-- <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
 
-                    <!-- 編集ボタン -->
                     <form action="/employee/public/edit/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
-                        <!-- トップに戻る用url -->
+                        <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を送る -->
                         <input type="hidden" name="top_url" value={{$post_url}}>
                         <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
                         <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
@@ -34,20 +31,24 @@
             </div>
         </div>
 
-        <!-- Books -->
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 詳細表示
             </div>
 
             <div class="float-right mr-5">
+                @if(is_null($employee->nyushabi))
+                <select name="year">
+                <option selected >入社日が登録されていません</option>
+                </select>
+                <input type="submit" class="btn btn-info m-2" value="有給取得日明細" disabled>
+                @else
                 <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
-
                     {{ csrf_field() }}
+
                     <select name='year'>
                         <?php
-
-                        $year_month = date("Ym");
+                        //  DBのholidayテーブルに入力されている最新データ月より入社月が大きいか、同じのとき　かつ　最新データ年より入社年が大きいとき＝初回基準月未満
                         if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
                             echo '<option value="00" selected >初回基準月未満</option>';
                         } else {
@@ -69,27 +70,25 @@
 
                                 //退職日が入力されていない場合・・・
                             } else {
-                                //現在年月が基準年月に達していない場合・・・
-
+                                //DBのholidayテーブルに入力されている最新データ年月が基準年月に達していない場合　＝最新データ年未満
                                 if ($year_month_a2 < $kijunbi_month) {
-                                    //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/4、基準日が10月の場合、2016年度・2017年度・2018年度まで表示する)
-                                    //基準日から現在年まで(現在年は含まない)(現在が2019/10、入社日が2016/3、基準日が9月の場合、2016年度・2017年度・2018年度・2019年度まで表示する)
-                                    for ($i = $kijunbi_year; $i < $year; $i++) {
-                                        if ($i == $year - 1) {
-                                            //現在の年にselected
+                                    //基準日からDBのholidayテーブルに入力されている最新データ年まで(最新データ年は含まない)
+                                    for ($i = $kijunbi_year; $i < $year_month_a1; $i++) {
+                                        if ($i == $year_month_a1 - 1) {
+                                            //最新データ年にselected
                                             echo '<option value="', $i, '" selected >', $i, '年度</option>';
-                                        } elseif ($i < $year) {
+                                        } elseif ($i < $year_month_a1) {
                                             echo '<option value="', $i, '">', $i, '年度</option>';
                                         }
                                         echo 'ERROR';
                                     }
                                 } else {
-                                    //基準日から現在年まで(現在年を含む)
-                                    for ($i = $kijunbi_year; $i <= $year; $i++) {
-                                        if ($i == $year) {
-                                            //現在の年にselected
+                                    //基準日からDBのholidayテーブルに入力されている最新データ年まで（最新データ年は含む）
+                                    for ($i = $kijunbi_year; $i <= $year_month_a1; $i++) {
+                                        if ($i == $year_month_a1) {
+                                            //最新データ年にselected
                                             echo '<option value="', $i, '" selected >', $i, '年度</option>';
-                                        } elseif ($i < $year) {
+                                        } elseif ($i < $year_month_a1) {
                                             echo '<option value="', $i, '">', $i, '年度</option>';;
                                         }
                                         echo 'ERROR';
@@ -100,10 +99,12 @@
 
                         ?>
                     </select>
+                    <!-- トップのURLとスクロール位置を次のページに送る -->
                     <input type="hidden" name="top_url" value={{$post_url}}>
                     <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
                     <input type="submit" class="btn btn-info m-2" value="有給取得日明細">
                 </form>
+                @endif
 
 
             </div>
@@ -225,22 +226,20 @@
             </div>
 
             <div class="mt-5 text-center mb-5">
-                <!-- トップに戻るボタン -->
-                <!-- <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                <!-- <button type="button" onclick=history.back() class="btn btn-success btn-lg m-0">トップに戻る</button> -->
+                <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置に戻る -->
                 <form action="{{$post_url}}" method="GET">
                     {{ csrf_field() }}
-                        <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
-                        <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
-                    </form>
-                <!-- 編集ボタン -->
+                    <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+                    <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                </form>
+
                 <form action="/employee/public/edit/{{$employee->shain_cd}}" method="POST">
-                        {{ csrf_field() }}
-                        <!-- トップに戻る用url -->
-                        <input type="hidden" name="top_url" value={{$post_url}}>
-                        <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
-                        <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
-                    </form>
+                    {{ csrf_field() }}
+                    <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を送る -->
+                    <input type="hidden" name="top_url" value={{$post_url}}>
+                    <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
+                    <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
+                </form>
             </div>
 
         </div>

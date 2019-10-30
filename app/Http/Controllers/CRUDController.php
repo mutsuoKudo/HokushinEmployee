@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Employee;
 use \DB;
 
 use App\Http\Requests\UpdatePost;
 use App\Http\Requests\CreatePost;
+
+use App\Library\BaseClass;
 
 class CRUDController extends Controller
 {
@@ -27,7 +28,6 @@ class CRUDController extends Controller
         $post_url = $_POST['url'];
         $scroll_top = $_POST['scroll_top'];
 
-        // return view('/create');
 
         return view('/create')->with([
             'post_url' => $post_url,
@@ -91,35 +91,29 @@ class CRUDController extends Controller
         //
         $employee = Employee::find($id);
 
+        $class = new BaseClass();
         //基準日の計算(入社日に+6か月)　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
-        $kijunbi = DB::table('employees')
-            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +6 MONTH) AS "kijunbi"'))
-            ->where('shain_cd', $id)
-            ->first();
-        // ->toSQL();
-
+        list($kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre) = $class->kijunbi($id);
         // 基準年を抜き出す
-        $kijunbi_year = substr($kijunbi->kijunbi, 0, 4);
+        $kijunbi_year = $kijunbi_year_pre;
         // var_dump('基準年:' . $kijunbi_year);
 
         // 基準月を抜き出す
-        $kijunbi_month = substr($kijunbi->kijunbi, 5, 2);
-        // var_dump('基準年:' . $kijunbi_year);
+        $kijunbi_month = $kijunbi_month_pre;
+        // // var_dump('基準年:' . $kijunbi_year);
 
         // 基準年月を抜き出す
-        $kijunbi_year_month = $kijunbi_year . $kijunbi_month;
+        $kijunbi_year_month = $kijunbi_year_month_pre;
 
         //退職年の計算
-        $taishokubi = DB::table('employees')
-            ->select('taishokubi')
-            ->where('shain_cd', $id)
-            ->first();
+        list($taishokubi_year_pre, $taishokubi_month_pre, $taishokubi_year_month_pre,$taishokubi_pre) = $class->retirement_id($id);
 
         // 退職年を抜き出す
-        $taishokubi_year = substr($taishokubi->taishokubi, 0, 4);
+        $taishokubi_year = $taishokubi_year_pre;
         // var_dump('退職年:' . $kijunbi_year);
 
         //入社日の取得
+
         $nyushabi = DB::table('employees')
             ->select('nyushabi')
             ->where('shain_cd', $id)
@@ -134,27 +128,20 @@ class CRUDController extends Controller
         //入社年月の作成
         $nyushabi_year_month = $nyushabi_year . $nyushabi_month;
 
-        //現在年
-        $year = date("Y");
-
+ 
         //一番最近のデータの年月(0000-00)を作成(=現在日時になる)
-        $year_month_a_pre = DB::table('holidays')
-            // ->select('year', 'month')
-            ->select(db::raw('year,lpad(month, 2, "0") as month'))
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->first();
-        // var_dump($year_month_a_pre);
+        list($year_month_a1_pre, $year_month_a2_pre,$year_month_a_pre,$year_month_b_pre) = $class->year_month();
 
         //一番最近のデータの年
-        $year_month_a1 = $year_month_a_pre->year;
+        $year_month_a1 = $year_month_a1_pre;
         //一番最近のデータの月
-        $year_month_a2 = $year_month_a_pre->month;
+        $year_month_a2 = $year_month_a2_pre;
         //一番最近のデータの年月（000000：文字なし）
-        $year_month_b = $year_month_a1 . $year_month_a2;
+        $year_month_b = $year_month_b_pre;
+        
+
 
         $post_url = $_POST['url'];
-
         $scroll_top = $_POST['scroll_top'];
 
 
@@ -164,11 +151,10 @@ class CRUDController extends Controller
             'employee' => $employee,
             'kijunbi_year' => $kijunbi_year,
             'taishokubi_year' => $taishokubi_year,
-            'nyushabi_year' => $nyushabi_year,
             'nyushabi_year_month' => $nyushabi_year_month,
             'kijunbi_year_month' => $kijunbi_year_month,
-            'year' => $year,
             'kijunbi_month' => $kijunbi_month,
+            'year_month_a1' => $year_month_a1,
             'year_month_a2' => $year_month_a2,
             'year_month_b' => $year_month_b,
             'post_url' => $post_url,
@@ -190,7 +176,6 @@ class CRUDController extends Controller
         //
         $employee = Employee::find($id);
 
-        // return view('/edit')->with('employee', $employee);
 
         $top_url = $_POST['top_url'];
         $scroll_top = $_POST['scroll_top2'];
@@ -246,14 +231,10 @@ class CRUDController extends Controller
         $employee->save();
 
         $top_url_edit = $_POST['top_url_edit'];
-        // // $scroll_top = $_POST['scroll_top2'];
 
-        // var_dump($top_url_edit);
-        // $day_max1 = substr($top_url_edit, 16, 100);
-        // var_dump($day_max1);
+
 
         return redirect($top_url_edit)->with('status', 'UPDATE完了!');
-
-        
+            
     }
 }

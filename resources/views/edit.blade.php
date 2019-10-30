@@ -2,25 +2,24 @@
 
 @section('content')
 
+<!-- 編集画面 -->
 <?php
 $top_url_edit = $top_url;
-// var_dump($top_url_edit);
+$top_scroll_top = $scroll_top;
 ?>
 <div class="container">
-    <div class="col-sm-12">
+    <div class="col-12">
         <div class="panel panel-default">
 
             <div class="panel-body">
                 <div class="col-12 mt-2 text-center">
-                    <!-- トップに戻るボタン -->
-                    <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <!-- <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
+                    <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置に戻る -->
                     <form action="{{$top_url}}" method="GET">
                         {{ csrf_field() }}
                         <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
                         <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
                     </form>
-                    <!-- 詳細画面に戻るボタン -->
+                    <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を渡す -->
                     <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="url" value={{$top_url}}>
@@ -32,7 +31,6 @@ $top_url_edit = $top_url;
             </div>
         </div>
 
-        <!-- Books -->
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 編集
@@ -399,17 +397,16 @@ $top_url_edit = $top_url;
         </div>
 
         <div class="mt-3 p-0 text-center">
-            <!-- トップに戻るボタン -->
-            <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-            <!-- <a href={{$top_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
             <form action="{{$top_url}}" method="GET">
                 {{ csrf_field() }}
+                 <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置に戻る -->
                 <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
                 <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
             </form>
-            <!-- 詳細画面に戻るボタン -->
+
             <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
                 {{ csrf_field() }}
+                <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を渡す -->
                 <input type="hidden" name="url" value={{$top_url}}>
                 <input type="hidden" name="scroll_top" value="{{$scroll_top}}">
                 <button type="submit" class="btn btn-info btn-lg mt-2">詳細画面に戻る</button>

@@ -150,7 +150,24 @@ class BaseClass
         return [$kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre];
     }
 
-    //初年度最後の月計算
+    //初年度最後の月計算(年・月・まとめたもの))
+    public function first_day_max_2($id)
+    {
+        $day_max_pre = DB::table('employees')
+            ->select(db::raw('ADDDATE( DATE_FORMAT(nyushabi, "%Y-%m-01") , INTERVAL +17 MONTH) AS "day_max_pre"'))
+            ->where('shain_cd', $id)
+            ->first();
+
+        $first_day_max_year_pre = substr($day_max_pre->day_max_pre, 0, 4);
+        $first_day_max_month_pre = substr($day_max_pre->day_max_pre, 5, 2);
+        //年度最後の年月
+        $first_day_max_pre = $first_day_max_year_pre . $first_day_max_month_pre;
+
+
+        return [$first_day_max_year_pre, $first_day_max_month_pre, $first_day_max_pre];
+    }
+
+    //初年度最後の月計算(まとめたもののみ)
     public function first_day_max($id)
     {
         $day_max_pre = DB::table('employees')
@@ -270,7 +287,7 @@ class BaseClass
     //初年度以降の年度初め
     public function day_min($kijunbi_year, $i, $kijunbi_month)
     {
-        $day_min_pre = $kijunbi_year + $i;
+        $day_min_pre = (int)$kijunbi_year + $i;
         $day_min = $day_min_pre . $kijunbi_month;
 
         return $day_min;
@@ -282,7 +299,7 @@ class BaseClass
         $day_max_year = substr($first_day_max, 0, 4);
         $day_max_month = substr($first_day_max, 4, 2);
 
-        $day_max = $day_max_year + $i . $day_max_month;
+        $day_max = (int)$day_max_year + $i . $day_max_month;
 
         return $day_max;
     }
@@ -338,23 +355,23 @@ class BaseClass
             ->where('shain_cd', $id)
             ->get();
 
-            //     echo ('<pre>');
-            // var_dump($end_kijunbi_pre);
+        //     echo ('<pre>');
+        // var_dump($end_kijunbi_pre);
+        // echo ('</pre>');
+
+        foreach ($end_kijunbi_pre as $end_kijunbi2) {
+
+            // echo ('<pre>');
+            // var_dump($end_kijunbi2);
             // echo ('</pre>');
 
-            foreach ($end_kijunbi_pre as $end_kijunbi2) {
-
-                // echo ('<pre>');
-                // var_dump($end_kijunbi2);
-                // echo ('</pre>');
-
-                $end_kijunbi_year_pre = substr($end_kijunbi2->end_kijunbi, 0, 4);
-                $end_kijunbi_month_pre = substr($end_kijunbi2->end_kijunbi, 5, 2);
-                $end_kijunbi_pre = $end_kijunbi_year_pre . $end_kijunbi_month_pre ;
-            }
+            $end_kijunbi_year_pre = substr($end_kijunbi2->end_kijunbi, 0, 4);
+            $end_kijunbi_month_pre = substr($end_kijunbi2->end_kijunbi, 5, 2);
+            $end_kijunbi_pre = $end_kijunbi_year_pre . $end_kijunbi_month_pre;
+        }
 
 
-        return [$end_kijunbi_year_pre,$end_kijunbi_month_pre,$end_kijunbi_pre];
+        return [$end_kijunbi_year_pre, $end_kijunbi_month_pre, $end_kijunbi_pre];
     }
 
     //消化日数を計算
@@ -385,6 +402,7 @@ class BaseClass
             ->get();
 
         // var_dump('入社日');
+        // var_dump($id);
         // var_dump($nyushabi);
 
         //入社年月の抜き出し
@@ -406,7 +424,7 @@ class BaseClass
             ->whereNull('taishokubi')
             ->get();
 
-            // echo ('<pre>');
+        // echo ('<pre>');
         // var_dump('入社日');
         // var_dump($nyushabi_pre);
         // echo ('</pre>');
@@ -417,6 +435,29 @@ class BaseClass
         $nyushabi_year_month_pre = $nyushabi_year_pre . $nyushabi_month_pre;
 
 
-        return [$nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre,$nyushabi_pre];
+        return [$nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre, $nyushabi_pre];
+    }
+
+
+
+
+    // CRUDControllerで使用
+    // 退職日取得
+    public function retirement_id($id)
+    {
+        //退職日取得
+        $taishokubi_pre = DB::table('employees')
+            ->select('taishokubi')
+            ->where('shain_cd', $id)
+            ->first();
+
+
+        //退職年月の抜き出し
+        $taishokubi_year_pre = substr($taishokubi_pre->taishokubi, 0, 4);
+        $taishokubi_month_pre = substr($taishokubi_pre->taishokubi, 5, 2);
+        $taishokubi_year_month_pre = $taishokubi_year_pre . $taishokubi_month_pre;
+
+
+        return [$taishokubi_year_pre, $taishokubi_month_pre, $taishokubi_year_month_pre, $taishokubi_pre];
     }
 }

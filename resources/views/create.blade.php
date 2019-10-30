@@ -2,45 +2,42 @@
 
 @section('content')
 
+<!-- 新規登録画面 -->
 <?php
 $post_url_create = $post_url;
-// var_dump($post_url_create);
 ?>
+
 <div class="container">
     <div class="mb-5">
         <div class="panel panel-default">
 
             <div class="panel-body">
                 <div class="mt-2 text-center">
-                    <!-- トップに戻るボタン -->
+                    <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置に戻る -->
                     <form action="{{$post_url}}" method="GET">
-
                         <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
                         <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
                     </form>
-                    <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-                    <!-- <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Books -->
     <div class="panel panel-default mt-5 col-12">
         <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
             新規登録
         </div>
 
         <div class="panel-body">
+            <!-- 新規登録ボタン -->
             <form class="form-signin" role="form" method="post" action="/employee/public/submit">
-            <input type="hidden" name="post_url_create" value="{{$post_url_create}}">
+                <input type="hidden" name="post_url_create" value="{{$post_url_create}}">
                 {{ csrf_field() }}
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <thead>
 
                     </thead>
                     <tbody>
-                        <!-- 新規登録ボタン -->
                         <tr>
                             <th>社員コード<small class="float-right text-danger">※必須</small></th>
                             <td class="width:50%">
@@ -213,9 +210,11 @@ $post_url_create = $post_url;
     </div>
 
     <div class="mt-3 text-center">
-        <!-- トップに戻るボタン -->
-        <!-- <a href="/employee/public" class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a> -->
-        <a href={{$post_url}} class="btn btn-success btn-lg m-0" style="margin:20px;">トップに戻る</a>
+        <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置に戻る -->
+        <form action="{{$post_url}}" method="GET">
+            <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
+            <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+        </form>
     </div>
 </div>
 </div>
