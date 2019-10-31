@@ -53,10 +53,7 @@
 								{{ csrf_field() }}
 								<input type="submit" name="department" value="システム開発部" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
-							<form action="/employee/public/department5" method="GET" class="mt-2">
-								{{ csrf_field() }}
-								<input type="submit" name="department" value="研修生" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
-							</form>
+
 						</div><!-- /.dropdown-menu -->
 					</div><!-- /.dropdown -->
 

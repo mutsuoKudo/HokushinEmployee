@@ -189,7 +189,6 @@
                             $("#result_department_avg").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>管理部の平均年齢は" + data['department_avg2'] + "歳です</p>");
                             $("#result_department_avg").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>営業部の平均年齢は　" + data['department_avg3'] + "歳です</p>");
                             $("#result_department_avg").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>システム開発部の平均年齢は　" + data['department_avg4'] + "歳です</p>");
-                            $("#result_department_avg").append("<p class='p-3' style='background-color: #F7F7EE'>研修生の平均年齢は　" + data['department_avg5'] + "歳です</p>");
                         })
                         .fail(function(data) { //ajaxの通信に失敗した場合
                             alert("error!");
@@ -272,7 +271,6 @@
                             $("#result_department_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>管理部の人数は" + data['all_department2'] + "人です</p>");
                             $("#result_department_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>営業部の人数は　" + data['all_department3'] + "人です</p>");
                             $("#result_department_count").append("<p class='p-3 mb-0' style='background-color: #F7F7EE'>システム開発部の人数は　" + data['all_department4'] + "人です</p>");
-                            $("#result_department_count").append("<p class='p-3' style='background-color: #F7F7EE'>研修生の人数は　" + data['all_department5'] + "人です</p>");
                         })
                         .fail(function(data) { //ajaxの通信に失敗した場合
                             alert("error!");

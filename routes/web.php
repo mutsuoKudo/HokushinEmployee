@@ -102,9 +102,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/department3', 'ButtonController@department3');
     //部門別ボタンクリック→システム開発部ボタンクリック→システム開発部のテーブル表示
     Route::get('/department4', 'ButtonController@department4');
-    //部門別ボタンクリック→研修生ボタンクリック→研修生のテーブル表示
-    Route::get('/department5', 'ButtonController@department5');
 
+    
     //入社年別ボタンクリック→2007年ボタンクリック→2007年入社のテーブル表示
     Route::get('/nyushabi2007', 'ButtonController@nyushabi2007');
     //入社年別ボタンクリック→2014年ボタンクリック→2014年入社のテーブル表示
