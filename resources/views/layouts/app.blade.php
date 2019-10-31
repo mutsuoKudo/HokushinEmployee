@@ -134,9 +134,9 @@
             // window.alert("クリアしたよ");
             // $('#data-teble').DataTable().destroy();
             // window.alert("破壊したよ");
-            $('#data-teble').empty();
+            // $('#data-teble').empty();
             // window.alert("空にしたよ");
-            window.location.reload();
+            // window.location.reload();
         })
 
 
