@@ -132,28 +132,6 @@ class ButtonController extends Controller
         ]);
     }
 
-    //研修生
-    public function department5()
-    {
-
-        $class = new BaseClass();
-
-        // 社員情報（部門＝5）取得
-        $employees = $class->department(5);
-
-        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
-        $select_nyusha_year = $select_nyusha_year_pre;
-        $select_taishoku_year = $select_taishoku_year_pre;
-
-        $title = "研修生";
-
-        return view('employees')->with([
-            'title' => $title,
-            'employees' => $employees,
-            'select_nyusha_year' => $select_nyusha_year,
-            'select_taishoku_year' => $select_taishoku_year,
-        ]);
-    }
 
     //2007年
     public function nyushabi2007()
@@ -903,6 +881,7 @@ class ButtonController extends Controller
 
         $all_avg = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->avg($birthday);
 
         $response = array();
@@ -937,17 +916,11 @@ class ButtonController extends Controller
             ->where('department', 4)
             ->avg($birthday);
 
-        $department_avg5 = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where('department', 5)
-            ->avg($birthday);
-
         $response = array();
         $response["department_avg1"] = round(($department_avg1), 1, PHP_ROUND_HALF_UP);
         $response["department_avg2"] = round(($department_avg2), 1, PHP_ROUND_HALF_UP);
         $response["department_avg3"] = round(($department_avg3), 1, PHP_ROUND_HALF_UP);
         $response["department_avg4"] = round(($department_avg4), 1, PHP_ROUND_HALF_UP);
-        $response["department_avg5"] = round(($department_avg5), 1, PHP_ROUND_HALF_UP);
 
         return Response::json($response);
     }
@@ -960,10 +933,12 @@ class ButtonController extends Controller
         $gender_avg1 = DB::table('employees')
             ->whereNull('taishokubi')
             ->where('gender', '男')
+            ->where('department', '!=' , '05')
             ->avg($birthday);
 
         $gender_avg2 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->where('gender', '女')
             ->avg($birthday);
 
@@ -981,8 +956,8 @@ class ButtonController extends Controller
         // テーブルを指定
         $all_count = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->count();
-
 
         $response = array();
         $response["all_count"] = $all_count;
@@ -1014,19 +989,12 @@ class ButtonController extends Controller
             ->where('department', 4)
             ->count();
 
-        $all_department5 = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->where('department', 5)
-            ->count();
-
 
         $response = array();
         $response["all_department1"] = $all_department1;
         $response["all_department2"] = $all_department2;
         $response["all_department3"] = $all_department3;
         $response["all_department4"] = $all_department4;
-        $response["all_department5"] = $all_department5;
-
 
         return Response::json($response);
     }
@@ -1038,11 +1006,14 @@ class ButtonController extends Controller
 
         $all_gender1 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->where('gender', '男')
+
             ->count();
 
         $all_gender2 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->where('gender', '女')
             ->count();
 
@@ -1062,36 +1033,42 @@ class ButtonController extends Controller
         //20代
         $age1 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween($birthday, [20, 29])
             ->count();
 
         //30代
         $age2 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween($birthday, [30, 39])
             ->count();
 
         //40代
         $age3 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween($birthday, [40, 49])
             ->count();
 
         //50代
         $age4 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween($birthday, [50, 59])
             ->count();
 
         //60代
         $age5 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween($birthday, [60, 69])
             ->count();
 
         //その他
         $age6 = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->where($birthday, '=>', 70)
             ->count();
 

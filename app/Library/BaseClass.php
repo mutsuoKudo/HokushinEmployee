@@ -13,11 +13,11 @@ class BaseClass
     {
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->get();
 
         return $employees;
     }
-
 
 
     //スタッフ全員の入社年と退職年を算出
@@ -27,6 +27,7 @@ class BaseClass
         $select_nyusha_year_pre = DB::table('employees')
             ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->orderBy('nyushanen', 'asc')
             ->get();
 
@@ -55,6 +56,7 @@ class BaseClass
     {
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween('nyushabi', [$start_nyushabi, $end_nyushabi])
             ->get();
 
@@ -68,6 +70,7 @@ class BaseClass
 
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween($birthday, [$start_age, $end_age])
             ->get();
 
@@ -81,6 +84,7 @@ class BaseClass
 
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->where($birthday, '<', $start_age)
             ->where($birthday, '>', $end_age)
             ->get();
@@ -94,6 +98,7 @@ class BaseClass
         //入社日が7月の人は基準月が1月
         $employees = DB::table('employees')
             ->where('nyushabi', 'LIKE', $kijun_month)
+            ->where('department', '!=' , '05')
             ->whereNull('taishokubi')
             ->get();
 
@@ -105,6 +110,7 @@ class BaseClass
     {
         $employees = DB::table('employees')
             ->whereNotNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->get();
 
         return $employees;
@@ -115,6 +121,7 @@ class BaseClass
     {
         $employees = DB::table('employees')
             ->whereNotNull('taishokubi')
+            ->where('department', '!=' , '05')
             ->whereBetween('taishokubi', [$start_taishokubi, $end_taishokubi])
             ->get();
 
@@ -413,6 +420,7 @@ class BaseClass
         //入社日の取得
         $nyushabi_pre = DB::table('employees')
             ->select('nyushabi')
+            ->where('department', '!=' , '05')
             ->whereNull('taishokubi')
             ->get();
 
