@@ -42,6 +42,8 @@ class HolidayController extends Controller
 
         //入社年月
         $nyushabi_year_month = $nyushabi_year_month_pre;
+        //入社年
+        $nyushabi_year = $nyushabi_year_pre;
 
 
         //初年度最後の月
@@ -49,7 +51,7 @@ class HolidayController extends Controller
         $first_day_max_month = $first_day_max_month_pre;
         $first_day_max = $first_day_max_pre;
 
- 
+
         //アラート用(基準月の3ヶ月前の時点で5日以上取得していないとき（＝未消化）)
         // 基準月から３ヶ月前の計算(基準月の3ヶ月前の時点で5日以上取得していないとき（＝未消化）)
         $kijunbi_before3 = DB::table('employees')
@@ -67,15 +69,31 @@ class HolidayController extends Controller
         // var_dump('現在年:' . $year);
         // var_dump('現在月:' . $month);
 
-        if ($kijunbi_year + 1 >= $year and $kijunbi_month >= $month) {
-            $kinzoku_year = 0;
+        if (isset($employee->taishokubi)) {
+
+            $taishokubi_year = substr($employee->taishokubi, 0, 4);
+
+            $kinzoku_year = $taishokubi_year - $nyushabi_year - 1;
+
+            // 勤続年数は0より小さくならないようにする
+            if ($kinzoku_year <= 0) {
+                $kinzoku_year = 0;
+            }
         } else {
-            $kinzoku_year = $year - $kijunbi_year;
+
+
+            // 初年度の人
+            if ($kijunbi_year + 1 >= $year and $kijunbi_month >= $month) {
+                $kinzoku_year = 0;
+
+            } elseif ($kijunbi_month > $month) {
+                $kinzoku_year = $year - 1 - $kijunbi_year;
+
+            } else {
+                $kinzoku_year = $year - $kijunbi_year;
+            }
         }
-
-
-        // var_dump('勤続年数:' . $kinzoku_year);
-
+        
 
         //配列の作成
         $array = [];
@@ -456,6 +474,7 @@ class HolidayController extends Controller
         }
 
 
+
         list($year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre) = $class->year_month();
         //一番最近のデータの年
         $year_month_a1 = $year_month_a1_pre;
@@ -468,11 +487,13 @@ class HolidayController extends Controller
 
 
 
+
+
         //初回基準日に達していない場合・・・
         $array2 = [];
-
         //一番最近のデータの年月より初回基準日が大きい人は初回基準日未満
-        if ($year_month_b < $kijunbi_year_month) {
+
+        if ($post_year == 00) {
             // echo ('<pre>');
             // var_dump("研修期間");
 
@@ -514,6 +535,60 @@ class HolidayController extends Controller
         }
 
 
+        // 初回基準月未満で退職した人
+        $array3 = [];
+        if (isset($employee->taishokubi)) {
+            // var_dump('退職者');
+
+            list($kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre) = $class->kijunbi($id);
+
+            // 基準年月を抜き出す
+            $kijunbi_year_month = $kijunbi_year_month_pre;
+            // var_dump('基準年月:' . $kijunbi_year_month);
+
+            if ($post_year == 01) {
+                // if ($employee->taishokubi < $kijunbi_year_month) {
+                echo ('<pre>');
+                var_dump('一年未満で退職した人');
+
+                //付与日数
+                $huyo_holiday = "3";
+                //最大繰り越し日数
+                $max_carry_over = "3";
+                //前期繰越
+                $carry_over = 0;
+
+                // 期首残高（付与日数+前期繰越）
+                $kisyu_nokori = $class->kisyu_nokori($huyo_holiday, $carry_over);
+                var_dump('期首残高:');
+                var_dump($kisyu_nokori);
+
+                //消化日数
+                $holiday_count_int = $class->holiday_count_int($nyushabi_year_month, $kijunbi_year_month, $id);
+                var_dump('消化日数:');
+                var_dump($holiday_count_int);
+
+                //消化残（期首残高-消化日数）
+                $nokori = $class->nokori($kisyu_nokori, $holiday_count_int);
+                var_dump('消化残:');
+                var_dump($nokori);
+
+                //繰越日数（消化残が最大繰り越し日数より大きい場合、繰り越し日数は最大繰り越し日数と同じになる。小さい場合、繰り越し日数は消化残と同じ日数になる。）
+                $carry_over_count = $class->carry_over_count($nokori, $max_carry_over);
+                var_dump('繰越日数:');
+                var_dump($carry_over_count);
+
+                //月別消化日数
+                $get_holiday = $class->get_holiday($id, $nyushabi_year_month, $kijunbi_year_month);
+                var_dump($i . '消化日数:');
+                var_dump($get_holiday);
+
+                //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]月別消化日数
+                $array3[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $get_holiday];
+                echo ('</pre>');
+            }
+        }
+
 
         //準社員の人は有給がないので表示しない
         $jun_shain_pre = DB::table('employees')
@@ -531,21 +606,21 @@ class HolidayController extends Controller
 
 
         //選択した年度と配列を結ぶ
-        //初回基準月未満の人は別の配列にデータが入っているので除外、準社員のひとはデータがないので除外
-        if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
+        //初回基準月未満の人は別の配列にデータが入っているので除外、準社員のひと、基準月が来る前に退社した人はデータがないので除外
+        if ($post_year == 00 or $post_year == 01 or $jun_shain == "準社員") {
             $array_count = -1;
         } else {
+
             //勤続年数分配列が作られているので、勤続年数分繰り返す
-            for ($i = 0; $i <= $kinzoku_year; $i++) {
-                //選択した年度が初年度だった場合、配列は0番目？を指定
-                if ($post_year == $kijunbi_year) {
-                    $array_count = 0;
-                    //選択した年度が初年度以外場合、配列は$i番目？を指定
-                } elseif ($post_year == $kijunbi_year + $i) {
-                    $array_count = $i;
+            for ($y = 0; $y <= $kinzoku_year; $y++) {
+
+                if ($post_year - $kijunbi_year == $y) {
+                    $array_count = $y;
                 }
             }
         }
+
+
 
 
 
@@ -554,9 +629,15 @@ class HolidayController extends Controller
         $scroll_top = $_POST['scroll_top2'];
 
 
+        // echo '<pre>';
+        // var_dump('ここよ');
+        // var_dump($post_year);
+        // echo '</pre>';
+
         // 未消化アラート
         // 初回基準月未満の人と準社員のひとのアラートは表示しない
-        if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
+        // if (($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) or $jun_shain == "準社員") {
+        if ($post_year == 00 or isset($employee->taishokubi) or $jun_shain == "準社員") {
             $mishouka_alert = "no";
             //未消化アラート表示の対象者で基準月が3か月以内に迫っていて消化日数が5日以下の場合、アラートを表示する
         } else {
@@ -568,7 +649,9 @@ class HolidayController extends Controller
             }
         }
 
-
+        // echo '<pre>';
+        // var_dump($array);
+        // echo '</pre>';
 
 
         return view('/holiday')->with([
@@ -600,12 +683,16 @@ class HolidayController extends Controller
             'first_day_max_month' => $first_day_max_month,
             //未消化アラート
             'mishouka_alert' => $mishouka_alert,
+            //勤続年数
+            'kinzoku_year' => $kinzoku_year,
 
 
             //配列
             'array' => $array,
             //配列2(研修期間中の)
             'array2' => $array2,
+            //配列3(初回基準月未満で退職した人の)
+            'array3' => $array3,
             //配列の指定
             'array_count' => $array_count,
 
