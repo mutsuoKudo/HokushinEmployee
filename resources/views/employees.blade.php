@@ -317,9 +317,11 @@
 							<!-- <th class="table-text" style="min-width:50px">
 								<div>転籍日</div>
 							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
+							@if($title == '退職者')
+							<th class="table-text" style="min-width:50px">
 								<div>退職日</div>
-							</th> -->
+							</th>
+							@endif
 							<!-- <th class="table-text" style="min-width:50px">
 								<div>社員携帯</div>
 							</th> -->
@@ -422,9 +424,11 @@
 							<!-- <td class="table-text">
 								<div>{{ $employee->tensekibi }}</div>
 							</td> -->
-							<!-- <td class="table-text">
+							@if($title == '退職者')
+							<td class="table-text">
 								<div>{{ $employee->taishokubi }}</div>
-							</td> -->
+							</td>
+							@endif
 							<!-- <td class="table-text">
 								<div>{{ $employee->shain_keitai }}</div>
 							</td> -->

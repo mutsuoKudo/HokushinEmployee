@@ -395,12 +395,7 @@ class BaseClass
         $nyushabi = DB::table('employees')
             ->select('nyushabi')
             ->where('shain_cd', $id)
-            ->whereNull('taishokubi')
             ->get();
-
-        // var_dump('入社日');
-        // var_dump($id);
-        // var_dump($nyushabi);
 
         //入社年月の抜き出し
         $nyushabi_year_pre = substr($nyushabi[0]->nyushabi, 0, 4);

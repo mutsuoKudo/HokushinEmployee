@@ -31,6 +31,7 @@
             </div>
         </div>
 
+
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 詳細表示
@@ -39,10 +40,11 @@
             <div class="float-right mr-5">
                 @if(is_null($employee->nyushabi))
                 <select name="year">
-                <option selected >入社日が登録されていません</option>
+                    <option selected>入社日が登録されていません</option>
                 </select>
                 <input type="submit" class="btn btn-info m-2" value="有給取得日明細" disabled>
                 @else
+
                 <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
                     {{ csrf_field() }}
 
@@ -53,18 +55,43 @@
                             echo '<option value="00" selected >初回基準月未満</option>';
                         } else {
 
-
                             //退職日が入力されている場合・・・
                             if (isset($employee->taishokubi)) {
-                                //退職年までの選択
-                                for ($i = $kijunbi_year; $i <= $taishokubi_year; $i++) {
-                                    if ($i == $taishokubi_year) {
-                                        //退職した年にselected
-                                        echo '<option value="', $i, '" selected >', $i, '年度</option>';
-                                    } elseif ($i < $taishokubi_year) {
-                                        echo '<option value="', $i, '">', $i, '年度</option>';
+                                // 初回基準日未満で退職した人(退職日より基準日のほうが大きい))
+                                if ($taishokubi_year_month < $kijunbi_year_month) {
+                                    // echo '<option value="01" selected>', $taishokubi_year, '年度</option>';
+                                    echo '<option value="00" selected >初回基準月未満</option>';
+                                } else {
+
+                                    //退職年までの選択
+                                    if ($taishokubi_year - 1 < $kijunbi_year) {
+                                        for ($i = $kijunbi_year; $i <= $kijunbi_year; $i++) {
+
+                                            echo '<option value="', $i, '" selected >', $i, '年度</option>';
+                                        }
+                                    } else {
+                                        if ($taishokubi_year - $nyushabi_year == 2) {
+                                            for ($i = $kijunbi_year; $i <= $taishokubi_year; $i++) {
+                                                if ($i == $taishokubi_year) {
+                                                    //退職した年にselected
+                                                    echo '<option value="', $i, '" selected >', $i, '年度</option>';
+                                                } elseif ($i < $taishokubi_year) {
+                                                    echo '<option value="', $i, '">', $i, '年度</option>';
+                                                }
+                                                echo 'ERROR';
+                                            }
+                                        } else {
+                                            for ($i = $kijunbi_year; $i <= $taishokubi_year - 1; $i++) {
+                                                if ($i == $taishokubi_year - 1) {
+                                                    //退職した年にselected
+                                                    echo '<option value="', $i, '" selected >', $i, '年度</option>';
+                                                } elseif ($i < $taishokubi_year) {
+                                                    echo '<option value="', $i, '">', $i, '年度</option>';
+                                                }
+                                                echo 'ERROR';
+                                            }
+                                        }
                                     }
-                                    echo 'ERROR';
                                 }
 
 
@@ -80,18 +107,17 @@
                                         } elseif ($i < $year_month_a1) {
                                             echo '<option value="', $i, '">', $i, '年度</option>';
                                         }
-                                        echo 'ERROR';
                                     }
                                 } else {
+
                                     //基準日からDBのholidayテーブルに入力されている最新データ年まで（最新データ年は含む）
                                     for ($i = $kijunbi_year; $i <= $year_month_a1; $i++) {
                                         if ($i == $year_month_a1) {
                                             //最新データ年にselected
                                             echo '<option value="', $i, '" selected >', $i, '年度</option>';
                                         } elseif ($i < $year_month_a1) {
-                                            echo '<option value="', $i, '">', $i, '年度</option>';;
+                                            echo '<option value="', $i, '">', $i, '年度</option>';
                                         }
-                                        echo 'ERROR';
                                     }
                                 }
                             }

@@ -106,10 +106,12 @@ class CRUDController extends Controller
         $kijunbi_year_month = $kijunbi_year_month_pre;
 
         //退職年の計算
-        list($taishokubi_year_pre, $taishokubi_month_pre, $taishokubi_year_month_pre,$taishokubi_pre) = $class->retirement_id($id);
+        list($taishokubi_year_pre, $taishokubi_month_pre, $taishokubi_year_month_pre, $taishokubi_pre) = $class->retirement_id($id);
 
         // 退職年を抜き出す
         $taishokubi_year = $taishokubi_year_pre;
+        // 退職年月を抜き出す
+        $taishokubi_year_month = $taishokubi_year_month_pre;
         // var_dump('退職年:' . $kijunbi_year);
 
         //入社日の取得
@@ -128,9 +130,9 @@ class CRUDController extends Controller
         //入社年月の作成
         $nyushabi_year_month = $nyushabi_year . $nyushabi_month;
 
- 
+
         //一番最近のデータの年月(0000-00)を作成(=現在日時になる)
-        list($year_month_a1_pre, $year_month_a2_pre,$year_month_a_pre,$year_month_b_pre) = $class->year_month();
+        list($year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre) = $class->year_month();
 
         //一番最近のデータの年
         $year_month_a1 = $year_month_a1_pre;
@@ -138,11 +140,18 @@ class CRUDController extends Controller
         $year_month_a2 = $year_month_a2_pre;
         //一番最近のデータの年月（000000：文字なし）
         $year_month_b = $year_month_b_pre;
-        
 
 
         $post_url = $_POST['url'];
         $scroll_top = $_POST['scroll_top'];
+
+        // var_dump($kijunbi_year);
+        // var_dump('退職年');
+        // var_dump($taishokubi_year);
+        // var_dump($taishokubi_year_month < $kijunbi_year_month);
+        // var_dump($kijunbi_year);
+        // var_dump($taishokubi_year);
+
 
 
 
@@ -150,8 +159,10 @@ class CRUDController extends Controller
         return view('/show')->with([
             'employee' => $employee,
             'kijunbi_year' => $kijunbi_year,
+            'taishokubi_year_month' => $taishokubi_year_month,
             'taishokubi_year' => $taishokubi_year,
             'nyushabi_year_month' => $nyushabi_year_month,
+            'nyushabi_year' => $nyushabi_year,
             'kijunbi_year_month' => $kijunbi_year_month,
             'kijunbi_month' => $kijunbi_month,
             'year_month_a1' => $year_month_a1,
@@ -235,6 +246,5 @@ class CRUDController extends Controller
 
 
         return redirect($top_url_edit)->with('status', 'UPDATE完了!');
-            
     }
 }
