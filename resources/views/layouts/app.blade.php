@@ -20,6 +20,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -51,14 +52,17 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" style="width:35%">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <!-- <ul class="navbar-nav mr-auto">
 
-                    </ul>
+                    </ul> -->
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item" style="margin-right:8rem">
+                            <a class="nav-link" href="/employee_doc/employee_doc.html" target="_blank" style="font-size:12px">仕様及び使い方</a>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
@@ -117,13 +121,13 @@
                 stateDuration: -1,
 
                 columnDefs: [
-                    
+
                     {
                         // 操作・社員名・メール・備考のソート機能をオフ
                         "orderable": false,
                         "targets": [0, 2, 3, 5]
                     }
-                   
+
                 ]
             });
         });
@@ -384,7 +388,6 @@
             });
 
         });
-
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
