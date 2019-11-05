@@ -1,0 +1,1704 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+
+<html xmlns:s="http://sqlfairy.sourceforge.net/sqlfairy.xml" lang="ja">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+    <meta charset="utf-8">
+    <title>テーブル定義</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <style>
+        table.htable {
+            margin: 3em auto 1em auto !important;
+        }
+        
+        table.htable th {
+            border-left: 10px solid #e5e5e5 !important;
+        }
+        
+        footer {
+            border-top: 1px solid #e5e5e5;
+            padding: 0.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="page-header">テーブル定義</h1>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_commentmeta</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>meta_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>comment_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>meta_key</td>
+                    <td>varchar(255)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>meta_value</td>
+                    <td>longtext</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_comments</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>comment_ID</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>comment_post_ID</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>comment_author</td>
+                    <td>tinytext</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>comment_author_email</td>
+                    <td>varchar(100)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">5</td>
+                    <td></td>
+                    <td>comment_author_url</td>
+                    <td>varchar(200)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">6</td>
+                    <td></td>
+                    <td>comment_author_IP</td>
+                    <td>varchar(100)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">7</td>
+                    <td></td>
+                    <td>comment_date</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">8</td>
+                    <td></td>
+                    <td>comment_date_gmt</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">9</td>
+                    <td></td>
+                    <td>comment_content</td>
+                    <td>text</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">10</td>
+                    <td></td>
+                    <td>comment_karma</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">11</td>
+                    <td></td>
+                    <td>comment_approved</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">12</td>
+                    <td></td>
+                    <td>comment_agent</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">13</td>
+                    <td></td>
+                    <td>comment_type</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">14</td>
+                    <td></td>
+                    <td>comment_parent</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">15</td>
+                    <td></td>
+                    <td>user_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_ewwwio_images</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>id</td>
+                    <td>int(14) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>attachment_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>gallery</td>
+                    <td>varchar(10)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>resize</td>
+                    <td>varchar(75)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">5</td>
+                    <td></td>
+                    <td>path</td>
+                    <td>text</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">6</td>
+                    <td></td>
+                    <td>converted</td>
+                    <td>text</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">7</td>
+                    <td></td>
+                    <td>results</td>
+                    <td>varchar(75)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">8</td>
+                    <td></td>
+                    <td>image_size</td>
+                    <td>int(10) unsigned</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">9</td>
+                    <td></td>
+                    <td>orig_size</td>
+                    <td>int(10) unsigned</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">10</td>
+                    <td></td>
+                    <td>backup</td>
+                    <td>varchar(100)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">11</td>
+                    <td></td>
+                    <td>level</td>
+                    <td>int(5) unsigned</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">12</td>
+                    <td></td>
+                    <td>pending</td>
+                    <td>tinyint(1)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">13</td>
+                    <td></td>
+                    <td>updates</td>
+                    <td>int(5) unsigned</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">14</td>
+                    <td></td>
+                    <td>updated</td>
+                    <td>timestamp</td>
+                    <td></td>
+                    <td>1970-12-31 06:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">15</td>
+                    <td></td>
+                    <td>trace</td>
+                    <td>blob</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_ewwwio_queue</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>attachment_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>gallery</td>
+                    <td>varchar(10)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>scanned</td>
+                    <td>tinyint(1)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_links</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>link_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>link_url</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>link_name</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>link_image</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">5</td>
+                    <td></td>
+                    <td>link_target</td>
+                    <td>varchar(25)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">6</td>
+                    <td></td>
+                    <td>link_description</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">7</td>
+                    <td></td>
+                    <td>link_visible</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td>Y</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">8</td>
+                    <td></td>
+                    <td>link_owner</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">9</td>
+                    <td></td>
+                    <td>link_rating</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">10</td>
+                    <td></td>
+                    <td>link_updated</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">11</td>
+                    <td></td>
+                    <td>link_rel</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">12</td>
+                    <td></td>
+                    <td>link_notes</td>
+                    <td>mediumtext</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">13</td>
+                    <td></td>
+                    <td>link_rss</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_options</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>option_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>option_name</td>
+                    <td>varchar(191)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>option_value</td>
+                    <td>longtext</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>autoload</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td>yes</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_postmeta</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>meta_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>post_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>meta_key</td>
+                    <td>varchar(255)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>meta_value</td>
+                    <td>longtext</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_posts</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>ID</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>post_author</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>post_date</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>post_date_gmt</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">5</td>
+                    <td></td>
+                    <td>post_content</td>
+                    <td>longtext</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">6</td>
+                    <td></td>
+                    <td>post_title</td>
+                    <td>text</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">7</td>
+                    <td></td>
+                    <td>post_excerpt</td>
+                    <td>text</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">8</td>
+                    <td></td>
+                    <td>post_status</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td>publish</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">9</td>
+                    <td></td>
+                    <td>comment_status</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td>open</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">10</td>
+                    <td></td>
+                    <td>ping_status</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td>open</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">11</td>
+                    <td></td>
+                    <td>post_password</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">12</td>
+                    <td></td>
+                    <td>post_name</td>
+                    <td>varchar(200)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">13</td>
+                    <td></td>
+                    <td>to_ping</td>
+                    <td>text</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">14</td>
+                    <td></td>
+                    <td>pinged</td>
+                    <td>text</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">15</td>
+                    <td></td>
+                    <td>post_modified</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">16</td>
+                    <td></td>
+                    <td>post_modified_gmt</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">17</td>
+                    <td></td>
+                    <td>post_content_filtered</td>
+                    <td>longtext</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">18</td>
+                    <td></td>
+                    <td>post_parent</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">19</td>
+                    <td></td>
+                    <td>guid</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">20</td>
+                    <td></td>
+                    <td>menu_order</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">21</td>
+                    <td></td>
+                    <td>post_type</td>
+                    <td>varchar(20)</td>
+                    <td></td>
+                    <td>post</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">22</td>
+                    <td></td>
+                    <td>post_mime_type</td>
+                    <td>varchar(100)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">23</td>
+                    <td></td>
+                    <td>comment_count</td>
+                    <td>bigint(20)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_siteguard_history</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>login_name</td>
+                    <td>varchar(40)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>ip_address</td>
+                    <td>varchar(40)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>operation</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">5</td>
+                    <td></td>
+                    <td>time</td>
+                    <td>datetime</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">6</td>
+                    <td></td>
+                    <td>type</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_siteguard_login</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>ip_address</td>
+                    <td>varchar(40)</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>status</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>count</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>last_login_time</td>
+                    <td>datetime</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_term_relationships</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>object_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>term_taxonomy_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>term_order</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_term_taxonomy</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>term_taxonomy_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>term_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>taxonomy</td>
+                    <td>varchar(32)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>description</td>
+                    <td>longtext</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">5</td>
+                    <td></td>
+                    <td>parent</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">6</td>
+                    <td></td>
+                    <td>count</td>
+                    <td>bigint(20)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_termmeta</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>meta_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>term_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>meta_key</td>
+                    <td>varchar(255)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>meta_value</td>
+                    <td>longtext</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_terms</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>term_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>name</td>
+                    <td>varchar(200)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>slug</td>
+                    <td>varchar(200)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>term_group</td>
+                    <td>bigint(10)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_usermeta</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>umeta_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>user_id</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>meta_key</td>
+                    <td>varchar(255)</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>meta_value</td>
+                    <td>longtext</td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered htable">
+            <tbody>
+                <tr class="active">
+                    <th>テーブル名</th>
+                    <td></td>
+                </tr>
+                <tr class="active">
+                    <th>スキーマ</th>
+                    <td>hs_users</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th class="text-right">#</th>
+                    <th>論理名</th>
+                    <th>物理名</th>
+                    <th>型</th>
+                    <th>NULL</th>
+                    <th>デフォルト値</th>
+                    <th>主キー</th>
+                    <th>ユニーク</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">1</td>
+                    <td></td>
+                    <td>ID</td>
+                    <td>bigint(20) unsigned</td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">2</td>
+                    <td></td>
+                    <td>user_login</td>
+                    <td>varchar(60)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">3</td>
+                    <td></td>
+                    <td>user_pass</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">4</td>
+                    <td></td>
+                    <td>user_nicename</td>
+                    <td>varchar(50)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">5</td>
+                    <td></td>
+                    <td>user_email</td>
+                    <td>varchar(100)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">6</td>
+                    <td></td>
+                    <td>user_url</td>
+                    <td>varchar(100)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">7</td>
+                    <td></td>
+                    <td>user_registered</td>
+                    <td>datetime</td>
+                    <td></td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">8</td>
+                    <td></td>
+                    <td>user_activation_key</td>
+                    <td>varchar(255)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">9</td>
+                    <td></td>
+                    <td>user_status</td>
+                    <td>int(11)</td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">10</td>
+                    <td></td>
+                    <td>display_name</td>
+                    <td>varchar(250)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer class="text-center">
+        your company
+    </footer>
+</body>
+
+</html>
