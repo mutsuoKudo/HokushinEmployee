@@ -1,0 +1,560 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+		<title>テーブル定義書</title>
+		<link rel="stylesheet" href="a5m2.css">
+	</head>
+	<body>
+	<table border="1">
+		<caption>テーブル情報</caption>
+			<colgroup>
+				<col width="115">
+				<col width="180">
+				<col width="115">
+				<col width="180">
+			</colgroup>
+			<th>システム名</th>
+			<td>&nbsp;</td>
+			<th>作成者</th>
+			<td>user&nbsp;</td>
+		</tr>
+		<tr>
+			<th>サブシステム名</th>
+			<td>&nbsp;</td>
+			<th>作成日</th>
+			<td>2019/11/01&nbsp;</td>
+		</tr>
+		<tr>
+			<th>スキーマ名</th>
+			<td>hokushin_util&nbsp;</td>
+			<th>更新日</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<th>論理テーブル名</th>
+			<td>&nbsp;</td>
+			<th>RDBMS&nbsp;</th>
+			<td>5.5.5-10.1.31-MariaDB 10.1.31-MariaDB&nbsp;</td>
+		</tr>
+		<tr>
+			<th>物理テーブル名</th>
+			<td>employees&nbsp;</td>
+			<th>&nbsp;</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="4"><b>備考</b><br></td>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>カラム情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="120">
+				<col width="120">
+				<col width="100">
+				<col width="60">
+				<col width="60">
+				<col width="100">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>論理名</th>
+			<th>物理名</th>
+			<th>データ型</th>
+			<th>Not Null</th>
+			<th>デフォルト</th>
+			<th>備考</th>
+		</tr>
+		<tr>
+			<td style="text-align:right;">1</td>
+			<td></td>
+			<td>shain_cd</td>
+			<td>varchar(10)</td>
+			<td>Yes (PK)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">2</td>
+			<td></td>
+			<td>shain_mei</td>
+			<td>varchar(30)</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">3</td>
+			<td></td>
+			<td>shain_mei_kana</td>
+			<td>varchar(50)</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">4</td>
+			<td></td>
+			<td>shain_mei_romaji</td>
+			<td>varchar(50)</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">5</td>
+			<td></td>
+			<td>shain_mail</td>
+			<td>varchar(50)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">6</td>
+			<td></td>
+			<td>gender</td>
+			<td>varchar(10)</td>
+			<td>Yes</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">7</td>
+			<td></td>
+			<td>shain_zip_code</td>
+			<td>varchar(8)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">8</td>
+			<td></td>
+			<td>shain_jyusho</td>
+			<td>varchar(100)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">9</td>
+			<td></td>
+			<td>shain_jyusho_tatemono</td>
+			<td>varchar(100)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">10</td>
+			<td></td>
+			<td>shain_birthday</td>
+			<td>varchar(100)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">11</td>
+			<td></td>
+			<td>nyushabi</td>
+			<td>date</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">12</td>
+			<td></td>
+			<td>seishain_tenkanbi</td>
+			<td>date</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">13</td>
+			<td></td>
+			<td>tensekibi</td>
+			<td>date</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">14</td>
+			<td></td>
+			<td>taishokubi</td>
+			<td>date</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">15</td>
+			<td></td>
+			<td>shain_keitai</td>
+			<td>varchar(13)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">16</td>
+			<td></td>
+			<td>shain_tel</td>
+			<td>varchar(12)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">17</td>
+			<td></td>
+			<td>koyohoken_bango</td>
+			<td>varchar(13)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">18</td>
+			<td></td>
+			<td>shakaihoken_bango</td>
+			<td>int(11)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">19</td>
+			<td></td>
+			<td>kisonenkin_bango</td>
+			<td>varchar(11)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">20</td>
+			<td></td>
+			<td>monthly_saraly</td>
+			<td>int(11)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">21</td>
+			<td></td>
+			<td>department</td>
+			<td>varchar(2)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">22</td>
+			<td></td>
+			<td>name_card</td>
+			<td>int(11)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">23</td>
+			<td></td>
+			<td>id_card</td>
+			<td>tinyint(4)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">24</td>
+			<td></td>
+			<td>fuyo_kazoku</td>
+			<td>tinyint(4)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">25</td>
+			<td></td>
+			<td>test</td>
+			<td>int(11)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">26</td>
+			<td></td>
+			<td>remarks</td>
+			<td>text</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">27</td>
+			<td></td>
+			<td>updated_at</td>
+			<td>date</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">28</td>
+			<td></td>
+			<td>created_at</td>
+			<td>date</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>インデックス情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="230">
+				<col width="60">
+				<col width="100">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>インデックス名</th>
+			<th>カラムリスト</th>
+			<th>ユニーク</th>
+			<th>備考</th>
+		</tr>
+		<tr>
+			<td style="text-align:right;">1</td>
+			<td>PRIMARY</td>
+			<td>shain_cd</td>
+			<td>Yes</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>制約情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="90">
+				<col width="300">
+				<col width="100">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>制約名</th>
+			<th>種類</th>
+			<th>制約定義</th>
+		</tr>
+		<tr>
+			<td style="text-align:right;">1</td>
+			<td>PRIMARY</td>
+			<td>PRIMARY&#32;KEY</td>
+			<td>shain_cd</td>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>外部キー情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="120">
+				<col width="160">
+				<col width="120">
+				<col width="160">
+			</colgroup>
+			<th>No.</th>
+			<th>外部キー名</th>
+			<th>カラムリスト</th>
+			<th>参照先</th>
+			<th>参照先カラムリスト</th>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>外部キー情報(PK側)</caption>
+			<colgroup>
+				<col width="30">
+				<col width="120">
+				<col width="160">
+				<col width="120">
+				<col width="160">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>外部キー名</th>
+			<th>カラムリスト</th>
+			<th>参照元</th>
+			<th>参照元カラムリスト</th>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>トリガー情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="120">
+				<col width="160">
+				<col width="120">
+				<col width="160">
+			</colgroup>
+			<th>No.</th>
+			<th>トリガー名</th>
+			<th>イベント</th>
+			<th>タイミング</th>
+			<th>条件</th>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>RDBMS固有の情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="220">
+				<col width="340">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>プロパティ名</th>
+			<th>プロパティ値</th>
+		</tr>
+		<tr>
+			<td style="text-align:right;">1</td>
+			<td>TABLE_CATALOG</td>
+			<td>def</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">2</td>
+			<td>TABLE_SCHEMA</td>
+			<td>hokushin_util</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">3</td>
+			<td>TABLE_NAME</td>
+			<td>employees</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">4</td>
+			<td>TABLE_TYPE</td>
+			<td>BASE&#32;TABLE</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">5</td>
+			<td>ENGINE</td>
+			<td>InnoDB</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">6</td>
+			<td>VERSION</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">7</td>
+			<td>ROW_FORMAT</td>
+			<td>Compact</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">8</td>
+			<td>TABLE_ROWS</td>
+			<td>53</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">9</td>
+			<td>AVG_ROW_LENGTH</td>
+			<td>309</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">10</td>
+			<td>DATA_LENGTH</td>
+			<td>16384</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">11</td>
+			<td>MAX_DATA_LENGTH</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">12</td>
+			<td>INDEX_LENGTH</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">13</td>
+			<td>DATA_FREE</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">14</td>
+			<td>AUTO_INCREMENT</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">15</td>
+			<td>CREATE_TIME</td>
+			<td>2019/10/04&#32;11:04:03</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">16</td>
+			<td>UPDATE_TIME</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">17</td>
+			<td>CHECK_TIME</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">18</td>
+			<td>TABLE_COLLATION</td>
+			<td>utf8_general_ci</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">19</td>
+			<td>CHECKSUM</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">20</td>
+			<td>CREATE_OPTIONS</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">21</td>
+			<td>TABLE_COMMENT</td>
+			<td></td>
+		</tr>
+	</table>
+
+
+	</body>
+</html>
