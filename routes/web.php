@@ -202,10 +202,10 @@ Route::group(['middleware' => ['web']], function () {
         return back()->withInput();
     });
 
-    Route::get('/employee_doc/employee_doc.html', function () {
-        return \File::get(public_path() . '/employee_doc/employee_doc.html');
-        // return \File::get(public_path() . '/employee_doc/employee_doc.html');
-    });
+    // Route::get('/employee_doc/employee_doc.html', function () {
+    //     return \File::get(public_path() . '/employee_doc/employee_doc.html');
+    //     // return \File::get(public_path() . '/employee_doc/employee_doc.html');
+    // });
 
 
     //shainテーブルアップデートボタンクリック→shainテーブルのアップデート

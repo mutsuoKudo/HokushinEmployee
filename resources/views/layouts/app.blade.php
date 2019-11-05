@@ -61,7 +61,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item" style="margin-right:8rem">
-                            <a class="nav-link" href="/employee_doc/employee_doc.html" target="_blank" style="font-size:12px">仕様及び使い方</a>
+                            <a class="nav-link" href="./employee_doc/employee_doc.html" target="_blank" style="font-size:12px">仕様及び使い方</a>
                         </li>
                         <!-- Authentication Links -->
                         @guest
