@@ -8,8 +8,6 @@
 @if (session('delete'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('delete') }}</div>@endif
 <!-- 新規登録完了時に表示されるメッセージ -->
 @if (session('create'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('create') }}</div>@endif
-<!-- 画像エラー時に表示されるメッセージ -->
-<!-- @if (session('pic_error'))<div class="alert alert-danger" role="alert" onclick="this.classList.add('hidden')">{{ session('pic_error') }}</div>@endif -->
 
 <div class="container">
 	<div class="col-12">
