@@ -5,7 +5,10 @@
 <!-- 新規登録画面 -->
 <?php
 $post_url_create = $post_url;
+$top_scroll_top = $scroll_top;
 ?>
+
+@include('common.errors')
 
 <div class="container">
     <div class="mb-5">
@@ -24,14 +27,23 @@ $post_url_create = $post_url;
     </div>
 
     <div class="panel panel-default mt-5 col-12">
+
+        @if(isset($file_extension_error))
+        <div class="text-center mt-5 mb-5">
+            <p style="color:red">写真の拡張子がjpg・png以外だったので新規登録できませんでした</p>
+        </div>
+        @endif
+
+
         <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
             新規登録
         </div>
 
         <div class="panel-body">
             <!-- 新規登録ボタン -->
-            <form class="form-signin" role="form" method="post" action="/employee/public/submit">
+            <form class="form-signin" role="form" method="post" action="/employee/public/submit" enctype="multipart/form-data">
                 <input type="hidden" name="post_url_create" value="{{$post_url_create}}">
+                <input type="hidden" name="top_scroll_top" value="{{$top_scroll_top}}">
                 {{ csrf_field() }}
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <thead>
@@ -191,6 +203,14 @@ $post_url_create = $post_url;
                             <th>入社試験点数</th>
                             <td>
                                 <input type="text" name="test" class="form-control" placeholder="例）100" value="{{old('test')}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>写真</th>
+                            <td>
+                                <div class="form-image_url">
+                                    <input type="file" name="pic" value="{{ old('pic') }}">
+                                </div>
                             </td>
                         </tr>
                         <tr>

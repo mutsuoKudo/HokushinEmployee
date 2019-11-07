@@ -3,6 +3,7 @@
 namespace app\Library;
 
 use DB;
+use App\Employee;
 
 
 class BaseClass
@@ -460,4 +461,65 @@ class BaseClass
 
         return [$taishokubi_year_pre, $taishokubi_month_pre, $taishokubi_year_month_pre, $taishokubi_pre];
     }
+    
+    // CRUDコントローラーで使用
+    
+    // ストレージに入った写真の削除
+    public function pic_file_delete($employee_shain_cd,$employee_shain_mei_romaji)
+    {
+        // 写真が入っているフォルダのファイルをすべて取得
+        $pic_file = glob('C:\xampp\htdocs\employee\public\storage\post_images\*');
+
+        // ファイル名にいま保存しようとしている社員コードと社員名（ローマ字）がすでに入っていたら削除
+        // DBはupdateで上書きしちゃうのでわざわざ消さなくてもおｋ
+        foreach ($pic_file as $p_file_id) {
+            if (strpos($p_file_id, $employee_shain_cd. '_' . $employee_shain_mei_romaji)) {
+                unlink($p_file_id);
+            }
+        }
+    }
+    
+    // データベースにpublic/post_imagesのパスを保存する
+    public function pic_file_db_save($id,$time,$employee_shain_cd,$employee_shain_mei_romaji,$file_extension)
+    {
+        \DB::table('employees')
+                    ->where('shain_cd', $id)
+                    ->update([
+                        'pic' => $time . '_' . $employee_shain_cd . '_' . $employee_shain_mei_romaji . '.' . $file_extension
+                    ]);
+    }
+    // 入力した社員情報をデータベースに新規登録する
+    public function employee_create($request)
+    {
+        $employee = new Employee();
+        $employee->shain_cd = $request->shain_cd;
+        $employee->shain_mei = $request->shain_mei;
+        $employee->shain_mei_kana = $request->shain_mei_kana;
+        $employee->shain_mei_romaji = $request->shain_mei_romaji;
+        $employee->shain_mail = $request->shain_mail;
+        $employee->gender = $request->gender;
+        $employee->shain_zip_code = $request->shain_zip_code;
+        $employee->shain_jyusho = $request->shain_jyusho;
+        $employee->shain_jyusho_tatemono = $request->shain_jyusho_tatemono;
+        $employee->shain_birthday = $request->shain_birthday;
+        $employee->nyushabi = $request->nyushabi;
+        $employee->seishain_tenkanbi = $request->seishain_tenkanbi;
+        $employee->tensekibi = $request->tensekibi;
+        $employee->taishokubi = $request->taishokubi;
+        $employee->shain_keitai = $request->shain_keitai;
+        $employee->shain_tel = $request->shain_tel;
+        $employee->koyohoken_bango = $request->koyohoken_bango;
+        $employee->shakaihoken_bango = $request->shakaihoken_bango;
+        $employee->kisonenkin_bango = $request->kisonenkin_bango;
+        $employee->monthly_saraly = $request->monthly_saraly;
+        $employee->department = $request->department;
+        $employee->name_card = $request->name_card;
+        $employee->id_card = $request->id_card;
+        $employee->fuyo_kazoku = $request->fuyo_kazoku;
+        $employee->test = $request->test;
+        $employee->remarks = $request->remarks;
+
+        $employee->save();
+    }
+    
 }

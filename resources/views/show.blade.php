@@ -32,6 +32,8 @@
         </div>
 
 
+
+
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 詳細表示
@@ -136,6 +138,17 @@
             </div>
 
             <div class="panel-body">
+
+                <div class="text-center mt-5 mb-3">
+                    @if ($employee->pic)
+                    <p>使用中の写真</p>
+                    <img src="../storage/post_images/{{ $employee->pic }}" style="width: 20%;">
+                    @else
+                    <p>使用中の写真はありません</p>
+                    <img src="{{ asset('image/nodata.jpg') }}" alt="" width="20%">
+                    @endif
+                </div>
+
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <thead>
 

@@ -46,15 +46,25 @@ Route::group(['middleware' => ['web']], function () {
             ->orderBy('taishokunen', 'asc')
             ->get();
 
+        $test = db::table('employees')
+            ->select(db::raw('(CAST( pic AS CHAR( 1000 ) CHARACTER SET utf8 )) AS img'))
+            ->whereNull('taishokubi')
+            ->where('shain_cd', '00')
+            ->get();
 
-   
-        
+        // var_dump($select_nyusha_year[0]->nyushanen);   
+        // var_dump($test[0]->img);
+
+
+
+
         //view (employeesテンプレ)に渡す
         return view('employees', [
             'employees' => $employees,
             'title' => $title,
             'select_nyusha_year' => $select_nyusha_year,
             'select_taishoku_year' => $select_taishoku_year,
+            'test' => $test,
         ]);
     }]);
 
@@ -62,6 +72,12 @@ Route::group(['middleware' => ['web']], function () {
     //削除するところ
     Route::delete('/delete/{employee}', function (Employee $employee) {
         $employee->delete();
+
+        // クラスのインスタンス化（BaseClaee）
+        $class = new BaseClass();
+
+        // 同じ名前が含まれた写真を削除（＝旧データを削除）
+        $class->pic_file_delete($employee->shain_cd, $employee->shain_mei_romaji);
 
         return redirect('/')->with('delete', '削除完了!');
     });
@@ -80,6 +96,10 @@ Route::group(['middleware' => ['web']], function () {
 
     //更新ボタンクリック→更新完了の場合、トップページにリダイレクト
     Route::patch('/update/{id}', 'CRUDController@update');
+
+    //写真削除ボタンクリック→削除完了の場合、トップページにリダイレクト
+    Route::post('/pic_delete/{id}', 'CRUDController@pic_delete');
+
 
     //新規登録ボタンクリック→新規登録画面の表示
     // Route::get('/add', 'CRUDController@add');
@@ -103,7 +123,7 @@ Route::group(['middleware' => ['web']], function () {
     //部門別ボタンクリック→システム開発部ボタンクリック→システム開発部のテーブル表示
     Route::get('/department4', 'ButtonController@department4');
 
-    
+
     //入社年別ボタンクリック→2007年ボタンクリック→2007年入社のテーブル表示
     Route::get('/nyushabi2007', 'ButtonController@nyushabi2007');
     //入社年別ボタンクリック→2014年ボタンクリック→2014年入社のテーブル表示
@@ -175,7 +195,7 @@ Route::group(['middleware' => ['web']], function () {
 
     //平均年齢（在籍者）ボタンクリック→平均年齢（在籍者）表示
     Route::get('/all_avg', 'ButtonController@all_avg');
-    
+
     //平均年齢（部門別）ボタンクリック→平均年齢（部門別）表示
     Route::get('/department_avg', 'ButtonController@department_avg');
     //平均年齢（男女別）ボタンクリック→平均年齢（男女別）表示
@@ -211,7 +231,7 @@ Route::group(['middleware' => ['web']], function () {
     //shainテーブルアップデートボタンクリック→shainテーブルのアップデート
     // Route::get('/shain_update', 'ButtonController@shain_update');
 
-    //
+
     Route::auth();
 });
 
