@@ -99,6 +99,7 @@
 
         <main class="py-4">
             @yield('content')
+            @include('common.errors')
         </main>
     </div>
     <script>
@@ -388,6 +389,20 @@
             });
 
         });
+
+
+            // スムーズにスクロールする
+            $('a[href^="#"]').click(function() {
+                var speed = 400;
+                var href = $(this).attr("href");
+                var target = $(href == "#" || href == "" ? 'html' : href);
+                var position = target.offset().top - 100;
+                $('body,html').animate({
+                    scrollTop: position
+                }, speed, 'swing');
+                return false;
+            });
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
