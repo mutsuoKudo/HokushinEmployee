@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePost;
 use App\Http\Requests\CreatePost;
 
 use App\Library\BaseClass;
+use App\Http\Controllers\Storage;
 
 class CRUDController extends Controller
 {
@@ -29,9 +30,12 @@ class CRUDController extends Controller
         $scroll_top = $_POST['scroll_top'];
 
 
+
+
         return view('/create')->with([
             'post_url' => $post_url,
             'scroll_top' => $scroll_top,
+
 
         ]);
     }
@@ -45,37 +49,72 @@ class CRUDController extends Controller
     public function submit(CreatePost $request)
     {
 
-        $employee = new Employee();
-        $employee->shain_cd = $request->shain_cd;
-        $employee->shain_mei = $request->shain_mei;
-        $employee->shain_mei_kana = $request->shain_mei_kana;
-        $employee->shain_mei_romaji = $request->shain_mei_romaji;
-        $employee->shain_mail = $request->shain_mail;
-        $employee->gender = $request->gender;
-        $employee->shain_zip_code = $request->shain_zip_code;
-        $employee->shain_jyusho = $request->shain_jyusho;
-        $employee->shain_jyusho_tatemono = $request->shain_jyusho_tatemono;
-        $employee->shain_birthday = $request->shain_birthday;
-        $employee->nyushabi = $request->nyushabi;
-        $employee->seishain_tenkanbi = $request->seishain_tenkanbi;
-        $employee->tensekibi = $request->tensekibi;
-        $employee->taishokubi = $request->taishokubi;
-        $employee->shain_keitai = $request->shain_keitai;
-        $employee->shain_tel = $request->shain_tel;
-        $employee->koyohoken_bango = $request->koyohoken_bango;
-        $employee->shakaihoken_bango = $request->shakaihoken_bango;
-        $employee->kisonenkin_bango = $request->kisonenkin_bango;
-        $employee->monthly_saraly = $request->monthly_saraly;
-        $employee->department = $request->department;
-        $employee->name_card = $request->name_card;
-        $employee->id_card = $request->id_card;
-        $employee->fuyo_kazoku = $request->fuyo_kazoku;
-        $employee->test = $request->test;
-        $employee->remarks = $request->remarks;
-
-        $employee->save();
-
         $post_url_create = $_POST['post_url_create'];
+        $scroll_top = $_POST['top_scroll_top'];
+
+
+        if (isset($request->pic)) {
+
+            // public/post_imagesに　現在年月日時間＿社員コードjpgでストレージに保存する
+            $time = date("Ymdhi");
+
+            // クラスのインスタンス化（BaseClaee）
+            $class = new BaseClass();
+
+
+
+            // 写真の拡張子を取得
+            $file_extension =  $request->pic->getClientOriginalExtension();
+
+            // jpgなら、名前を変更して（DBとストレージに）保存する際、拡張子はjpgで
+            if ($file_extension == 'jpg') {
+
+                // 入力した内容を新規登録
+                $class->employee_create($request);
+
+                // 同じ名前が含まれた写真を削除（＝旧データを削除）
+                $class->pic_file_delete($request->shain_cd, $request->shain_mei_romaji);
+
+                // ストレージに保存
+                $request->pic->storeAs('public/post_images', $time . '_' . $request->shain_cd . '_' . $request->shain_mei_romaji . '.jpg');
+
+                // データベースにpublic/post_imagesのパスを保存する
+                $class->pic_file_db_save($request->shain_cd, $time, $request->shain_cd, $request->shain_mei_romaji, 'jpg');
+
+
+                // pngなら、名前を変更して（DBとストレージに）保存する際、拡張子はpngで
+            } elseif ($file_extension == 'png') {
+
+                // 入力した内容を新規登録
+                $class->employee_create($request);
+
+                // 同じ名前が含まれた写真を削除（＝旧データを削除）
+                $class->pic_file_delete($request->shain_cd, $request->shain_mei_romaji);
+
+                // ストレージに保存
+                $request->pic->storeAs('public/post_images', $time . '_' . $request->shain_cd . '_' . $request->shain_mei_romaji . '.png');
+
+                // データベースにpublic/post_imagesのパスを保存する
+                $class->pic_file_db_save($request->shain_cd, $time, $request->shain_cd, $request->shain_mei_romaji, 'png');
+
+
+                // jpgとpng以外だったら、エラーを返して編集画面に戻る
+            } else {
+
+                $file_extension_error = 'error';
+                $employee = Employee::find($request->shain_cd);
+
+                return view('/create')->with([
+                    'file_extension_error' => $file_extension_error,
+                    'employee' => $employee,
+                    'post_url' => $post_url_create,
+                    'scroll_top' => $scroll_top,
+                ]);
+            }
+        }
+
+
+
 
         return redirect($post_url_create)->with('create', '新規登録完了!');
     }
@@ -145,16 +184,6 @@ class CRUDController extends Controller
         $post_url = $_POST['url'];
         $scroll_top = $_POST['scroll_top'];
 
-        // var_dump($kijunbi_year);
-        // var_dump('退職年');
-        // var_dump($taishokubi_year);
-        // var_dump($taishokubi_year_month < $kijunbi_year_month);
-        // var_dump($kijunbi_year);
-        // var_dump($taishokubi_year);
-
-
-
-
 
         return view('/show')->with([
             'employee' => $employee,
@@ -170,8 +199,6 @@ class CRUDController extends Controller
             'year_month_b' => $year_month_b,
             'post_url' => $post_url,
             'scroll_top' => $scroll_top,
-
-
 
         ]);
     }
@@ -210,7 +237,7 @@ class CRUDController extends Controller
 
     public function update(UpdatePost $request, $id)
     {
-        //
+
         $employee = Employee::find($id);
 
         $employee->shain_cd = $request->input('shain_cd');
@@ -241,10 +268,105 @@ class CRUDController extends Controller
         $employee->remarks = $request->input('remarks');
         $employee->save();
 
+
         $top_url_edit = $_POST['top_url_edit'];
 
+        // 画像はjpgとpngだけの対応で。
+        if (isset($request->pic)) {
+
+            // public/post_imagesに　現在年月日時間＿社員コードjpgでストレージに保存する
+            $time = date("Ymdhi");
+
+            // クラスのインスタンス化（BaseClaee）
+            $class = new BaseClass();
+
+            // 写真の拡張子を取得
+            $file_extension =  $request->pic->getClientOriginalExtension();
+
+            // jpgなら、名前を変更して（DBとストレージに）保存する際、拡張子はjpgで
+            if ($file_extension == 'jpg') {
+
+                // 同じ名前が含まれた写真を削除（＝旧データを削除）
+                $class->pic_file_delete($employee->shain_cd, $employee->shain_mei_romaji);
+
+                // ストレージに保存
+                $request->pic->storeAs('public/post_images', $time . '_' . $employee->shain_cd . '_' . $employee->shain_mei_romaji .'.jpg');
+
+                // データベースにpublic/post_imagesのパスを保存する
+                $class->pic_file_db_save($id, $time, $employee->shain_cd, $employee->shain_mei_romaji, 'jpg');
 
 
-        return redirect($top_url_edit)->with('status', 'UPDATE完了!');
+                // pngなら、名前を変更して（DBとストレージに）保存する際、拡張子はpngで
+            } elseif ($file_extension == 'png') {
+
+                // 同じ名前が含まれた写真を削除（＝旧データを削除）
+                $class->pic_file_delete($employee->shain_cd, $employee->shain_mei_romaji);
+
+                // ストレージに保存
+                $request->pic->storeAs('public/post_images', $time . '_' . $employee->shain_cd . '_' . $employee->shain_mei_romaji . '.png');
+
+                // データベースにpublic/post_imagesのパスを保存する
+                $class->pic_file_db_save($id, $time, $employee->shain_cd, $employee->shain_mei_romaji, 'png');
+
+
+                // jpgとpng以外だったら、エラーを返して編集画面に戻る
+            } else {
+
+
+                $file_extension_error = 'error';
+                $employee = Employee::find($id);
+
+                $top_url = $_POST['top_url_edit'];
+                $scroll_top = $_POST['top_scroll_top'];
+
+                return view('/edit')->with([
+                    'file_extension_error' => $file_extension_error,
+                    'employee' => $employee,
+                    'top_url' => $top_url,
+                    'scroll_top' => $scroll_top,
+                ]);
+            }
+        }
+
+        return redirect($top_url_edit)->with('status', '更新完了!');
+    }
+
+
+    // 編集画面に表示される写真の削除ボタンの処理
+    public function pic_delete($id)
+    {
+
+        // データベースのpicカラムをnullにする
+        \DB::table('employees')
+            ->where('shain_cd', $id)
+            ->update([
+                'pic' => null
+            ]);
+
+        $employee = Employee::find($id);
+
+
+        // 写真が入っているフォルダのファイルをすべて取得
+        $pic_file = glob('C:\xampp\htdocs\employee\public\storage\post_images\*');
+
+
+        // ファイル名に社員コードが入っているものがあれば削除
+        foreach ($pic_file as $p_file_id) {
+            if (strpos($p_file_id, $employee->shain_mei_romaji)) {
+                // if (strpos($p_file_id, $id)) {
+                unlink($p_file_id);
+            }
+        }
+
+        $top_url = $_POST['top_url_edit'];
+        $scroll_top = 10;
+
+
+        return view('/edit')->with([
+            'employee' => $employee,
+            'top_url' => $top_url,
+            'scroll_top' => $scroll_top,
+
+        ]);
     }
 }

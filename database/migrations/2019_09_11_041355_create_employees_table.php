@@ -40,6 +40,7 @@ class CreateEmployeesTable extends Migration
             $table->tinyInteger('id_card')->nullable();
             $table->tinyInteger('fuyo_kazoku')->nullable();
             $table->integer('test')->nullable();
+            $table->string('pic')->nullable();
             $table->text('remarks')->nullable();
             $table->date('updated_at')->nullable();
             $table->date('created_at')->nullable();

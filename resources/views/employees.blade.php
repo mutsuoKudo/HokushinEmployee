@@ -15,8 +15,6 @@
 
 			<div class="panel-body">
 
-				@include('common.errors')
-
 				<!-- Button -->
 				<p class="mt-3 mb-0 font-weight-bold">名簿表示</p>
 
@@ -240,12 +238,11 @@
 
 
 				<!-- その他機能ボタン押下時、ajax表示する場所 -->
-			<div id="result_pre"></div>
+				<div id="result_pre"></div>
 
 			</div>
 		</div>
 
-		
 		@if(isset($title))
 		<div class="mt-5">
 			<form action="/employee/public/add" method="POST">
@@ -272,8 +269,11 @@
 				<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
 					<thead>
 						<tr>
-							<th class="table-text hs-md-th1" style="min-width:30px">
+							<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
 								<div>操作</div>
+							</th>
+							<th class="table-text hs-md-th1" style="min-width:30px; width:120px">
+								<div>写真</div>
 							</th>
 							<th class="table-text hs-md-th2" style="min-width:50px">
 								<div>社員コード</div>
@@ -281,9 +281,9 @@
 							<th class="table-text hs-md-th3" style="min-width:50px">
 								<div>社員名</div>
 							</th>
-							<!-- <th class="table-text" style="min-width:50px">
+							<th class="table-text" style="min-width:50px">
 								<div>社員名（カナ）</div>
-							</th> -->
+							</th>
 							<!-- <th class="table-text" style="min-width:50px">
 								<div>社員名（ローマ字）</div>
 							</th> -->
@@ -383,14 +383,23 @@
 							</td>
 
 							<td class="table-text">
+								<!-- 写真がない場合は、nodata画像を表示 -->
+								@if(is_null($employee->pic))
+								<img src="{{ asset('image/nodata.jpg') }}" alt="" width="80%">　　　　
+								@else
+								<img src="{{ asset('storage/post_images/' .$employee->pic) }}" style="width: 80%;">
+								@endif
+
+							</td>
+							<td class="table-text">
 								<div>{{ $employee->shain_cd }}</div>
 							</td>
 							<td class="table-text">
 								<div>{{ $employee->shain_mei }}</div>
 							</td>
-							<!-- <td class="table-text">
+							<td class="table-text">
 								<div>{{ $employee->shain_mei_kana }}</div>
-							</td> -->
+							</td>
 							<!-- <td class="table-text">
 								<div>{{ $employee->shain_mei_romaji }}</div>
 							</td> -->
@@ -487,7 +496,6 @@
 		$(window).scrollTop(<?php echo @$_REQUEST['post_scroll_top']; ?>);
 		var scroll_top = 0;
 	}
-
 </script>
 
 @endsection
