@@ -74,13 +74,44 @@
                         </li>
                         @endif -->
                         @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+
+
+                        <!-- 退職者年代別 -->
+                        <div class="dropdown">
+                            <!-- 切替ボタンの設定 -->
+                            <button type="button" class="dropdown-toggle" id="dropdownMenuButton_login_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            {{ Auth::user()->name }}
+                            </button>
+                            <!-- ドロップメニューの設定 -->
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_login_user">
+
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+
+
+                            </div><!-- /.dropdown-menu -->
+                        </div><!-- /.dropdown -->
+
+
+
+
+
+
+
+
+                        <!-- <li class="nav-item dropdown">
+                            <a id="navbarDropdown_login" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
-                                <!-- <span class="caret"></span> -->
+
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown_login">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
@@ -90,7 +121,7 @@
                                     @csrf
                                 </form>
                             </div>
-                        </li>
+                        </li> -->
                         @endguest
                     </ul>
                 </div>
@@ -99,7 +130,7 @@
 
         <main class="py-4">
             @yield('content')
-            @include('common.errors')
+
         </main>
     </div>
     <script>
@@ -391,18 +422,17 @@
         });
 
 
-            // スムーズにスクロールする
-            $('a[href^="#"]').click(function() {
-                var speed = 400;
-                var href = $(this).attr("href");
-                var target = $(href == "#" || href == "" ? 'html' : href);
-                var position = target.offset().top - 100;
-                $('body,html').animate({
-                    scrollTop: position
-                }, speed, 'swing');
-                return false;
-            });
-
+        // スムーズにスクロールする
+        $('a[href^="#"]').click(function() {
+            var speed = 400;
+            var href = $(this).attr("href");
+            var target = $(href == "#" || href == "" ? 'html' : href);
+            var position = target.offset().top - 100;
+            $('body,html').animate({
+                scrollTop: position
+            }, speed, 'swing');
+            return false;
+        });
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

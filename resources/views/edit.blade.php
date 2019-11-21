@@ -440,7 +440,7 @@ $top_scroll_top = $scroll_top;
                                         <input type="hidden" name="_method" value="PATCH">
                                         <div class="form-image_url">
                                             <input type="file" name="pic" value="{{ $employee->pic }}">
-                                            <p class="mt-2" style="color:red">※ファイル形式 JPEG/PNG です。</p>
+                                            <p class="mt-2" style="color:red">※ファイル形式 jpg/png です。</p>
                                         </div>
 
                                         {{-- バリデーション --}}

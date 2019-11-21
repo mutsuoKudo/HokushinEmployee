@@ -887,6 +887,7 @@ class ButtonController extends Controller
         $response = array();
         $response["all_avg"] = round(($all_avg), 1, PHP_ROUND_HALF_UP);
         return Response::json($response);
+        
     }
 
 

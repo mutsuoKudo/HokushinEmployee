@@ -4,8 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class UpdatePost extends FormRequest
 {
+
+    protected $redirect = '/';
     /**
      * Determine if the user is authorized to make this request.
      *

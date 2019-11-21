@@ -10,6 +10,8 @@ $top_scroll_top = $scroll_top;
 
 @include('common.errors')
 
+
+
 <div class="container">
     <div class="mb-5">
         <div class="panel panel-default">
@@ -37,6 +39,7 @@ $top_scroll_top = $scroll_top;
 
         <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
             新規登録
+                <div class="text-danger" style="font-size:15px;">※社員コード・社員名・社員名（カナ）・社員名（ローマ字）・性別・部門は必須項目です</div>
         </div>
 
         <div class="panel-body">
@@ -176,7 +179,7 @@ $top_scroll_top = $scroll_top;
                             </td>
                         </tr>
                         <tr>
-                            <th>部門</th>
+                            <th>部門<small class="float-right text-danger">※必須</small></th>
                             <td>
                                 <input type="text" name="department" class="form-control" placeholder="例）04" value="{{old('department')}}">
                             </td>
