@@ -9,7 +9,10 @@ use App\Http\Requests\UpdatePost;
 use App\Http\Requests\CreatePost;
 
 use App\Library\BaseClass;
-use App\Http\Controllers\Storage;
+
+use  App\Http\Controllers\Request;
+
+
 
 class CRUDController extends Controller
 {
@@ -40,17 +43,39 @@ class CRUDController extends Controller
         ]);
     }
 
+    // 新規作成でバリデーションに引っ掛かった時に使用
+    public function add2()
+    {
+
+        $post_url = '/employee/public/';
+        $scroll_top = 0;
+
+
+
+
+        return view('/create')->with([
+            'post_url' => $post_url,
+            'scroll_top' => $scroll_top,
+
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
 
+    // public function submit(CreatePost $request)
     public function submit(CreatePost $request)
+
     {
 
-        $post_url_create = $_POST['post_url_create'];
+        // $post_url_create = $_POST['post_url_create'];
+        $post_url_create = '';
         $scroll_top = $_POST['top_scroll_top'];
+
 
 
         if (isset($request->pic)) {
@@ -67,7 +92,7 @@ class CRUDController extends Controller
             $file_extension =  $request->pic->getClientOriginalExtension();
 
             // jpgなら、名前を変更して（DBとストレージに）保存する際、拡張子はjpgで
-            if ($file_extension == 'jpg') {
+            if ($file_extension == 'jpg' or $file_extension == 'jpeg' or $file_extension == 'JPG' or $file_extension == 'JPEG') {
 
                 // 入力した内容を新規登録
                 $class->employee_create($request);
@@ -111,6 +136,11 @@ class CRUDController extends Controller
                     'scroll_top' => $scroll_top,
                 ]);
             }
+        } else {
+            // クラスのインスタンス化（BaseClaee）
+            $class = new BaseClass();
+            // 入力した内容を新規登録
+            $class->employee_create($request);
         }
 
 
@@ -227,6 +257,27 @@ class CRUDController extends Controller
         ]);
     }
 
+    public function edit2($id)
+    {
+        //
+        $employee = Employee::find($id);
+
+
+        $top_url = '/employee/public/';
+        $scroll_top = 0;
+
+
+
+        return view('/edit')->with([
+            'employee' => $employee,
+            'top_url' => $top_url,
+            'scroll_top' => $scroll_top,
+
+        ]);
+    }
+
+    
+
     /**
      * Update the specified resource in storage.
      *
@@ -236,7 +287,22 @@ class CRUDController extends Controller
      */
 
     public function update(UpdatePost $request, $id)
+    // public function update(Request $request, $id)
     {
+
+        // // validation（チェックのみ）
+        // $validator = Validator::make($request->all(), [
+        //     'shain_cd' => 'required',
+        //     'shain_mei' => 'required',
+        //     'shain_mei_kana' => 'required',
+        //     'shain_mei_romaji' => 'required',
+        //     'gender' => 'required',
+        // ]);
+
+        // // validation エラーがある場合、エラーメッセージをダンプする
+        // if ($validator->fails()) {
+        //     dd( $validator->messages()->toArray() );
+        // }
 
         $employee = Employee::find($id);
 
@@ -284,13 +350,13 @@ class CRUDController extends Controller
             $file_extension =  $request->pic->getClientOriginalExtension();
 
             // jpgなら、名前を変更して（DBとストレージに）保存する際、拡張子はjpgで
-            if ($file_extension == 'jpg') {
+            if ($file_extension == 'jpg' or $file_extension == 'jpeg' or $file_extension == 'JPG' or $file_extension == 'JPEG') {
 
                 // 同じ名前が含まれた写真を削除（＝旧データを削除）
                 $class->pic_file_delete($employee->shain_cd, $employee->shain_mei_romaji);
 
                 // ストレージに保存
-                $request->pic->storeAs('public/post_images', $time . '_' . $employee->shain_cd . '_' . $employee->shain_mei_romaji .'.jpg');
+                $request->pic->storeAs('public/post_images', $time . '_' . $employee->shain_cd . '_' . $employee->shain_mei_romaji . '.jpg');
 
                 // データベースにpublic/post_imagesのパスを保存する
                 $class->pic_file_db_save($id, $time, $employee->shain_cd, $employee->shain_mei_romaji, 'jpg');

@@ -4,6 +4,8 @@ use App\Employee;
 use App\Holiday;
 use Illuminate\Http\Request;
 
+use App\Library\BaseClass;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,10 +30,16 @@ Route::group(['middleware' => ['web']], function () {
     //全ての表示
     Route::get('/', ['middleware' => 'auth', function () {
         //employeesテーブルのデータをemployees変数に入れる
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->get();
-        // $employees = Employee::all();
+        // クラスのインスタンス化
+        $class = new BaseClass();
+
+        // 社員情報取得
+        $employees = $class->all();
+
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
         $title = "在籍者";
 
         $select_nyusha_year = DB::table('employees')
@@ -87,8 +95,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/show/{employee}', 'CRUDController@show');
 
     //編集ボタンクリック→編集画面表示
-    // Route::get('/edit/{employee}', 'CRUDController@edit');
     Route::post('/edit/{employee}', 'CRUDController@edit');
+    Route::get('/edit2/{employee}', 'CRUDController@edit2');
 
     //有給取得日数明細ボタンクリック→有給明細
     // Route::get('/holiday/{employee}', 'HolidayController@holiday');
@@ -103,10 +111,12 @@ Route::group(['middleware' => ['web']], function () {
 
     //新規登録ボタンクリック→新規登録画面の表示
     // Route::get('/add', 'CRUDController@add');
+    // Route::match(array('GET', 'POST'), '/add', 'CRUDController@add');
     Route::post('/add', 'CRUDController@add');
+    Route::get('/add2', 'CRUDController@add2');
 
     //新規登録画面の更新ボタンをクリック→エラーなしの場合、トップページにリダイレクト
-    Route::post('/submit', 'CRUDController@submit');
+    Route::post('/submit', 'CRUDController@submit')->name('/add');
 
 
 

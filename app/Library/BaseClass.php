@@ -9,26 +9,26 @@ use App\Employee;
 class BaseClass
 {
 
-    //employeesテーブルのtaishokubiが入力されていないデータ全て（＝在籍者）
+    //☆employeesテーブルのtaishokubiが入力されていないデータ全て（＝在籍者）
     public function all()
     {
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->get();
 
         return $employees;
     }
 
 
-    //スタッフ全員の入社年と退職年を算出
+    //☆スタッフ全員の入社年と退職年を算出
     public function nyusya_taishoku_year()
     {
 
         $select_nyusha_year_pre = DB::table('employees')
             ->select(db::raw('distinct DATE_FORMAT(nyushabi, "%Y") as nyushanen'))
             ->whereNull('taishokubi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->orderBy('nyushanen', 'asc')
             ->get();
 
@@ -41,7 +41,7 @@ class BaseClass
         return [$select_nyusha_year_pre, $select_taishoku_year_pre];
     }
 
-    //部門ごとのスタッフ情報
+    //☆部門ごとのスタッフ情報
     public function department($department)
     {
         $employees = DB::table('employees')
@@ -52,40 +52,40 @@ class BaseClass
         return $employees;
     }
 
-    //入社年ごとのスタッフ情報
+    //☆入社年ごとのスタッフ情報
     public function nyushabi($start_nyushabi, $end_nyushabi)
     {
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->whereBetween('nyushabi', [$start_nyushabi, $end_nyushabi])
             ->get();
 
         return $employees;
     }
 
-    //年代ごとのスタッフ情報
+    //☆年代ごとのスタッフ情報
     public function age($start_age, $end_age)
     {
         $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
 
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->whereBetween($birthday, [$start_age, $end_age])
             ->get();
 
         return $employees;
     }
 
-    //その他の年代のスタッフ情報
+    //☆その他の年代のスタッフ情報
     public function age_other($start_age, $end_age)
     {
         $birthday = DB::raw('(year(curdate()) - year(shain_birthday) ) - ( right(curdate(),5) < right(shain_birthday,5))');
 
         $employees = DB::table('employees')
             ->whereNull('taishokubi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->where($birthday, '<', $start_age)
             ->where($birthday, '>', $end_age)
             ->get();
@@ -93,36 +93,36 @@ class BaseClass
         return $employees;
     }
 
-    //基準月ごとのスタッフ情報
+    //☆基準月ごとのスタッフ情報
     public function kijun_month($kijun_month)
     {
         //入社日が7月の人は基準月が1月
         $employees = DB::table('employees')
             ->where('nyushabi', 'LIKE', $kijun_month)
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->whereNull('taishokubi')
             ->get();
 
         return $employees;
     }
 
-    //退職したスタッフ情報
+    //☆退職したスタッフ情報
     public function retirement()
     {
         $employees = DB::table('employees')
             ->whereNotNull('taishokubi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->get();
 
         return $employees;
     }
 
-    //退職した年ごとのスタッフ情報
+    //☆退職した年ごとのスタッフ情報
     public function taishokubi($start_taishokubi, $end_taishokubi)
     {
         $employees = DB::table('employees')
             ->whereNotNull('taishokubi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->whereBetween('taishokubi', [$start_taishokubi, $end_taishokubi])
             ->get();
 
@@ -132,7 +132,7 @@ class BaseClass
 
 
 
-    //基準日を求める
+    //☆基準日を求める
     public function kijunbi($id)
     {
         //基準日の計算(入社日に+6か月)　※ XXXX-XX-01　XXXX-XXの部分は個人で計算されます。
@@ -158,7 +158,7 @@ class BaseClass
         return [$kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre];
     }
 
-    //初年度最後の月計算(年・月・まとめたもの))
+    //☆初年度最後の月計算(年・月・まとめたもの))
     public function first_day_max_2($id)
     {
         $day_max_pre = DB::table('employees')
@@ -175,7 +175,7 @@ class BaseClass
         return [$first_day_max_year_pre, $first_day_max_month_pre, $first_day_max_pre];
     }
 
-    //初年度最後の月計算(まとめたもののみ)
+    //☆初年度最後の月計算(まとめたもののみ)
     public function first_day_max($id)
     {
         $day_max_pre = DB::table('employees')
@@ -192,7 +192,7 @@ class BaseClass
         return $first_day_max;
     }
 
-    //年度終わりから３ヶ月前（=warning）を計算
+    //☆年度終わりから３ヶ月前（=warning）を計算
     public function warning($kijunbi_before3, $i)
     {
         //年度終わりから３ヶ月前の年を抜き出す
@@ -209,7 +209,7 @@ class BaseClass
         return $warning;
     }
 
-    // 期首残高（付与日数+前期繰越）
+    //☆期首残高（付与日数+前期繰越）
     public function kisyu_nokori($huyo_holiday, $carry_over)
     {
         $kisyu_nokori = $huyo_holiday + $carry_over;
@@ -217,7 +217,7 @@ class BaseClass
         return $kisyu_nokori;
     }
 
-    //消化日数を計算
+    //☆消化日数を計算
     public function holiday_count_int($nyushabi_year_month, $day_max, $id)
     {
         $holiday_count = DB::table('holidays')
@@ -242,7 +242,7 @@ class BaseClass
         return $holiday_count_int;
     }
 
-    //消化残（期首残高-消化日数）
+    //☆消化残（期首残高-消化日数）
     public function nokori($kisyu_nokori, $holiday_count_int)
     {
         $nokori = $kisyu_nokori - $holiday_count_int;
@@ -250,7 +250,7 @@ class BaseClass
         return $nokori;
     }
 
-    //繰越日数
+    //☆繰越日数
     public function carry_over_count($nokori, $max_carry_over)
     {
         if ($nokori > $max_carry_over) {
@@ -261,7 +261,7 @@ class BaseClass
         return $carry_over_count;
     }
 
-    //月別消化日数
+    //☆月別消化日数
     public function get_holiday($id, $nyushabi_year_month, $day_max)
     {
         //月別消化日数
@@ -279,7 +279,7 @@ class BaseClass
         return $get_holiday;
     }
 
-    //初年度以降の前期繰越
+    //☆初年度以降の前期繰越
     public function carry_over($array, $i, $max_carry_over)
     {
         //前期繰越（1年目～の前期繰越は前年度で求めた繰り越し日数と同じなので、前年度の繰り越し日数を代入）
@@ -292,27 +292,27 @@ class BaseClass
         return $carry_over;
     }
 
-    //初年度以降の年度初め
+    //☆初年度以降の年度初め
     public function day_min($kijunbi_year, $i, $kijunbi_month)
     {
-        $day_min_pre = (int)$kijunbi_year + $i;
+        $day_min_pre = (int) $kijunbi_year + $i;
         $day_min = $day_min_pre . $kijunbi_month;
 
         return $day_min;
     }
 
-    //初年度以降の年度終わり
+    //☆初年度以降の年度終わり
     public function day_max($first_day_max, $i)
     {
         $day_max_year = substr($first_day_max, 0, 4);
         $day_max_month = substr($first_day_max, 4, 2);
 
-        $day_max = (int)$day_max_year + $i . $day_max_month;
+        $day_max = (int) $day_max_year + $i . $day_max_month;
 
         return $day_max;
     }
 
-    //一番最近のデータの年月(0000-00)を作成(=現在日時になる（◎月時点のデータですとか）)
+    //☆一番最近のデータの年月(0000-00)を作成(=現在日時になる（◎月時点のデータですとか）)
     public function year_month()
     {
 
@@ -353,7 +353,7 @@ class BaseClass
         return [$employees];
     }
 
-    //年度の終わりを計算
+    //☆年度の終わりを計算
     public function end_kijunbi($id)
     {
 
@@ -379,7 +379,7 @@ class BaseClass
         return [$end_kijunbi_year_pre, $end_kijunbi_month_pre, $end_kijunbi_pre];
     }
 
-    //消化日数を計算
+    //☆消化日数を計算
     public function holiday_count($day_min, $day_max, $id)
     {
         // 本年度の有給取得数を計算
@@ -395,7 +395,7 @@ class BaseClass
         return $holiday_count;
     }
 
-    //入社年・入社月・入社年月の取得
+    //☆入社年・入社月・入社年月の取得
     // IDで抜き出す
     public function nyushabi_year_month($id)
     {
@@ -414,14 +414,14 @@ class BaseClass
         return [$nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre];
     }
 
-    //全在籍社員の入社年・入社月・入社年月(20191001)・入社年月(2019-10-01)の取得
+    //☆全在籍社員の入社年・入社月・入社年月(20191001)・入社年月(2019-10-01)の取得
     // データ数指定
     public function all_nyushabi_year_month($i)
     {
         //入社日の取得
         $nyushabi_pre = DB::table('employees')
             ->select('nyushabi')
-            ->where('department', '!=' , '05')
+            ->where('department', '!=', '05')
             ->whereNull('taishokubi')
             ->get();
 
@@ -443,7 +443,7 @@ class BaseClass
 
 
     // CRUDControllerで使用
-    // 退職日取得
+    // ☆退職日取得
     public function retirement_id($id)
     {
         //退職日取得
@@ -461,11 +461,11 @@ class BaseClass
 
         return [$taishokubi_year_pre, $taishokubi_month_pre, $taishokubi_year_month_pre, $taishokubi_pre];
     }
-    
+
     // CRUDコントローラーで使用
-    
-    // ストレージに入った写真の削除
-    public function pic_file_delete($employee_shain_cd,$employee_shain_mei_romaji)
+
+    // ☆ストレージに入った写真の削除
+    public function pic_file_delete($employee_shain_cd, $employee_shain_mei_romaji)
     {
         // 写真が入っているフォルダのファイルをすべて取得
         $pic_file = glob('C:\xampp\htdocs\employee\public\storage\post_images\*');
@@ -473,21 +473,22 @@ class BaseClass
         // ファイル名にいま保存しようとしている社員コードと社員名（ローマ字）がすでに入っていたら削除
         // DBはupdateで上書きしちゃうのでわざわざ消さなくてもおｋ
         foreach ($pic_file as $p_file_id) {
-            if (strpos($p_file_id, $employee_shain_cd. '_' . $employee_shain_mei_romaji)) {
+            if (strpos($p_file_id, $employee_shain_cd . '_' . $employee_shain_mei_romaji)) {
                 unlink($p_file_id);
             }
         }
     }
-    
+
     // データベースにpublic/post_imagesのパスを保存する
-    public function pic_file_db_save($id,$time,$employee_shain_cd,$employee_shain_mei_romaji,$file_extension)
+    public function pic_file_db_save($id, $time, $employee_shain_cd, $employee_shain_mei_romaji, $file_extension)
     {
         \DB::table('employees')
-                    ->where('shain_cd', $id)
-                    ->update([
-                        'pic' => $time . '_' . $employee_shain_cd . '_' . $employee_shain_mei_romaji . '.' . $file_extension
-                    ]);
+            ->where('shain_cd', $id)
+            ->update([
+                'pic' => $time . '_' . $employee_shain_cd . '_' . $employee_shain_mei_romaji . '.' . $file_extension
+            ]);
     }
+
     // 入力した社員情報をデータベースに新規登録する
     public function employee_create($request)
     {
@@ -521,5 +522,7 @@ class BaseClass
 
         $employee->save();
     }
-    
+
+
+
 }
