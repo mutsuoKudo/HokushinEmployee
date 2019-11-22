@@ -29,9 +29,16 @@ class CRUDController extends Controller
     public function add()
     {
 
-        $post_url = $_POST['url'];
-        $scroll_top = $_POST['scroll_top'];
+        if (isset($_POST['url'])) {
+            $post_url = $_POST['url'];
+            $scroll_top = $_POST['scroll_top'];
+        } else {
+            $post_url = 'http://localhost/employee/public/';
+            $scroll_top = '100';
+        }
 
+        // $post_url = $_POST['url'];
+        // $scroll_top = $_POST['scroll_top'];
 
 
 
@@ -74,6 +81,7 @@ class CRUDController extends Controller
 
         // $post_url_create = $_POST['post_url_create'];
         $post_url_create = '';
+        
         $scroll_top = $_POST['top_scroll_top'];
 
 
@@ -276,7 +284,7 @@ class CRUDController extends Controller
         ]);
     }
 
-    
+
 
     /**
      * Update the specified resource in storage.

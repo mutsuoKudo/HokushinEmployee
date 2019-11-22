@@ -481,7 +481,7 @@ $top_scroll_top = $scroll_top;
                 {{ csrf_field() }}
                 <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置に戻る -->
                 <input type="hidden" name="post_scroll_top" value="{{$scroll_top}}">
-                <button type="submit" class="btn btn-success btn-lg" style="margin:20px;">トップに戻る</button>
+                <button type="submit" class="btn btn-success btn-lg" style="margin:20px;" id="edit_bottom_top_button">トップに戻る</button>
             </form>
 
             <form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">

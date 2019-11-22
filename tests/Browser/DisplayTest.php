@@ -39,12 +39,29 @@ class DisplayTest extends DuskTestCase
                 ->assertSee('在籍者')
                 ->press('#dropdownMenuButton_login_user')
                 ->press('#navbarSupportedContent > ul > div > div > a')
-                
+
                 ->assertSee('UserID')
                 ->assertSee('Password')
 
                 ->assertPathIs('/employee/public/login')
                 ->screenshot('ログアウト成功' . date('Ymd-his'));
+            // ->dump($browser)
+
+        });
+    }
+
+    // ログイン ※これ以降のテストはログイン後のものになるのでもう一度ログインしておく
+    public function testDisplay_login2()
+    {
+
+        $this->browse(function ($browser) {
+            $browser->visit('/employee/public/login')
+
+                ->assertSee('UserID')
+                ->type('userid', 'hokushin')
+                ->type('password', 'hokushinpass')
+                ->press('Login')
+                ->assertPathIs('/employee/public/');
             // ->dump($browser)
 
         });
@@ -133,6 +150,7 @@ class DisplayTest extends DuskTestCase
         });
     }
 
+
     // 詳細ページ→編集
     public function testDisplay_edit()
     {
@@ -147,7 +165,8 @@ class DisplayTest extends DuskTestCase
 
                 // 編集ボタン、2つあるので繰り返す
                 // 画面上部にある編集ボタン
-                ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                // ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                ->press('#show_top_edit_button')
                 ->screenshot('編集①' . date('Ymd-his'))
 
                 // ※編集画面には2つトップに戻るボタンがあるので繰り返す
@@ -158,8 +177,17 @@ class DisplayTest extends DuskTestCase
                 // 画面下部のトップに戻るボタンを押すパターン
                 // 詳細ボタン→編集ボタン→ 画面下部のトップに戻るボタン
                 ->press('詳細')
-                ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
-                ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(1) > button')
+                ->assertSee('詳細表示')
+                ->pause('2000')
+                // ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                ->press('#show_top_edit_button')
+                ->pause('2000')
+                ->assertSee('編集')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+
+            $browser->pause('2000')
+                // ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(1) > button')
+                ->press('#edit_bottom_top_button')
 
                 ->screenshot('編集①からトップに戻った②' . date('Ymd-his'))
 
@@ -168,23 +196,38 @@ class DisplayTest extends DuskTestCase
                 // 画面上部の詳細画面に戻るボタンを押すパターン
                 // 詳細ボタン→編集ボタン→ 画面上部の詳細画面に戻るボタン
                 ->press('詳細')
+                ->assertSee('詳細表示')
+                ->pause('2000')
+
+                // ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                ->press('#show_top_edit_button')
+                ->assertSee('編集')
+                ->pause('2000')
                 ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
-                ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                ->assertSee('詳細表示')
 
                 ->screenshot('編集①から詳細に戻った①' . date('Ymd-his'))
 
+
                 // 画面下部の詳細画面に戻るボタンを押すパターン
                 // 編集ボタン→ 画面下部の詳細画面に戻るボタン
-                ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
-                ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(2) > button')
+                // ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                ->press('#show_top_edit_button')
+                ->assertSee('編集')
+                ->pause('2000')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
 
+            $browser->pause('2000')
+                ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(2) > button')
                 ->screenshot('編集①から詳細に戻った②' . date('Ymd-his'))
 
 
 
 
                 // 画面下部にある編集ボタン
-                ->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+            $browser->press('#show_bottom_edit_button')
                 ->screenshot('編集②' . date('Ymd-his'))
 
                 // ※編集画面には2つトップに戻るボタンがあるので繰り返す
@@ -195,21 +238,47 @@ class DisplayTest extends DuskTestCase
                 // 画面下部のトップに戻るボタンを押すパターン
                 // 詳細ボタン→編集ボタン→ 画面下部のトップに戻るボタン
                 ->press('詳細')
-                ->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
-                ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(1) > button')
+                ->assertSee('詳細表示')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+
+            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+            $browser->pause('2000')
+            ->press('#show_bottom_edit_button')
+                // ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(1) > button')
+                ->assertSee('編集')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+
+            $browser->pause('2000')
+                ->press('#edit_bottom_top_button')
                 ->screenshot('編集②からトップに戻った②' . date('Ymd-his'))
 
                 // 編集画面には2つの詳細画面に戻るボタンがあるので繰り返す
                 // 画面上部の詳細画面に戻るボタンを押すパターン
-                // 詳細ボタン→編集ボタン→ 画面上部のトップに戻るボタン
+                // 詳細ボタン→編集ボタン→ 画面上部の詳細に戻るボタン
                 ->press('詳細')
-                ->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+                ->assertSee('詳細表示')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+
+            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+            $browser->press('#show_bottom_edit_button')
+                // ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                ->assertSee('編集')
+                ->pause('2000')
+
                 ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
                 ->screenshot('編集②から詳細に戻った①' . date('Ymd-his'))
 
                 // 画面下部の詳細画面に戻るボタンを押すパターン
-                // 編集ボタン→ 画面下部のトップに戻るボタン
-                ->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+                // 編集ボタン→ 画面下部の詳細に戻るボタン
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+            $browser->pause('2000')
+                ->press('#show_bottom_edit_button')
+                ->assertSee('編集')
+                ->pause('2000')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+
+            $browser->pause('2000')
                 ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(2) > button')
                 ->screenshot('編集②から詳細に戻った②' . date('Ymd-his'));
         });
@@ -218,10 +287,9 @@ class DisplayTest extends DuskTestCase
 
 
 
-
     // 在籍者ボタン
     public function testDisplay_all()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -234,7 +302,7 @@ class DisplayTest extends DuskTestCase
 
     // 部門別ボタン
     public function testDisplay_department()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -263,7 +331,7 @@ class DisplayTest extends DuskTestCase
 
     // 入社年別ボタン
     public function testDisplay_nyushabi()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -297,14 +365,12 @@ class DisplayTest extends DuskTestCase
                 ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(2) > div.dropdown.open.show > div > form:nth-child(6) > input.mr-2.mt-1.table_reset')
                 ->assertSee('2019年入社')
                 ->screenshot('入社年別（2019年）ボタンクリック' . date('Ymd-his'));
-
-
         });
     }
 
     // 年代別ボタン
     public function testDisplay_age()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -338,13 +404,12 @@ class DisplayTest extends DuskTestCase
                 ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(2) > div.dropdown.open.show > div > form:nth-child(6) > input.mr-2.mt-1.table_reset')
                 ->assertSee('その他の年代')
                 ->screenshot('年代別（その他の年代）ボタンクリック' . date('Ymd-his'));
-
         });
     }
 
     // 有給基準月別ボタン
     public function testDisplay_kijun_month()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -408,41 +473,40 @@ class DisplayTest extends DuskTestCase
                 ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(2) > div.dropdown.open.show > div > form:nth-child(12) > input.mr-2.mt-1.table_reset')
                 ->assertSee('12月')
                 ->screenshot('有給基準月別（12月）ボタンクリック' . date('Ymd-his'));
-
-            });
+        });
     }
 
     // 退職者ボタン
     public function testDisplay_retirement()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
                 // ->dump($browser)
-                ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(2) > form:nth-child(6) > input.mr-2.mt-1.function-button.table_reset')
+                // ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(2) > form:nth-child(6) > input.mr-2.mt-1.function-button.table_reset')
+                ->press('#retirement')
                 ->assertSee('退職者')
                 ->screenshot('退職者ボタンクリック' . date('Ymd-his'));
-
-            });
+        });
     }
 
     // 未消化アラートボタン
     public function testDisplay_mishouka()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
                 // ->dump($browser)
-                ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(3) > form:nth-child(1) > input.mr-2.mt-1.function-button.table_reset')
+                // ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(3) > form:nth-child(1) > input.mr-2.mt-1.function-button.table_reset')
+                ->press('#mishouka')
                 ->assertSee('未消化アラート対象者')
                 ->screenshot('未消化アラートボタンクリック' . date('Ymd-his'));
-
-            });
+        });
     }
 
     // 残数僅少アラートボタン
     public function testDisplay_zansu_kinshou()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -450,13 +514,12 @@ class DisplayTest extends DuskTestCase
                 ->press('#app > main > div > div > div:nth-child(1) > div > div:nth-child(3) > form:nth-child(2) > input.mr-2.mt-1.function-button.table_reset')
                 ->assertSee('残数僅少アラート対象者')
                 ->screenshot('残数僅少アラートボタンクリック' . date('Ymd-his'));
-
-            });
+        });
     }
 
     // 平均年齢（在籍者）ボタン
     public function testDisplay_all_avg()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -465,13 +528,13 @@ class DisplayTest extends DuskTestCase
                 ->pause('1000')
                 ->assertSee('≪全在籍者の平均年齢≫')
                 ->screenshot(' 平均年齢（在籍者）ボタンクリック' . date('Ymd-his'));
-            });
+        });
     }
 
 
     // 平均年齢（部門別）ボタン
     public function testDisplay_department_avg()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -480,12 +543,12 @@ class DisplayTest extends DuskTestCase
                 ->pause('1000')
                 ->assertSee('≪部門別の平均年齢≫')
                 ->screenshot(' 平均年齢（部門別）ボタンクリック' . date('Ymd-his'));
-            });
+        });
     }
 
     // 平均年齢（男女別）ボタン
     public function testDisplay_gender_avg()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -494,12 +557,12 @@ class DisplayTest extends DuskTestCase
                 ->pause('1000')
                 ->assertSee('≪男女別の平均年齢≫')
                 ->screenshot(' 平均年齢（男女別）ボタンクリック' . date('Ymd-his'));
-            });
+        });
     }
 
     // 人数（在籍者）ボタン
     public function testDisplay_all_count()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -508,12 +571,12 @@ class DisplayTest extends DuskTestCase
                 ->pause('1000')
                 ->assertSee('≪全在籍者の人数≫')
                 ->screenshot(' 人数（在籍者）ボタンクリック' . date('Ymd-his'));
-            });
+        });
     }
 
     // 人数（部門別）ボタン
     public function testDisplay_department_count()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -522,12 +585,12 @@ class DisplayTest extends DuskTestCase
                 ->pause('1000')
                 ->assertSee('≪部門別の人数≫')
                 ->screenshot(' 人数（部門別）ボタンクリック' . date('Ymd-his'));
-            });
+        });
     }
 
     // 人数（男女別）ボタン
     public function testDisplay_gender_count()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -536,12 +599,12 @@ class DisplayTest extends DuskTestCase
                 ->pause('1000')
                 ->assertSee('≪男女別の人数≫')
                 ->screenshot(' 人数（男女別）ボタンクリック' . date('Ymd-his'));
-            });
+        });
     }
 
     // 人数（年代別）ボタン
     public function testDisplay_age_count()
-    { 
+    {
         $this->browse(function ($browser) {
             $browser->visit('/employee/public/')
 
@@ -550,23 +613,23 @@ class DisplayTest extends DuskTestCase
                 ->pause('1000')
                 ->assertSee('≪年代別の人数≫')
                 ->screenshot(' 人数（年代別）ボタンクリック' . date('Ymd-his'));
-            });
+        });
     }
 
     // ロゴ
     public function testDisplay_logo()
     {
-        $this->browse(function ($browser){
+        $this->browse(function ($browser) {
             $browser->visit('employee/public')
 
-            ->assertSee('名簿表示')
-            ->assertSee('その他の機能')
-            ->assertSee('在籍者')
-            ->press('#app > nav > div > a')
-            ->assertSee('名簿表示')
-            ->assertSee('その他の機能')
-            ->assertSee('在籍者')
-            ->screenshot('ロゴ押下');
+                ->assertSee('名簿表示')
+                ->assertSee('その他の機能')
+                ->assertSee('在籍者')
+                ->press('#app > nav > div > a')
+                ->assertSee('名簿表示')
+                ->assertSee('その他の機能')
+                ->assertSee('在籍者')
+                ->screenshot('ロゴ押下');
         });
-     }
+    }
 }

@@ -257,7 +257,11 @@
 			<form action="/employee/public/add" method="POST">
 				{{ csrf_field() }}
 				<?php
-				$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+				if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+				} else {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+				}
 				?>
 				<!-- 現在のURLとスクロール位置を次のページに送る -->
 				<input type="hidden" name="url" value={{$url}}>
@@ -388,7 +392,11 @@
 									<form action="/employee/public/show/{{$employees2[$i][0][0][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
-										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+										 if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
 										?>
 										<!-- 現在のURLとスクロール位置を次のページに送る -->
 										<input type="hidden" name="url" value={{$url}}>
