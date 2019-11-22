@@ -3,19 +3,19 @@
 @section('content')
 
 @if (count($errors) > 0)
-	<!-- Form Error List -->
-	<div class="alert alert-danger">
-		<strong>エラーが発生しました！</strong>
+<!-- Form Error List -->
+<div class="alert alert-danger">
+	<strong>エラーが発生しました！</strong>
 
-		<br><br>
+	<br><br>
 
-		<ul>
-			<li>必須項目の未入力</li>
-			<li>社員コードの重複</li>
-			<li>サーバーエラー</li>
-		</ul>
-		<p>などが考えられます。お手数ですが上記をお確かめのうえ、再度お試しください。</p>
-	</div>
+	<ul>
+		<li>必須項目の未入力</li>
+		<li>社員コードの重複</li>
+		<li>サーバーエラー</li>
+	</ul>
+	<p>などが考えられます。お手数ですが上記をお確かめのうえ、再度お試しください。</p>
+</div>
 @endif
 
 <!-- 更新完了時に表示されるメッセージ -->
@@ -192,7 +192,7 @@
 					<!-- 退職者 -->
 					<form action="/employee/public/retirement" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset" id="retirement">
 					</form>
 
 					<!-- 退職者年代別 -->
@@ -221,13 +221,13 @@
 					<!-- 未消化アラート -->
 					<form action="/employee/public/mishouka" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset" id="mishouka">
 					</form>
 
 					<!-- 残数僅少アラート -->
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset" id="zansu_kinshou">
 					</form>
 				</div>
 
@@ -264,7 +264,11 @@
 			<form action="/employee/public/add" method="POST">
 				{{ csrf_field() }}
 				<?php
-				$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+				if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+				} else {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+				}
 				?>
 				<!-- 現在のURLとスクロール位置を次のページに送る -->
 				<input type="hidden" name="url" value={{$url}}>
@@ -381,7 +385,11 @@
 								<form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
 									{{ csrf_field() }}
 									<?php
-									$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+									if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+									} else {
+										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+									}
 									?>
 									<!-- 現在のURLとスクロール位置を次のページに送る -->
 									<input type="hidden" name="url" value={{$url}}>

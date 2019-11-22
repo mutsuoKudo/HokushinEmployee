@@ -437,6 +437,22 @@ class BaseClassTest extends TestCase
     }
 
 
+    //繰越日数2
+    public function testBaseClass_carry_over_count2()
+    {
+
+        $BaseClass = new BaseClass();
+
+        // 最大繰越日数
+        $max_carry_over = 14;
+
+        $result_carry_over_count2 = $BaseClass->carry_over_count(14, $max_carry_over);
+        var_dump($result_carry_over_count2);
+
+        $this->assertEquals(14, $result_carry_over_count2);
+    }
+
+
     /**
      * @depends testBaseClass_variable_container
      */
@@ -708,53 +724,66 @@ class BaseClassTest extends TestCase
 
         $this->assertEquals("2020000000_2018100031_tesuto de-ta.jpg", $result_pic_file_db_save);
 
-        // \DB::table('employees')
-        //     ->DB::raw('UPDATE employees SET pic=null WHERE shain_cd = "2018100031"');
+        //　挿入したpicパスを削除する
+        \DB::table('employees')
+            ->where('shain_cd', '2018100031')
+            ->update(['pic' => null]);
     }
 
 
     public function testBaseClass_employee_create()
     {
 
+
+        $BaseClass = new BaseClass();
+
+        $request = [
+            'shain_cd' => '2021',
+            'shain_mei' => '新規登録',
+            'shain_mei_kana' => '新規登録',
+            'shain_mei_romaji' => '新規登録',
+            'shain_mail' => '新規登録',
+            'gender' => '男',
+            'shain_zip_code' => null,
+            'shain_jyusho' => '札幌市',
+            'shain_jyusho_tatemono' => 'ハイツ',
+            'shain_birthday' => '1990-01-01',
+            'nyushabi' => 20110501,
+            'seishain_tenkanbi' => null,
+            'tensekibi' => null,
+            'taishokubi' => null,
+            'shain_keitai' => null,
+            'shain_tel' => null,
+            'koyohoken_bango' => null,
+            'shakaihoken_bango' => null,
+            'kisonenkin_bango' => null,
+            'monthly_saraly' => null,
+            'department' => '04',
+            'name_card' => null,
+            'id_card' => null,
+            'fuyo_kazoku' => null,
+            'test' => null,
+            'remarks' => null,
+            `updated_at` => '""',
+            `created_at` => '""'
+        ];
+
         
-    //     $BaseClass = new BaseClass();
 
-    //     $request = array(
-    //         'shain_cd' => '2021',
-    //         'shain_mei' => '新規登録',
-    //         'shain_mei_kana' => '新規登録',
-    //         'shain_mei_romaji' => '新規登録',
-    //         'shain_mail' => '新規登録',
-    //         'gender' => '男',
-    //         'shain_zip_code' => '123-4567',
-    //         'shain_jyusho' => '札幌市',
-    //         'shain_jyusho_tatemono' => 'ハイツ',
-    //         'shain_birthday' => '1990-01-01',
-    //         'nyushabi' => '2011-05-01',
-    //         'seishain_tenkanbi' => '',
-    //         'tensekibi' => '',
-    //         'taishokubi' => '',
-    //         'shain_keitai' => '',
-    //         'shain_tel' => '',
-    //         'koyohoken_bango' => '',
-    //         'shakaihoken_bango' => '',
-    //         'kisonenkin_bango' => '',
-    //         'monthly_saraly' => '',
-    //         'department' => '04',
-    //         'id_card' => '',
-    //         'fuyo_kazoku' => '',
-    //         'test' => '',
-    //         'remarks' => '',
-    //     );
+        // 入力した内容を新規登録
+        $BaseClass->employee_create((object) $request);
 
-    //     // 入力した内容を新規登録
-    //     $BaseClass->employee_create($request);
+        $result_employee_create = DB::table('employees')
+            ->where('shain_cd','2021')
+            ->get();
 
-    //     $result_employee_create = DB::table('employees')
-    //         ->where('shain_cd,2021')
-    //         ->get();
+            var_dump($result_employee_create[0]->shain_cd);
 
+        $this->assertEquals("2021", $result_employee_create[0]->shain_cd);
 
-    //     $this->assertEquals("2021", $result_employee_create);
+         //　挿入したデータをを削除する
+         \DB::table('employees')
+         ->where('shain_cd', '2021')
+         ->delete();
     }
 }

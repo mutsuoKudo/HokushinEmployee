@@ -479,7 +479,7 @@ class BaseClass
         }
     }
 
-    // データベースにpublic/post_imagesのパスを保存する
+    // ☆データベースにpublic/post_imagesのパスを保存する
     public function pic_file_db_save($id, $time, $employee_shain_cd, $employee_shain_mei_romaji, $file_extension)
     {
         \DB::table('employees')
@@ -489,7 +489,7 @@ class BaseClass
             ]);
     }
 
-    // 入力した社員情報をデータベースに新規登録する
+    // ☆入力した社員情報をデータベースに新規登録する
     public function employee_create($request)
     {
         $employee = new Employee();
@@ -519,8 +519,10 @@ class BaseClass
         $employee->fuyo_kazoku = $request->fuyo_kazoku;
         $employee->test = $request->test;
         $employee->remarks = $request->remarks;
-
+        
         $employee->save();
+        // var_dump($request);
+        // dd($request);
     }
 
 

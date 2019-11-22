@@ -25,7 +25,7 @@
                         <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を送る -->
                         <input type="hidden" name="top_url" value={{$post_url}}>
                         <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
-                        <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
+                        <button type="submit" class="btn btn-primary btn-lg mt-3" id="show_top_edit_button">編集</button>
                     </form>
                 </div>
             </div>
@@ -277,7 +277,7 @@
                     <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を送る -->
                     <input type="hidden" name="top_url" value={{$post_url}}>
                     <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
-                    <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
+                    <button type="submit" class="btn btn-primary btn-lg mt-3" id="show_bottom_edit_button">編集</button>
                 </form>
             </div>
 
