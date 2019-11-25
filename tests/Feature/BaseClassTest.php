@@ -42,8 +42,9 @@ class BaseClassTest extends TestCase
 
         // var_dump($result_nyusya_taishoku_year);
 
-        $this->assertEquals(2018, $result_nyusya_taishoku_year[0][0]->nyushanen);
-        $this->assertEquals(2019, $result_nyusya_taishoku_year[0][1]->nyushanen);
+        $this->assertEquals(2007, $result_nyusya_taishoku_year[0][0]->nyushanen);
+        $this->assertEquals(2018, $result_nyusya_taishoku_year[0][1]->nyushanen);
+        $this->assertEquals(2019, $result_nyusya_taishoku_year[0][2]->nyushanen);
         $this->assertEquals(2019, $result_nyusya_taishoku_year[1][0]->taishokunen);
     }
 
@@ -764,8 +765,8 @@ class BaseClassTest extends TestCase
             'fuyo_kazoku' => null,
             'test' => null,
             'remarks' => null,
-            `updated_at` => '""',
-            `created_at` => '""'
+            // `updated_at` => '""',
+            // `created_at` => '""'
         ];
 
         
@@ -785,5 +786,7 @@ class BaseClassTest extends TestCase
          \DB::table('employees')
          ->where('shain_cd', '2021')
          ->delete();
+
     }
+    
 }

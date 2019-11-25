@@ -19,7 +19,16 @@ class HolidayController extends Controller
         $employee = Employee::find($id);
 
         //詳細ページのプルダウンで選択された年度
-        $post_year = $_POST['year'];
+        if(isset($_POST['year'])){
+            $post_year = $_POST['year'];
+        }else{
+            // $post_year = substr($id, 0, 4);
+            $post_year = '2019';
+            
+            // if($post_year == '2019'){
+            //     $post_year == '00';
+            // }
+        }
         // var_dump('何年の有給についてか:'.$post_year);
 
         list($kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre) = $class->kijunbi($id);
@@ -620,13 +629,20 @@ class HolidayController extends Controller
             }
         }
 
+        var_dump($array_count);
+
 
 
 
 
         // トップページに戻るボタン押下時のスクロール位置とトップページURL
-        $top_url = $_POST['top_url'];
-        $scroll_top = $_POST['scroll_top2'];
+        if(isset($_POST['top_url'])){
+            $top_url = $_POST['top_url'];
+            $scroll_top = $_POST['scroll_top2'];
+        }else{
+            $top_url = '/employee/public';
+            $scroll_top = '0';
+        }
 
 
         // echo '<pre>';
