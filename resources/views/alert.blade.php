@@ -33,11 +33,11 @@
 					<!-- 部門別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_department" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							部門別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton_department">
 							<form action="/employee/public/department1" method="GET" class="mt-2">
 								{{ csrf_field() }}
 								<input type="submit" name="department" value="代表取締役" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
@@ -65,11 +65,11 @@
 					<!-- 入社年別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_nyushabi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							入社年別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton_nyushabi">
 
 							@foreach ($select_nyusha_year as $select_nyusha_years)
 							<form action="/employee/public/nyushabi{{$select_nyusha_years->nyushanen}}" method="GET" class="mt-2">
@@ -85,11 +85,11 @@
 					<!-- 年代別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_age" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							年代別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton_age">
 							<form action="/employee/public/age20" method="GET" class="mt-2">
 								{{ csrf_field() }}
 								<input type="submit" name="age" value="20代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
@@ -121,11 +121,11 @@
 					<!-- 有給基準月別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_kijun_month" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							有給基準月別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton_kijun_month">
 							<form action="/employee/public/kijun_month01" method="GET" class="mt-2">
 								{{ csrf_field() }}
 								<input type="submit" name="kijun_month" value="1月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
@@ -188,11 +188,11 @@
 					<!-- 退職者年代別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_taishokubi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							退社年別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton_taishokubi">
 
 							@foreach ($select_taishoku_year as $select_taishoku_years)
 							<form action="/employee/public/taishokubi{{$select_taishoku_years->taishokunen}}" method="GET" class="mt-2">
@@ -211,12 +211,12 @@
 					<!-- 未消化アラート -->
 					<form action="/employee/public/mishouka" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="all_count" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
 					<!-- 残数僅少アラート -->
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="all_department" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
 				</div>
 
@@ -257,7 +257,11 @@
 			<form action="/employee/public/add" method="POST">
 				{{ csrf_field() }}
 				<?php
-				$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+				if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+				} else {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+				}
 				?>
 				<!-- 現在のURLとスクロール位置を次のページに送る -->
 				<input type="hidden" name="url" value={{$url}}>
@@ -388,7 +392,11 @@
 									<form action="/employee/public/show/{{$employees2[$i][0][0][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
-										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+										 if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
 										?>
 										<!-- 現在のURLとスクロール位置を次のページに送る -->
 										<input type="hidden" name="url" value={{$url}}>

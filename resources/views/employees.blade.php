@@ -2,6 +2,22 @@
 
 @section('content')
 
+@if (count($errors) > 0)
+<!-- Form Error List -->
+<div class="alert alert-danger">
+	<strong>エラーが発生しました！</strong>
+
+	<br><br>
+
+	<ul>
+		<li>必須項目の未入力</li>
+		<li>社員コードの重複</li>
+		<li>サーバーエラー</li>
+	</ul>
+	<p>などが考えられます。お手数ですが上記をお確かめのうえ、再度お試しください。</p>
+</div>
+@endif
+
 <!-- 更新完了時に表示されるメッセージ -->
 @if (session('status'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('status') }}</div>@endif
 <!-- 削除完了時に表示されるメッセージ -->
@@ -14,8 +30,6 @@
 		<div class="panel panel-default">
 
 			<div class="panel-body">
-
-				@include('common.errors')
 
 				<!-- Button -->
 				<p class="mt-3 mb-0 font-weight-bold">名簿表示</p>
@@ -32,11 +46,11 @@
 					<!-- 部門別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_department" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							部門別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton_department">
 							<form action="/employee/public/department1" method="GET" class="mt-2">
 								{{ csrf_field() }}
 								<input type="submit" name="department" value="代表取締役" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
@@ -61,11 +75,11 @@
 					<!-- 入社年別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_nyushabi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							入社年別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton_nyushabi">
 
 							@foreach ($select_nyusha_year as $select_nyusha_years)
 							<form action="/employee/public/nyushabi{{$select_nyusha_years->nyushanen}}" method="GET" class="mt-2">
@@ -81,11 +95,11 @@
 					<!-- 年代別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_age" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							年代別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton_age">
 							<form action="/employee/public/age20" method="GET" class="mt-2">
 								{{ csrf_field() }}
 								<input type="submit" name="age" value="20代" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
@@ -117,11 +131,11 @@
 					<!-- 有給基準月別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_kijun_month" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							有給基準月別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu overflow-auto" style="height:250px;" aria-labelledby="dropdownMenuButton_kijun_month">
 							<form action="/employee/public/kijun_month01" method="GET" class="mt-2">
 								{{ csrf_field() }}
 								<input type="submit" name="kijun_month" value="1月" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
@@ -178,17 +192,17 @@
 					<!-- 退職者 -->
 					<form action="/employee/public/retirement" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset" id="retirement">
 					</form>
 
 					<!-- 退職者年代別 -->
 					<div class="dropdown">
 						<!-- 切替ボタンの設定 -->
-						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="mr-2 mt-1 function-button dropdown-toggle" id="dropdownMenuButton_taishokubi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							退社年別
 						</button>
 						<!-- ドロップメニューの設定 -->
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton_taishokubi">
 
 							@foreach ($select_taishoku_year as $select_taishoku_years)
 							<form action="/employee/public/taishokubi{{$select_taishoku_years->taishokunen}}" method="GET" class="mt-2">
@@ -207,13 +221,13 @@
 					<!-- 未消化アラート -->
 					<form action="/employee/public/mishouka" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="all_count" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset" id="mishouka">
 					</form>
 
 					<!-- 残数僅少アラート -->
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="all_department" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset" id="zansu_kinshou">
 					</form>
 				</div>
 
@@ -240,18 +254,21 @@
 
 
 				<!-- その他機能ボタン押下時、ajax表示する場所 -->
-			<div id="result_pre"></div>
+				<div id="result_pre"></div>
 
 			</div>
 		</div>
 
-		
 		@if(isset($title))
 		<div class="mt-5">
 			<form action="/employee/public/add" method="POST">
 				{{ csrf_field() }}
 				<?php
-				$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+				if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+				} else {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+				}
 				?>
 				<!-- 現在のURLとスクロール位置を次のページに送る -->
 				<input type="hidden" name="url" value={{$url}}>
@@ -272,8 +289,11 @@
 				<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
 					<thead>
 						<tr>
-							<th class="table-text hs-md-th1" style="min-width:30px">
+							<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
 								<div>操作</div>
+							</th>
+							<th class="table-text hs-md-th1" style="min-width:30px; width:120px">
+								<div>写真</div>
 							</th>
 							<th class="table-text hs-md-th2" style="min-width:50px">
 								<div>社員コード</div>
@@ -281,9 +301,9 @@
 							<th class="table-text hs-md-th3" style="min-width:50px">
 								<div>社員名</div>
 							</th>
-							<!-- <th class="table-text" style="min-width:50px">
+							<th class="table-text" style="min-width:50px">
 								<div>社員名（カナ）</div>
-							</th> -->
+							</th>
 							<!-- <th class="table-text" style="min-width:50px">
 								<div>社員名（ローマ字）</div>
 							</th> -->
@@ -365,7 +385,11 @@
 								<form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
 									{{ csrf_field() }}
 									<?php
-									$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+									if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+									} else {
+										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+									}
 									?>
 									<!-- 現在のURLとスクロール位置を次のページに送る -->
 									<input type="hidden" name="url" value={{$url}}>
@@ -383,14 +407,23 @@
 							</td>
 
 							<td class="table-text">
+								<!-- 写真がない場合は、nodata画像を表示 -->
+								@if(is_null($employee->pic))
+								<img src="{{ asset('image/nodata.jpg') }}" alt="" width="80%">　　　　
+								@else
+								<img src="{{ asset('storage/post_images/' .$employee->pic) }}" style="width: 80%;">
+								@endif
+
+							</td>
+							<td class="table-text">
 								<div>{{ $employee->shain_cd }}</div>
 							</td>
 							<td class="table-text">
 								<div>{{ $employee->shain_mei }}</div>
 							</td>
-							<!-- <td class="table-text">
+							<td class="table-text">
 								<div>{{ $employee->shain_mei_kana }}</div>
-							</td> -->
+							</td>
 							<!-- <td class="table-text">
 								<div>{{ $employee->shain_mei_romaji }}</div>
 							</td> -->
@@ -487,7 +520,6 @@
 		$(window).scrollTop(<?php echo @$_REQUEST['post_scroll_top']; ?>);
 		var scroll_top = 0;
 	}
-
 </script>
 
 @endsection

@@ -25,11 +25,13 @@
                         <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を送る -->
                         <input type="hidden" name="top_url" value={{$post_url}}>
                         <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
-                        <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
+                        <button type="submit" class="btn btn-primary btn-lg mt-3" id="show_top_edit_button">編集</button>
                     </form>
                 </div>
             </div>
         </div>
+
+
 
 
         <div class="panel panel-default mt-5">
@@ -136,6 +138,17 @@
             </div>
 
             <div class="panel-body">
+
+                <div class="text-center mt-5 mb-3">
+                    @if ($employee->pic)
+                    <p>使用中の写真</p>
+                    <img src="../storage/post_images/{{ $employee->pic }}" style="width: 20%;">
+                    @else
+                    <p>使用中の写真はありません</p>
+                    <img src="{{ asset('image/nodata.jpg') }}" alt="" width="20%">
+                    @endif
+                </div>
+
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
                     <thead>
 
@@ -264,7 +277,7 @@
                     <!-- トップ画面から送られてきたトップ画面のURLとスクロール位置を送る -->
                     <input type="hidden" name="top_url" value={{$post_url}}>
                     <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
-                    <button type="submit" class="btn btn-primary btn-lg mt-3">編集</button>
+                    <button type="submit" class="btn btn-primary btn-lg mt-3" id="show_bottom_edit_button">編集</button>
                 </form>
             </div>
 

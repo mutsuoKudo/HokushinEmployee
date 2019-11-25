@@ -4,6 +4,8 @@ use App\Employee;
 use App\Holiday;
 use Illuminate\Http\Request;
 
+use App\Library\BaseClass;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,10 +30,16 @@ Route::group(['middleware' => ['web']], function () {
     //全ての表示
     Route::get('/', ['middleware' => 'auth', function () {
         //employeesテーブルのデータをemployees変数に入れる
-        $employees = DB::table('employees')
-            ->whereNull('taishokubi')
-            ->get();
-        // $employees = Employee::all();
+        // クラスのインスタンス化
+        $class = new BaseClass();
+
+        // 社員情報取得
+        $employees = $class->all();
+
+        // $employees = DB::table('employees')
+        //     ->whereNull('taishokubi')
+        //     ->get();
+
         $title = "在籍者";
 
         $select_nyusha_year = DB::table('employees')
@@ -46,15 +54,25 @@ Route::group(['middleware' => ['web']], function () {
             ->orderBy('taishokunen', 'asc')
             ->get();
 
+        $test = db::table('employees')
+            ->select(db::raw('(CAST( pic AS CHAR( 1000 ) CHARACTER SET utf8 )) AS img'))
+            ->whereNull('taishokubi')
+            ->where('shain_cd', '00')
+            ->get();
 
-   
-        
+        // var_dump($select_nyusha_year[0]->nyushanen);   
+        // var_dump($test[0]->img);
+
+
+
+
         //view (employeesテンプレ)に渡す
         return view('employees', [
             'employees' => $employees,
             'title' => $title,
             'select_nyusha_year' => $select_nyusha_year,
             'select_taishoku_year' => $select_taishoku_year,
+            'test' => $test,
         ]);
     }]);
 
@@ -62,6 +80,12 @@ Route::group(['middleware' => ['web']], function () {
     //削除するところ
     Route::delete('/delete/{employee}', function (Employee $employee) {
         $employee->delete();
+
+        // クラスのインスタンス化（BaseClaee）
+        $class = new BaseClass();
+
+        // 同じ名前が含まれた写真を削除（＝旧データを削除）
+        $class->pic_file_delete($employee->shain_cd, $employee->shain_mei_romaji);
 
         return redirect('/')->with('delete', '削除完了!');
     });
@@ -71,8 +95,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/show/{employee}', 'CRUDController@show');
 
     //編集ボタンクリック→編集画面表示
-    // Route::get('/edit/{employee}', 'CRUDController@edit');
     Route::post('/edit/{employee}', 'CRUDController@edit');
+    Route::get('/edit2/{employee}', 'CRUDController@edit2');
 
     //有給取得日数明細ボタンクリック→有給明細
     // Route::get('/holiday/{employee}', 'HolidayController@holiday');
@@ -81,11 +105,18 @@ Route::group(['middleware' => ['web']], function () {
     //更新ボタンクリック→更新完了の場合、トップページにリダイレクト
     Route::patch('/update/{id}', 'CRUDController@update');
 
+    //写真削除ボタンクリック→削除完了の場合、トップページにリダイレクト
+    Route::post('/pic_delete/{id}', 'CRUDController@pic_delete');
+
+
     //新規登録ボタンクリック→新規登録画面の表示
     // Route::get('/add', 'CRUDController@add');
+    // Route::match(array('GET', 'POST'), '/add', 'CRUDController@add');
     Route::post('/add', 'CRUDController@add');
+    Route::get('/add2', 'CRUDController@add2');
 
     //新規登録画面の更新ボタンをクリック→エラーなしの場合、トップページにリダイレクト
+    // Route::post('/submit', 'CRUDController@submit')->name('/add');
     Route::post('/submit', 'CRUDController@submit');
 
 
@@ -103,7 +134,7 @@ Route::group(['middleware' => ['web']], function () {
     //部門別ボタンクリック→システム開発部ボタンクリック→システム開発部のテーブル表示
     Route::get('/department4', 'ButtonController@department4');
 
-    
+
     //入社年別ボタンクリック→2007年ボタンクリック→2007年入社のテーブル表示
     Route::get('/nyushabi2007', 'ButtonController@nyushabi2007');
     //入社年別ボタンクリック→2014年ボタンクリック→2014年入社のテーブル表示
@@ -171,11 +202,11 @@ Route::group(['middleware' => ['web']], function () {
     //退社年別ボタンクリック→2019年ボタンクリック→2019年退社のテーブル表示
     Route::get('/taishokubi2019', 'ButtonController@taishokubi2019');
     //入社退社年別ボタンクリック→2020年ボタンクリック→2020年入社のテーブル表示
-    // Route::get('/nyushabi2020', 'ButtonController@nyushabi2020');
+    Route::get('/nyushabi2020', 'ButtonController@nyushabi2020');
 
     //平均年齢（在籍者）ボタンクリック→平均年齢（在籍者）表示
     Route::get('/all_avg', 'ButtonController@all_avg');
-    
+
     //平均年齢（部門別）ボタンクリック→平均年齢（部門別）表示
     Route::get('/department_avg', 'ButtonController@department_avg');
     //平均年齢（男女別）ボタンクリック→平均年齢（男女別）表示
@@ -197,10 +228,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/zansu_kinshou', 'AlertController@zansu_kinshou');
 
 
-    //残数僅少アラート一覧ボタンクリック→残数僅少アラート表示
-    Route::post('/back', function () {
-        return back()->withInput();
-    });
+
+    // Route::post('/back', function () {
+    //     return back()->withInput();
+    // });
 
     // Route::get('/employee_doc/employee_doc.html', function () {
     //     return \File::get(public_path() . '/employee_doc/employee_doc.html');
@@ -211,7 +242,7 @@ Route::group(['middleware' => ['web']], function () {
     //shainテーブルアップデートボタンクリック→shainテーブルのアップデート
     // Route::get('/shain_update', 'ButtonController@shain_update');
 
-    //
+
     Route::auth();
 });
 

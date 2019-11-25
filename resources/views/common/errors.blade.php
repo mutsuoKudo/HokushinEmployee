@@ -1,14 +1,14 @@
 @if (count($errors) > 0)
 	<!-- Form Error List -->
 	<div class="alert alert-danger">
-		<strong>エラーが発生しています！</strong>
+		<strong>エラーが発生しました！</strong>
 
-		<br><br>
+		<!-- <br><br> -->
 
-		<ul>
+		<!-- <ul>
 			@foreach ($errors->all() as $error)
 				<li>{{ $error }}</li>
 			@endforeach
-		</ul>
+		</ul> -->
 	</div>
 @endif
