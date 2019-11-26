@@ -33,7 +33,7 @@ class CRUDController extends Controller
             $post_url = $_POST['url'];
             $scroll_top = $_POST['scroll_top'];
         } else {
-            $post_url = 'http://localhost/employee/public/';
+            $post_url = '/employee/public/';
             $scroll_top = '0';
         }
 
@@ -235,7 +235,7 @@ class CRUDController extends Controller
             $post_url = $_POST['url'];
             $scroll_top = $_POST['scroll_top'];
         } else {
-            $post_url = 'http://localhost/employee/public/';
+            $post_url = '/employee/public/';
             $scroll_top = '0';
         }
         
@@ -357,7 +357,8 @@ class CRUDController extends Controller
         $employee->save();
 
 
-        $top_url_edit = $_POST['top_url_edit'];
+        $top_url_edit = $request->top_url_edit;
+        // $top_url_edit = $_POST['top_url_edit'];
 
         // 画像はjpgとpngだけの対応で。
         if (isset($request->pic)) {
@@ -404,8 +405,10 @@ class CRUDController extends Controller
                 $file_extension_error = 'error';
                 $employee = Employee::find($id);
 
-                $top_url = $_POST['top_url_edit'];
-                $scroll_top = $_POST['top_scroll_top'];
+                $top_url = $request->top_url_edit;
+                $scroll_top = $request->top_scroll_top;
+                // $top_url = $_POST['top_url_edit'];
+                // $scroll_top = $_POST['top_scroll_top'];
 
                 return view('/edit')->with([
                     'file_extension_error' => $file_extension_error,

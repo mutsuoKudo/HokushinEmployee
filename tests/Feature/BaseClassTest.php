@@ -146,8 +146,11 @@ class BaseClassTest extends TestCase
         $this->assertEquals(2019010011, $result_kijun_month7[0]->shain_cd);
 
         $this->assertEquals(2019070011, $result_kijun_month1[0]->shain_cd);
+        $this->assertEquals(202012, $result_kijun_month1[1]->shain_cd);
 
         $this->assertEquals(2020, $result_kijun_month2[0]->shain_cd);
+
+        $this->assertEquals(202013, $result_kijun_month12[0]->shain_cd);
 
         // $this->assertEmpty($result_kijun_month2);
         $this->assertEmpty($result_kijun_month3);
@@ -156,7 +159,7 @@ class BaseClassTest extends TestCase
         $this->assertEmpty($result_kijun_month9);
         $this->assertEmpty($result_kijun_month10);
         $this->assertEmpty($result_kijun_month11);
-        $this->assertEmpty($result_kijun_month12);
+        // $this->assertEmpty($result_kijun_month12);
     }
 
     //退職したスタッフ情報
