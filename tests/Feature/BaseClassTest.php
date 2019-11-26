@@ -42,8 +42,9 @@ class BaseClassTest extends TestCase
 
         // var_dump($result_nyusya_taishoku_year);
 
-        $this->assertEquals(2018, $result_nyusya_taishoku_year[0][0]->nyushanen);
-        $this->assertEquals(2019, $result_nyusya_taishoku_year[0][1]->nyushanen);
+        $this->assertEquals(2007, $result_nyusya_taishoku_year[0][0]->nyushanen);
+        $this->assertEquals(2018, $result_nyusya_taishoku_year[0][1]->nyushanen);
+        $this->assertEquals(2019, $result_nyusya_taishoku_year[0][2]->nyushanen);
         $this->assertEquals(2019, $result_nyusya_taishoku_year[1][0]->taishokunen);
     }
 
@@ -145,8 +146,11 @@ class BaseClassTest extends TestCase
         $this->assertEquals(2019010011, $result_kijun_month7[0]->shain_cd);
 
         $this->assertEquals(2019070011, $result_kijun_month1[0]->shain_cd);
+        $this->assertEquals(202012, $result_kijun_month1[1]->shain_cd);
 
         $this->assertEquals(2020, $result_kijun_month2[0]->shain_cd);
+
+        $this->assertEquals(202013, $result_kijun_month12[0]->shain_cd);
 
         // $this->assertEmpty($result_kijun_month2);
         $this->assertEmpty($result_kijun_month3);
@@ -155,7 +159,7 @@ class BaseClassTest extends TestCase
         $this->assertEmpty($result_kijun_month9);
         $this->assertEmpty($result_kijun_month10);
         $this->assertEmpty($result_kijun_month11);
-        $this->assertEmpty($result_kijun_month12);
+        // $this->assertEmpty($result_kijun_month12);
     }
 
     //退職したスタッフ情報
@@ -764,8 +768,8 @@ class BaseClassTest extends TestCase
             'fuyo_kazoku' => null,
             'test' => null,
             'remarks' => null,
-            `updated_at` => '""',
-            `created_at` => '""'
+            // `updated_at` => '""',
+            // `created_at` => '""'
         ];
 
         
@@ -785,5 +789,7 @@ class BaseClassTest extends TestCase
          \DB::table('employees')
          ->where('shain_cd', '2021')
          ->delete();
+
     }
+    
 }

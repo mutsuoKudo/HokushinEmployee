@@ -21,10 +21,10 @@ class CRUDController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    // public function index()
+    // {
+    //     //
+    // }
 
     public function add()
     {
@@ -33,12 +33,14 @@ class CRUDController extends Controller
             $post_url = $_POST['url'];
             $scroll_top = $_POST['scroll_top'];
         } else {
-            $post_url = 'http://localhost/employee/public/';
-            $scroll_top = '100';
+            $post_url = '/employee/public/';
+            $scroll_top = '0';
         }
 
         // $post_url = $_POST['url'];
         // $scroll_top = $_POST['scroll_top'];
+
+
 
 
 
@@ -80,9 +82,16 @@ class CRUDController extends Controller
     {
 
         // $post_url_create = $_POST['post_url_create'];
-        $post_url_create = '';
+
+
+        $post_url_create = $request->post_url_create;
+        $scroll_top = $request->top_scroll_top;
         
-        $scroll_top = $_POST['top_scroll_top'];
+
+        // dd($post_url_create);
+        // var_dump($scroll_top);
+
+
 
 
 
@@ -219,8 +228,17 @@ class CRUDController extends Controller
         $year_month_b = $year_month_b_pre;
 
 
-        $post_url = $_POST['url'];
-        $scroll_top = $_POST['scroll_top'];
+        // $post_url = $_POST['url'];
+        // $scroll_top = $_POST['scroll_top'];
+
+        if (isset($_POST['url'])) {
+            $post_url = $_POST['url'];
+            $scroll_top = $_POST['scroll_top'];
+        } else {
+            $post_url = '/employee/public/';
+            $scroll_top = '0';
+        }
+        
 
 
         return view('/show')->with([
@@ -253,8 +271,18 @@ class CRUDController extends Controller
         $employee = Employee::find($id);
 
 
-        $top_url = $_POST['top_url'];
-        $scroll_top = $_POST['scroll_top2'];
+        // $top_url = $_POST['top_url'];
+        // $scroll_top = $_POST['scroll_top2'];
+
+        
+
+        if (isset($_POST['top_url'])) {
+            $top_url = $_POST['top_url'];
+            $scroll_top = $_POST['scroll_top2'];
+        } else {
+            $top_url = 'http://localhost/employee/public/';
+            $scroll_top = '0';
+        }
 
 
         return view('/edit')->with([
@@ -298,20 +326,6 @@ class CRUDController extends Controller
     // public function update(Request $request, $id)
     {
 
-        // // validation（チェックのみ）
-        // $validator = Validator::make($request->all(), [
-        //     'shain_cd' => 'required',
-        //     'shain_mei' => 'required',
-        //     'shain_mei_kana' => 'required',
-        //     'shain_mei_romaji' => 'required',
-        //     'gender' => 'required',
-        // ]);
-
-        // // validation エラーがある場合、エラーメッセージをダンプする
-        // if ($validator->fails()) {
-        //     dd( $validator->messages()->toArray() );
-        // }
-
         $employee = Employee::find($id);
 
         $employee->shain_cd = $request->input('shain_cd');
@@ -343,7 +357,8 @@ class CRUDController extends Controller
         $employee->save();
 
 
-        $top_url_edit = $_POST['top_url_edit'];
+        $top_url_edit = $request->top_url_edit;
+        // $top_url_edit = $_POST['top_url_edit'];
 
         // 画像はjpgとpngだけの対応で。
         if (isset($request->pic)) {
@@ -390,8 +405,10 @@ class CRUDController extends Controller
                 $file_extension_error = 'error';
                 $employee = Employee::find($id);
 
-                $top_url = $_POST['top_url_edit'];
-                $scroll_top = $_POST['top_scroll_top'];
+                $top_url = $request->top_url_edit;
+                $scroll_top = $request->top_scroll_top;
+                // $top_url = $_POST['top_url_edit'];
+                // $scroll_top = $_POST['top_scroll_top'];
 
                 return view('/edit')->with([
                     'file_extension_error' => $file_extension_error,
@@ -432,8 +449,16 @@ class CRUDController extends Controller
             }
         }
 
-        $top_url = $_POST['top_url_edit'];
-        $scroll_top = 10;
+        // $top_url = $_POST['top_url_edit'];
+        // $scroll_top = 10;
+
+        if (isset($_POST['top_url'])) {
+            $top_url = $_POST['top_url'];
+            $scroll_top = $_POST['scroll_top'];
+        } else {
+            $top_url = 'http://localhost/employee/public/';
+            $scroll_top = '0';
+        }
 
 
         return view('/edit')->with([

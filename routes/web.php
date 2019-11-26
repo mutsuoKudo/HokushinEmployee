@@ -116,7 +116,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/add2', 'CRUDController@add2');
 
     //新規登録画面の更新ボタンをクリック→エラーなしの場合、トップページにリダイレクト
-    Route::post('/submit', 'CRUDController@submit')->name('/add');
+    // Route::post('/submit', 'CRUDController@submit')->name('/add');
+    Route::post('/submit', 'CRUDController@submit');
 
 
 
