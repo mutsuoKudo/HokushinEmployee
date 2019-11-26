@@ -19,12 +19,12 @@ class HolidayController extends Controller
         $employee = Employee::find($id);
 
         //詳細ページのプルダウンで選択された年度
-        if(isset($_POST['year'])){
+        if (isset($_POST['year'])) {
             $post_year = $_POST['year'];
-        }else{
+        } else {
             // $post_year = substr($id, 0, 4);
             $post_year = '2019';
-            
+
             // if($post_year == '2019'){
             //     $post_year == '00';
             // }
@@ -84,6 +84,7 @@ class HolidayController extends Controller
 
             $kinzoku_year = $taishokubi_year - $nyushabi_year - 1;
 
+
             // 勤続年数は0より小さくならないようにする
             if ($kinzoku_year <= 0) {
                 $kinzoku_year = 0;
@@ -91,18 +92,19 @@ class HolidayController extends Controller
         } else {
 
 
-            // 初年度の人
-            if ($kijunbi_year + 1 >= $year and $kijunbi_month >= $month) {
-                $kinzoku_year = 0;
+            // 初年度の人　=　二回目の基準月が来ていない人
+            $second_kijunbi_year = $kijunbi_year + 1;
+            $second_kijunbi_month = $kijunbi_month;
 
+            if (($second_kijunbi_year > $year) or ($second_kijunbi_year == $year and $second_kijunbi_month > $month)) {
+                $kinzoku_year = 0;
             } elseif ($kijunbi_month > $month) {
                 $kinzoku_year = $year - 1 - $kijunbi_year;
-
             } else {
                 $kinzoku_year = $year - $kijunbi_year;
             }
         }
-        
+
 
         //配列の作成
         $array = [];
@@ -613,7 +615,6 @@ class HolidayController extends Controller
 
 
 
-
         //選択した年度と配列を結ぶ
         //初回基準月未満の人は別の配列にデータが入っているので除外、準社員のひと、基準月が来る前に退社した人はデータがないので除外
         if ($post_year == 00 or $post_year == 01 or $jun_shain == "準社員") {
@@ -629,17 +630,14 @@ class HolidayController extends Controller
             }
         }
 
-        var_dump($array_count);
-
-
 
 
 
         // トップページに戻るボタン押下時のスクロール位置とトップページURL
-        if(isset($_POST['top_url'])){
+        if (isset($_POST['top_url'])) {
             $top_url = $_POST['top_url'];
             $scroll_top = $_POST['scroll_top2'];
-        }else{
+        } else {
             $top_url = '/employee/public';
             $scroll_top = '0';
         }

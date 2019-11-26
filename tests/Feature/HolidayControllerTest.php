@@ -9,13 +9,16 @@ use Tests\TestCase;
 class HolidaycontrollerTest extends TestCase
 {
 
-    public function testController_HolidaycontrollerTest(){
+    public function testController_HolidaycontrollerTest()
+    {
 
         // $response = $this->json('post', '/holiday/2018100031');
         // $response->assertStatus(200);
 
         // 勤続年数12年
-        $response = $this->json('post', '/holiday/202012');
+        $response = $this->json('post', '/holiday/202012',[
+            'year' => '2020',
+        ]);
         $response->assertStatus(200);
 
         // 2019年退社
@@ -27,6 +30,12 @@ class HolidaycontrollerTest extends TestCase
         // $response = $this->json('post', '/holiday/2019070011');
         // $response->assertStatus(200);
 
+        $response->assertStatus(200);
+
+        $response = $this->json('get', '/mishouka');
+        $response->assertStatus(200);
+
+        $response = $this->json('get', '/zansu_kinshou');
         $response->assertStatus(200);
     }
 }

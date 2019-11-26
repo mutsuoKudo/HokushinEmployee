@@ -9,11 +9,11 @@ use Tests\TestCase;
 use App\Library\BaseClass;
 use App\Http\Controllers;
 use App\Http\Controllers\CRUDController;
+
 use DB;
 
-use Illuminate\Http\UploadedFile;
-use Tests\Feature\File;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdatePost;
+
 
 
 class ControllerTest extends TestCase
@@ -200,7 +200,7 @@ class ControllerTest extends TestCase
         // \DB::table('employees')
         // ->where('shain_cd', '00')
         // ->delete();
-             
+
 
         $response = $this->post('/show/00', [
             'url' => 'http://localhost/employee/public/',
@@ -216,10 +216,59 @@ class ControllerTest extends TestCase
         $response = $this->get('/edit2/00');
         $response->assertStatus(200);
 
-        
+
         // 　挿入したデータをを削除する
         \DB::table('employees')
         ->where('shain_cd', '00')
         ->delete();
+
+
+
+        // $response = $this->json('patch', '/update/00', [
+        //     'top_url_edit' => 'http://localhost/employee/public/',
+        //     'top_scroll_top' => '0',
+        //     'id' => '00',
+        //     'shain_cd' => '00',
+        //     'shain_mei' => 'アップデート',
+        //     'shain_mei_kana' => 'アップデート',
+        //     'shain_mei_romaji' => 'アップデート',
+        //     'shain_mail' => 'アップデート',
+        //     'gender' => '男',
+        //     'shain_zip_code' => null,
+        //     'shain_jyusho' => '札幌市',
+        //     'shain_jyusho_tatemono' => 'ハイツ',
+        //     'shain_birthday' => '1990-01-01',
+        //     'nyushabi' => 20110501,
+        //     'seishain_tenkanbi' => null,
+        //     'tensekibi' => null,
+        //     'taishokubi' => null,
+        //     'shain_keitai' => null,
+        //     'shain_tel' => null,
+        //     'koyohoken_bango' => null,
+        //     'shakaihoken_bango' => null,
+        //     'kisonenkin_bango' => null,
+        //     'monthly_saraly' => null,
+        //     'department' => '04',
+        //     'name_card' => null,
+        //     'id_card' => null,
+        //     'fuyo_kazoku' => null,
+        //     'test' => null,
+        //     'remarks' => null,
+        // ]);
+
+
+        // $response = $this->patch('/update/00', $data, [
+        //     'id' => '00'
+        // ]);
+
+        
+
+
+        // $response->assertStatus(200);
+
+        // 　挿入したデータをを削除する
+        // \DB::table('employees')
+        // ->where('shain_cd', '00')
+        // ->delete();
     }
 }
