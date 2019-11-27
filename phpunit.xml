@@ -34,6 +34,5 @@
         <server name="DB_DATABASE" value="test_laravel"/>
 
 
-
     </php>
 </phpunit>

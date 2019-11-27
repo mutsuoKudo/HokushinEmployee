@@ -86,9 +86,10 @@ class CRUDController extends Controller
 
         $post_url_create = $request->post_url_create;
         $scroll_top = $request->top_scroll_top;
-        
 
-        // dd($post_url_create);
+
+        // dd($request->pic);
+        // dd($request->shain_cd);
         // var_dump($scroll_top);
 
 
@@ -238,7 +239,7 @@ class CRUDController extends Controller
             $post_url = '/employee/public/';
             $scroll_top = '0';
         }
-        
+
 
 
         return view('/show')->with([
@@ -274,7 +275,7 @@ class CRUDController extends Controller
         // $top_url = $_POST['top_url'];
         // $scroll_top = $_POST['scroll_top2'];
 
-        
+
 
         if (isset($_POST['top_url'])) {
             $top_url = $_POST['top_url'];
