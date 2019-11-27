@@ -12,6 +12,9 @@ use App\Http\Controllers\CRUDController;
 
 use DB;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 use App\Http\Requests\UpdatePost;
 
 
@@ -191,15 +194,11 @@ class ControllerTest extends TestCase
             'id_card' => null,
             'fuyo_kazoku' => null,
             'test' => null,
+
             'remarks' => null,
         ]);
 
         $this->assertDatabaseHas('employees', ['shain_cd' => '00']);
-
-        // 　挿入したデータをを削除する
-        // \DB::table('employees')
-        // ->where('shain_cd', '00')
-        // ->delete();
 
 
         $response = $this->post('/show/00', [
@@ -216,59 +215,96 @@ class ControllerTest extends TestCase
         $response = $this->get('/edit2/00');
         $response->assertStatus(200);
 
+        $id = '00';
 
-        // 　挿入したデータをを削除する
+        $response = $this->json('patch', '/update/' . $id, [
+            'id' => '00',
+            'shain_cd' => '00',
+            'shain_mei' => 'アップデート',
+            'shain_mei_kana' => 'アップデート',
+            'shain_mei_romaji' => 'アップデート',
+            'shain_mail' => 'アップデート',
+            'gender' => '男',
+            'shain_zip_code' => null,
+            'shain_jyusho' => '札幌市',
+            'shain_jyusho_tatemono' => 'ハイツ',
+            'shain_birthday' => '1990-01-01',
+            'nyushabi' => 20110501,
+            'seishain_tenkanbi' => null,
+            'tensekibi' => null,
+            'taishokubi' => null,
+            'shain_keitai' => null,
+            'shain_tel' => null,
+            'koyohoken_bango' => null,
+            'shakaihoken_bango' => null,
+            'kisonenkin_bango' => null,
+            'monthly_saraly' => null,
+            'department' => '04',
+            'name_card' => null,
+            'id_card' => null,
+            'fuyo_kazoku' => null,
+            'test' => null,
+            'remarks' => null,
+        ]);
+
+        $this->assertDatabaseHas('employees', ['shain_mei' => 'アップデート']);
+
+
+
+        // shain_cd 00に写真のパスを保存（パスのみの保存でstorageに現物の保存はしていません）
         \DB::table('employees')
-        ->where('shain_cd', '00')
-        ->delete();
+            ->where('shain_cd', '00')
+            ->update(['pic' => '201911270000_00_update.jpg']);
+        // 保存されたかチェック
+        $this->assertDatabaseHas('employees', ['pic' => '201911270000_00_update.jpg']);
 
 
-
-        // $response = $this->json('patch', '/update/00', [
-        //     'top_url_edit' => 'http://localhost/employee/public/',
-        //     'top_scroll_top' => '0',
-        //     'id' => '00',
-        //     'shain_cd' => '00',
-        //     'shain_mei' => 'アップデート',
-        //     'shain_mei_kana' => 'アップデート',
-        //     'shain_mei_romaji' => 'アップデート',
-        //     'shain_mail' => 'アップデート',
-        //     'gender' => '男',
-        //     'shain_zip_code' => null,
-        //     'shain_jyusho' => '札幌市',
-        //     'shain_jyusho_tatemono' => 'ハイツ',
-        //     'shain_birthday' => '1990-01-01',
-        //     'nyushabi' => 20110501,
-        //     'seishain_tenkanbi' => null,
-        //     'tensekibi' => null,
-        //     'taishokubi' => null,
-        //     'shain_keitai' => null,
-        //     'shain_tel' => null,
-        //     'koyohoken_bango' => null,
-        //     'shakaihoken_bango' => null,
-        //     'kisonenkin_bango' => null,
-        //     'monthly_saraly' => null,
-        //     'department' => '04',
-        //     'name_card' => null,
-        //     'id_card' => null,
-        //     'fuyo_kazoku' => null,
-        //     'test' => null,
-        //     'remarks' => null,
-        // ]);
-
-
-        // $response = $this->patch('/update/00', $data, [
-        //     'id' => '00'
-        // ]);
-
-        
-
-
-        // $response->assertStatus(200);
+        $response = $this->json('post', '/pic_delete/' . $id);
+        $this->assertDatabaseMissing('employees', ['pic' => '201911270000_00_update.jpg']);
 
         // 　挿入したデータをを削除する
         // \DB::table('employees')
-        // ->where('shain_cd', '00')
-        // ->delete();
+        //     ->where('shain_cd', '00')
+        //     ->delete();
+
+
+        // Storage::disk('local')->put('file.png', 'Contents');
+        // $file = Storage::get('file.png');
+        // 作成した画像を移動
+        \Storage::disk('local')->put('file.png', 'Contents');
+        // $image = \Storage::disk('local')->get('storage\app\file.png');
+        $image = \Storage::get('file.png');;
+        $data = 'data: image/png;base64,' . base64_encode($image);
+
+
+        // Storage::fake('local');
+
+        // $file = UploadedFile::fake()->image('avatar.jpg');
+
+        $response = $this->json('patch', '/update/' . $id, [
+            'shain_mei' => 'update_pic',
+            'pic' => $data,
+        ]);
+
+
+        // ファイルが保存されたことをアサートする
+        // Storage::disk('local')->assertExists($file->hashName());
+
+        // ファイルが存在しないことをアサートする
+        // Storage::disk('local')->assertMissing('missing.jpg');
+
+
+        // Storage::disk('images')->assertExists('image/avatar.jpg');
+
+
+        // $this->assertDatabaseHas('employees', ['shain_mei' => '写真保存太郎']);
+        // $response->assertStatus(200);
+
+
+        // 　挿入したデータをを削除する
+        // \DB::table('employees')
+        //     ->where('shain_cd', '00')
+        //     ->delete();
     }
 }
+// 

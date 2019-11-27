@@ -105,7 +105,6 @@ class HolidayController extends Controller
             }
         }
 
-
         //配列の作成
         $array = [];
 
