@@ -66,9 +66,6 @@ class AlertController extends Controller
             ->get();
 
 
-
-
-
         // 基準月が最新データから3か月以内に来る人の社員コードが入った配列
         foreach ($employees_pre as $employee) {
             $select_shain_cd[] = [$employee->shain_cd];
@@ -133,13 +130,15 @@ class AlertController extends Controller
             //本年度終わりの年を計算
             if ($kijunbi_month >= 7) {
                 $kijunbi_year = date('Y') - 1 + 1;
-            } else {
-                $kijunbi_year = date('Y') - 1;
+            // } else {
+            //     $kijunbi_year = date('Y') - 1;
             }
+
 
 
             //本年度の終わりを作成
             $day_max = $kijunbi_year . $kijunbi_month;
+
 
             // 本年度の有給取得数を計算
             $holiday_count = $class->holiday_count($day_min, $day_max, $select_shain_cd[$i]);
@@ -177,6 +176,8 @@ class AlertController extends Controller
                 $select_shain_cd2[] = $select_employee[$i];
             }
         }
+
+
 
 
 
@@ -220,22 +221,28 @@ class AlertController extends Controller
                 $first_kijunbi_year_result_pre = 'large';
             }
 
+            
 
-            if ($kijunbi_month < $year_month_a2) {
-                $first_kijunbi_month_result_pre = 'small';
-            } elseif ($kijunbi_month == $year_month_a2) {
-                $first_kijunbi_month_result_pre = 'same';
+
+            if ($kijunbi_month <= $year_month_a2) {
+                $first_kijunbi_month_result_pre = 'same_small';
+            // } elseif ($kijunbi_month == $year_month_a2) {
+            //     $first_kijunbi_month_result_pre = 'same';
             } else {
                 $first_kijunbi_month_result_pre = 'large';
             }
 
 
 
+
             // 基準年が現在の年数より小さいとき(月数がなんでも))、基準年が現在年と同じで、月が現在年より小さいか同じの時は表示する（＝初回基準月以降のひと）。
             if (
                 ($first_kijunbi_year_result_pre == 'small'
-                    and ($first_kijunbi_month_result_pre == 'small' or $first_kijunbi_month_result_pre == 'same' or $first_kijunbi_month_result_pre == 'large'))
-                or ($first_kijunbi_year_result_pre == 'same' and ($first_kijunbi_month_result_pre == 'small' or $first_kijunbi_month_result_pre == 'same'))
+                    and ($first_kijunbi_month_result_pre == 'same_small' or $first_kijunbi_month_result_pre == 'large'))
+                or ($first_kijunbi_year_result_pre == 'same' and ($first_kijunbi_month_result_pre == 'same_small'))
+                // ($first_kijunbi_year_result_pre == 'small'
+                //     and ($first_kijunbi_month_result_pre == 'small' or $first_kijunbi_month_result_pre == 'same' or $first_kijunbi_month_result_pre == 'large'))
+                // or ($first_kijunbi_year_result_pre == 'same' and ($first_kijunbi_month_result_pre == 'small' or $first_kijunbi_month_result_pre == 'same'))
             ) {
                 // 表示する
                 $first_kijunbi_result = 'true';
@@ -252,23 +259,23 @@ class AlertController extends Controller
             }
         }
 
-        if (count($select_shain_cd3) == 0) {
-            list($year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre) = $class->year_month();
+        // if (count($select_shain_cd3) == 0) {
+        //     list($year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre) = $class->year_month();
 
-            //一番最近のデータの月
-            $month = $year_month_a2_pre;
+        //     //一番最近のデータの月
+        //     $month = $year_month_a2_pre;
 
-            return view('/alert')->with([
-                'title' => $title,
-                'select_nyusha_year' => $select_nyusha_year,
-                'select_taishoku_year' => $select_taishoku_year,
-                // 該当する社員コードの入った配列
-                'select_shain_cd3' => $select_shain_cd3,
-                // 最新データの月
-                'month' => $month,
+        //     return view('/alert')->with([
+        //         'title' => $title,
+        //         'select_nyusha_year' => $select_nyusha_year,
+        //         'select_taishoku_year' => $select_taishoku_year,
+        //         // 該当する社員コードの入った配列
+        //         'select_shain_cd3' => $select_shain_cd3,
+        //         // 最新データの月
+        //         'month' => $month,
 
-            ]);
-        }
+        //     ]);
+        // }
 
 
 
@@ -321,7 +328,7 @@ class AlertController extends Controller
 
             // 社員情報と基準月、取得日数を配列に格納
             $employees_array[] = [$employees_prepre, $select_employees_kijunbi_month, $select_holiday_count];
-            echo ('</pre>');
+            // echo ('</pre>');
         }
 
 
@@ -353,12 +360,12 @@ class AlertController extends Controller
             $month = $year_month_a2_pre;
 
 
-            if ($kijunbi_year + 1 >= $year and $kijunbi_month >= $month) {
-                $kinzoku_year = 0;
-            } else {
+            // 初年度の人は勤続年数を0にする = 2回目の基準日($kijunbi_year + 1 と　$kijunbi_monthであらわす）が到来していない人
+            // if ($kijunbi_year + 1 >= $year and $kijunbi_month >= $month) {
+            //     $kinzoku_year = 0;
+            // } else {
                 $kinzoku_year = $year - $kijunbi_year;
-            }
-
+            // }
 
 
             //入社日の取得
@@ -951,6 +958,7 @@ class AlertController extends Controller
 
             $second_kijunbi_year = (int) $kijunbi_array[$i][4] + 1;
             $second_kijunbi_month = (int) $kijunbi_array[$i][5];
+
 
 
             if (($second_kijunbi_year > (int) $year) or ($second_kijunbi_year == (int) $year and $second_kijunbi_month > (int) $month)) {

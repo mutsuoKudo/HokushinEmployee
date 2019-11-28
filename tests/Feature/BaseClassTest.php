@@ -152,12 +152,14 @@ class BaseClassTest extends TestCase
 
         $this->assertEquals(202013, $result_kijun_month12[0]->shain_cd);
 
+        $this->assertEquals(202014, $result_kijun_month10[0]->shain_cd);
+
         // $this->assertEmpty($result_kijun_month2);
         $this->assertEmpty($result_kijun_month3);
         $this->assertEmpty($result_kijun_month6);
         $this->assertEmpty($result_kijun_month8);
-        $this->assertEmpty($result_kijun_month9);
-        $this->assertEmpty($result_kijun_month10);
+        // $this->assertEmpty($result_kijun_month9);
+        // $this->assertEmpty($result_kijun_month10);
         $this->assertEmpty($result_kijun_month11);
         // $this->assertEmpty($result_kijun_month12);
     }
@@ -225,9 +227,9 @@ class BaseClassTest extends TestCase
 
         list($kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre) = $BaseClass->kijunbi($id);
 
-        var_dump($kijunbi_year_pre);
-        var_dump($kijunbi_month_pre);
-        var_dump($kijunbi_year_month_pre);
+        // var_dump($kijunbi_year_pre);
+        // var_dump($kijunbi_month_pre);
+        // var_dump($kijunbi_year_month_pre);
 
         $this->assertEquals('2019', $kijunbi_year_pre);
         $this->assertEquals('04', $kijunbi_month_pre);
@@ -247,9 +249,9 @@ class BaseClassTest extends TestCase
 
         list($first_day_max_year_pre, $first_day_max_month_pre, $first_day_max_pre) = $BaseClass->first_day_max_2($id);
 
-        var_dump($first_day_max_year_pre);
-        var_dump($first_day_max_month_pre);
-        var_dump($first_day_max_pre);
+        // var_dump($first_day_max_year_pre);
+        // var_dump($first_day_max_month_pre);
+        // var_dump($first_day_max_pre);
 
         $this->assertEquals('2020', $first_day_max_year_pre);
         $this->assertEquals('03', $first_day_max_month_pre);
@@ -267,7 +269,7 @@ class BaseClassTest extends TestCase
 
         $result_first_day_max = $BaseClass->first_day_max($id);
 
-        var_dump($result_first_day_max);
+        // var_dump($result_first_day_max);
 
         $this->assertEquals('202003', $result_first_day_max);
 
@@ -291,7 +293,7 @@ class BaseClassTest extends TestCase
         // 1年目の終わりから3ヶ月前を取得
         $result_warning = $BaseClass->warning($kijunbi_before3, 1);
 
-        var_dump($result_warning);
+        // var_dump($result_warning);
 
         $this->assertEquals('202012', $result_warning);
     }
@@ -307,7 +309,7 @@ class BaseClassTest extends TestCase
 
         $result_kisyu_nokori = $BaseClass->kisyu_nokori($huyo_holiday, $carry_over);
 
-        var_dump($result_kisyu_nokori);
+        // var_dump($result_kisyu_nokori);
 
         $this->assertEquals(10, $result_kisyu_nokori);
 
@@ -326,9 +328,9 @@ class BaseClassTest extends TestCase
 
         list($nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre) = $BaseClass->nyushabi_year_month($id);
 
-        var_dump($nyushabi_year_pre);
-        var_dump($nyushabi_month_pre);
-        var_dump($nyushabi_year_month_pre);
+        // var_dump($nyushabi_year_pre);
+        // var_dump($nyushabi_month_pre);
+        // var_dump($nyushabi_year_month_pre);
 
         $this->assertEquals('2018', $nyushabi_year_pre);
         $this->assertEquals('10', $nyushabi_month_pre);
@@ -350,7 +352,7 @@ class BaseClassTest extends TestCase
         // 1年目の年度終わり
         $result_day_max = $BaseClass->day_max($first_day_max, 1);
 
-        var_dump($result_day_max);
+        // var_dump($result_day_max);
 
         $this->assertEquals('202103', $result_day_max);
 
@@ -372,7 +374,7 @@ class BaseClassTest extends TestCase
 
         $result_holiday_count_int = $BaseClass->holiday_count_int($nyushabi_year_month_pre, $result_day_max, $id);
 
-        var_dump($result_holiday_count_int);
+        // var_dump($result_holiday_count_int);
 
         $this->assertEquals(4.5, $result_holiday_count_int);
 
@@ -392,8 +394,8 @@ class BaseClassTest extends TestCase
 
         $result_holiday_count_int = $BaseClass->holiday_count_int($nyushabi_year_month_pre, $result_day_max, $id2);
 
-        var_dump('here');
-        var_dump($result_holiday_count_int);
+        // var_dump('here');
+        // var_dump($result_holiday_count_int);
 
         $this->assertEquals(0, $result_holiday_count_int);
 
@@ -413,7 +415,7 @@ class BaseClassTest extends TestCase
 
         $result_nokori = $BaseClass->nokori($result_kisyu_nokori, $result_holiday_count_int);
 
-        var_dump($result_nokori);
+        // var_dump($result_nokori);
 
         $this->assertEquals(5.5, $result_nokori);
 
@@ -435,7 +437,7 @@ class BaseClassTest extends TestCase
 
         $result_carry_over_count = $BaseClass->carry_over_count($result_nokori, $max_carry_over);
 
-        var_dump($result_carry_over_count);
+        // var_dump($result_carry_over_count);
 
         $this->assertEquals(5.5, $result_carry_over_count);
     }
@@ -451,7 +453,7 @@ class BaseClassTest extends TestCase
         $max_carry_over = 14;
 
         $result_carry_over_count2 = $BaseClass->carry_over_count(14, $max_carry_over);
-        var_dump($result_carry_over_count2);
+        // var_dump($result_carry_over_count2);
 
         $this->assertEquals(14, $result_carry_over_count2);
     }
@@ -473,7 +475,7 @@ class BaseClassTest extends TestCase
         // 1年目の年度初め
         $result_day_min = $BaseClass->day_min($kijunbi_year_pre, 1, $kijunbi_month_pre);
 
-        var_dump($result_day_min);
+        // var_dump($result_day_min);
 
         $this->assertEquals(202004, $result_day_min);
 
@@ -629,9 +631,9 @@ class BaseClassTest extends TestCase
 
         $result_holiday_count = $BaseClass->holiday_count($day_min, $day_max, $id);
 
-        var_dump($result_holiday_count);
-        var_dump($day_min);
-        var_dump($day_max);
+        // var_dump($result_holiday_count);
+        // var_dump($day_min);
+        // var_dump($day_max);
 
         $this->assertEquals("4.5", $result_holiday_count[0]->sumday);
     }
@@ -647,8 +649,8 @@ class BaseClassTest extends TestCase
         //入社年月を求める
         list($nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre, $nyushabi_pre) = $BaseClass->all_nyushabi_year_month(0);
 
-        var_dump('here');
-        var_dump($nyushabi_year_pre);
+        // var_dump('here');
+        // var_dump($nyushabi_year_pre);
 
         // 入社年月
         $nyushabi = $nyushabi_year_month_pre;
@@ -723,7 +725,8 @@ class BaseClassTest extends TestCase
             ->select('pic')
             ->get();
 
-        var_dump($result_pic_file_db_save_pre[0]->pic);
+        // var_dump($result_pic_file_db_save_pre[0]->pic);
+
         $result_pic_file_db_save = $result_pic_file_db_save_pre[0]->pic;
 
         $this->assertEquals("2020000000_2018100031_tesuto de-ta.jpg", $result_pic_file_db_save);
@@ -781,7 +784,7 @@ class BaseClassTest extends TestCase
             ->where('shain_cd','2021')
             ->get();
 
-            var_dump($result_employee_create[0]->shain_cd);
+            // var_dump($result_employee_create[0]->shain_cd);
 
         $this->assertEquals("2021", $result_employee_create[0]->shain_cd);
 
@@ -789,6 +792,8 @@ class BaseClassTest extends TestCase
          \DB::table('employees')
          ->where('shain_cd', '2021')
          ->delete();
+
+         var_dump('BaseClassTest END');
 
     }
     
