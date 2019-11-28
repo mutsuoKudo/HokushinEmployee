@@ -9,14 +9,17 @@ use Tests\TestCase;
 use App\Library\BaseClass;
 use App\Http\Controllers;
 use App\Http\Controllers\CRUDController;
+
 use DB;
 
 use Illuminate\Http\UploadedFile;
-use Tests\Feature\File;
 use Illuminate\Support\Facades\Storage;
 
+use App\Http\Requests\UpdatePost;
 
-class ControllerTest extends TestCase
+
+
+class ButtonControllerTest extends TestCase
 {
     public function testController_ButtonController()
     {
@@ -149,77 +152,9 @@ class ControllerTest extends TestCase
 
         $response = $this->json('get', '/age_count');
         $response->assertStatus(200);
+
+        var_dump('ButtonControllerTest END');
     }
 
-    public function testController_CRUDController()
-    {
-
-        $response = $this->json('post', '/add');
-        $response->assertStatus(200);
-
-
-        $response = $this->json('get', '/add2');
-        $response->assertStatus(200);
-
-
-
-        $response = $this->json('post', '/submit', [
-            'post_url_create' => 'http://localhost/employee/public/',
-            'top_scroll_top' => '0',
-            'shain_cd' => '00',
-            'shain_mei' => '新規登録',
-            'shain_mei_kana' => '新規登録',
-            'shain_mei_romaji' => 'shinkitouroku',
-            'shain_mail' => '新規登録',
-            'gender' => '男',
-            'shain_zip_code' => null,
-            'shain_jyusho' => '札幌市',
-            'shain_jyusho_tatemono' => 'ハイツ',
-            'shain_birthday' => '1990-01-01',
-            'nyushabi' => 20110501,
-            'seishain_tenkanbi' => null,
-            'tensekibi' => null,
-            'taishokubi' => null,
-            'shain_keitai' => null,
-            'shain_tel' => null,
-            'koyohoken_bango' => null,
-            'shakaihoken_bango' => null,
-            'kisonenkin_bango' => null,
-            'monthly_saraly' => null,
-            'department' => '04',
-            'name_card' => null,
-            'id_card' => null,
-            'fuyo_kazoku' => null,
-            'test' => null,
-            'remarks' => null,
-        ]);
-
-        $this->assertDatabaseHas('employees', ['shain_cd' => '00']);
-
-        // 　挿入したデータをを削除する
-        // \DB::table('employees')
-        // ->where('shain_cd', '00')
-        // ->delete();
-             
-
-        $response = $this->post('/show/00', [
-            'url' => 'http://localhost/employee/public/',
-            'scroll_top' => '0',
-        ]);
-        $response->assertStatus(200);
-
-
-        $response = $this->post('/edit/00');
-        $response->assertStatus(200);
-
-
-        $response = $this->get('/edit2/00');
-        $response->assertStatus(200);
-
-        
-        // 　挿入したデータをを削除する
-        \DB::table('employees')
-        ->where('shain_cd', '00')
-        ->delete();
-    }
+    
 }

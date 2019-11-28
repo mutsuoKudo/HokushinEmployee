@@ -278,7 +278,7 @@
 				<!-- DBのholidayテーブルに入力されている最新のデータ月 -->
 				<p style="color:red; font-size:15px;">※{{$month}}月末時点のデータです</p>
 
-				<p id="print" width="150" height="30"><a href="#" class="btn btn-success btn-lg">このページを印刷</a></p>
+				<p id="print" width="150" height="30"><a href="" class="btn btn-success btn-lg">このページを印刷</a></p>
 			</div>
 			@endif
 

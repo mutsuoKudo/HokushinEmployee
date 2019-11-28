@@ -10,9 +10,8 @@ use App\Http\Requests\CreatePost;
 
 use App\Library\BaseClass;
 
-use  App\Http\Controllers\Request;
-
-
+// use  App\Http\Controllers\Request;
+use Illuminate\Http\Request;
 
 class CRUDController extends Controller
 {
@@ -26,23 +25,17 @@ class CRUDController extends Controller
     //     //
     // }
 
-    public function add()
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function add(Request $request)
     {
 
-        if (isset($_POST['url'])) {
-            $post_url = $_POST['url'];
-            $scroll_top = $_POST['scroll_top'];
-        } else {
-            $post_url = 'http://localhost/employee/public/';
-            $scroll_top = '0';
-        }
-
-        // $post_url = $_POST['url'];
-        // $scroll_top = $_POST['scroll_top'];
-
-
-
-
+        $post_url = $request->url;
+        $scroll_top = $request->scroll_top;
 
         return view('/create')->with([
             'post_url' => $post_url,
@@ -58,9 +51,6 @@ class CRUDController extends Controller
 
         $post_url = '/employee/public/';
         $scroll_top = 0;
-
-
-
 
         return view('/create')->with([
             'post_url' => $post_url,
@@ -81,18 +71,8 @@ class CRUDController extends Controller
 
     {
 
-        // $post_url_create = $_POST['post_url_create'];
-
-
         $post_url_create = $request->post_url_create;
         $scroll_top = $request->top_scroll_top;
-        
-
-        // dd($post_url_create);
-        // var_dump($scroll_top);
-
-
-
 
 
         if (isset($request->pic)) {
@@ -167,14 +147,13 @@ class CRUDController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+
         $employee = Employee::find($id);
 
         $class = new BaseClass();
@@ -228,18 +207,8 @@ class CRUDController extends Controller
         $year_month_b = $year_month_b_pre;
 
 
-        // $post_url = $_POST['url'];
-        // $scroll_top = $_POST['scroll_top'];
-
-        if (isset($_POST['url'])) {
-            $post_url = $_POST['url'];
-            $scroll_top = $_POST['scroll_top'];
-        } else {
-            $post_url = 'http://localhost/employee/public/';
-            $scroll_top = '0';
-        }
-        
-
+        $post_url = $request->url;
+        $scroll_top = $request->scroll_top;
 
         return view('/show')->with([
             'employee' => $employee,
@@ -260,30 +229,17 @@ class CRUDController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+
         $employee = Employee::find($id);
 
-
-        // $top_url = $_POST['top_url'];
-        // $scroll_top = $_POST['scroll_top2'];
-
-        
-
-        if (isset($_POST['top_url'])) {
-            $top_url = $_POST['top_url'];
-            $scroll_top = $_POST['scroll_top2'];
-        } else {
-            $top_url = 'http://localhost/employee/public/';
-            $scroll_top = '0';
-        }
-
+        $top_url = $request->top_url;
+        $scroll_top = $request->scroll_top2;
 
         return view('/edit')->with([
             'employee' => $employee,
@@ -295,14 +251,11 @@ class CRUDController extends Controller
 
     public function edit2($id)
     {
-        //
-        $employee = Employee::find($id);
 
+        $employee = Employee::find($id);
 
         $top_url = '/employee/public/';
         $scroll_top = 0;
-
-
 
         return view('/edit')->with([
             'employee' => $employee,
@@ -357,7 +310,8 @@ class CRUDController extends Controller
         $employee->save();
 
 
-        $top_url_edit = $_POST['top_url_edit'];
+        $top_url_edit = $request->top_url_edit;
+        // $top_url_edit = $_POST['top_url_edit'];
 
         // 画像はjpgとpngだけの対応で。
         if (isset($request->pic)) {
@@ -404,8 +358,10 @@ class CRUDController extends Controller
                 $file_extension_error = 'error';
                 $employee = Employee::find($id);
 
-                $top_url = $_POST['top_url_edit'];
-                $scroll_top = $_POST['top_scroll_top'];
+                $top_url = $request->top_url_edit;
+                $scroll_top = $request->top_scroll_top;
+                // $top_url = $_POST['top_url_edit'];
+                // $scroll_top = $_POST['top_scroll_top'];
 
                 return view('/edit')->with([
                     'file_extension_error' => $file_extension_error,
@@ -420,8 +376,13 @@ class CRUDController extends Controller
     }
 
 
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     // 編集画面に表示される写真の削除ボタンの処理
-    public function pic_delete($id)
+    public function pic_delete(Request $request, $id)
     {
 
         // データベースのpicカラムをnullにする
@@ -448,14 +409,16 @@ class CRUDController extends Controller
 
         // $top_url = $_POST['top_url_edit'];
         // $scroll_top = 10;
+        $top_url = $request->top_url_edit;
+        $scroll_top = 0;
 
-        if (isset($_POST['top_url'])) {
-            $top_url = $_POST['top_url'];
-            $scroll_top = $_POST['scroll_top'];
-        } else {
-            $top_url = 'http://localhost/employee/public/';
-            $scroll_top = '0';
-        }
+        // if (isset($_POST['top_url'])) {
+        //     $top_url = $_POST['top_url'];
+        //     $scroll_top = $_POST['scroll_top'];
+        // } else {
+        //     $top_url = 'http://localhost/employee/public/';
+        //     $scroll_top = '0';
+        // }
 
 
         return view('/edit')->with([
