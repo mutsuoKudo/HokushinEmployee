@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Employee;
 use \DB;
 use App\Library\BaseClass;
-// use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 
 class HolidayController extends Controller
@@ -43,8 +42,6 @@ class HolidayController extends Controller
         $kijunbi_year_month = $kijunbi_year_month_pre;
         // var_dump('基準年月:' . $kijunbi_year_month);
 
-
-        //入社日の取得
         //入社日の取得
         list($nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre) = $class->nyushabi_year_month($id);
 
@@ -90,7 +87,6 @@ class HolidayController extends Controller
             }
         } else {
 
-
             // 初年度の人　=　二回目の基準月が来ていない人
             $second_kijunbi_year = $kijunbi_year + 1;
             $second_kijunbi_month = $kijunbi_month;
@@ -108,7 +104,7 @@ class HolidayController extends Controller
         $array = [];
 
 
-        //勤続年数分のデータを配列にいれる。 基準日が2017年だったら、2017年・2018年・2019年分
+        //勤続年数分のデータを配列にいれる。 
         for ($i = 0; $i <= $kinzoku_year; $i++) {
 
 
@@ -500,7 +496,6 @@ class HolidayController extends Controller
 
         //初回基準日に達していない場合・・・
         $array2 = [];
-        //一番最近のデータの年月より初回基準日が大きい人は初回基準日未満
 
         if ($post_year == 00) {
             // echo ('<pre>');
@@ -544,60 +539,6 @@ class HolidayController extends Controller
         }
 
 
-        // 初回基準月未満で退職した人
-        $array3 = [];
-        if (isset($employee->taishokubi)) {
-            // var_dump('退職者');
-
-            list($kijunbi_year_pre, $kijunbi_month_pre, $kijunbi_year_month_pre) = $class->kijunbi($id);
-
-            // 基準年月を抜き出す
-            $kijunbi_year_month = $kijunbi_year_month_pre;
-            // var_dump('基準年月:' . $kijunbi_year_month);
-
-            if ($post_year == 01) {
-                // if ($employee->taishokubi < $kijunbi_year_month) {
-                // echo ('<pre>');
-                // var_dump('一年未満で退職した人');
-
-                //付与日数
-                $huyo_holiday = "3";
-                //最大繰り越し日数
-                $max_carry_over = "3";
-                //前期繰越
-                $carry_over = 0;
-
-                // 期首残高（付与日数+前期繰越）
-                $kisyu_nokori = $class->kisyu_nokori($huyo_holiday, $carry_over);
-                // var_dump('期首残高:');
-                // var_dump($kisyu_nokori);
-
-                //消化日数
-                $holiday_count_int = $class->holiday_count_int($nyushabi_year_month, $kijunbi_year_month, $id);
-                // var_dump('消化日数:');
-                // var_dump($holiday_count_int);
-
-                //消化残（期首残高-消化日数）
-                $nokori = $class->nokori($kisyu_nokori, $holiday_count_int);
-                // var_dump('消化残:');
-                // var_dump($nokori);
-
-                //繰越日数（消化残が最大繰り越し日数より大きい場合、繰り越し日数は最大繰り越し日数と同じになる。小さい場合、繰り越し日数は消化残と同じ日数になる。）
-                $carry_over_count = $class->carry_over_count($nokori, $max_carry_over);
-                // var_dump('繰越日数:');
-                // var_dump($carry_over_count);
-
-                //月別消化日数
-                $get_holiday = $class->get_holiday($id, $nyushabi_year_month, $kijunbi_year_month);
-                // var_dump($i . '消化日数:');
-                // var_dump($get_holiday);
-
-                //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]月別消化日数
-                $array3[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $get_holiday];
-                // echo ('</pre>');
-            }
-        }
-
 
         //準社員の人は有給がないので表示しない
         $jun_shain_pre = DB::table('employees')
@@ -615,13 +556,16 @@ class HolidayController extends Controller
 
         //選択した年度と配列を結ぶ
         //初回基準月未満の人は別の配列にデータが入っているので除外、準社員のひと、基準月が来る前に退社した人はデータがないので除外
-        if ($post_year == 00 or $post_year == 01 or $jun_shain == "準社員") {
+        // if ($post_year == 00 or $post_year == 01 or $jun_shain == "準社員") {
+        if ($post_year == 00 or $jun_shain == "準社員") {
+            // $array_countは$arrayの添え字？で使用する。初回基準月未満及び準社員の有給データは$arraに入っていないので、$array_countは必要ない。
+            // 初回基準月以降及び正社員のひとの$array_countは0以上になるので、ここでは-1にしとく。
             $array_count = -1;
         } else {
 
             //勤続年数分配列が作られているので、勤続年数分繰り返す
             for ($y = 0; $y <= $kinzoku_year; $y++) {
- 
+
                 if ($post_year - $kijunbi_year == $y) {
                     $array_count = $y;
                 }
@@ -630,19 +574,10 @@ class HolidayController extends Controller
 
 
 
-
-
         // トップページに戻るボタン押下時のスクロール位置とトップページURL
         $top_url = $request->top_url;
         $scroll_top = $request->scroll_top2;
 
-
-
-
-        // echo '<pre>';
-        // var_dump('ここよ');
-        // var_dump($post_year);
-        // echo '</pre>';
 
         // 未消化アラート
         // 初回基準月未満の人と準社員のひとのアラートは表示しない
@@ -652,12 +587,10 @@ class HolidayController extends Controller
             //未消化アラート表示の対象者で基準月が3か月以内に迫っていて消化日数が5日以下の場合、アラートを表示する
         } else {
 
-            if ($array[$array_count][9] <= $year_month_b and $array[$array_count][4] <= 5) {
+            if ($array[$array_count][9] <= $year_month_b and $array[$array_count][4] < 5) {
                 $mishouka_alert = "yes";
-
             } else {
                 $mishouka_alert = "no";
-
             }
         }
 
@@ -679,13 +612,13 @@ class HolidayController extends Controller
             'kijunbi_month' => $kijunbi_month,
             //基準年月
             'kijunbi_year_month' => $kijunbi_year_month,
-            //現在の年月-2か月（月日入り）
+            //現在の年月（月日入り）
             'year_month_a' => $year_month_a,
-            //現在の年月-2か月（文字なし）
+            //現在の年月（文字なし）
             'year_month_b' => $year_month_b,
-            //現在の年月-2か月（年のみ）
+            //現在の年月（年のみ）
             'year_month_a1' => $year_month_a1,
-            //現在の年月-2か月（月のみ）
+            //現在の年月（月のみ）
             'year_month_a2' => $year_month_a2,
             //入社日年月
             'nyushabi_year_month' => $nyushabi_year_month,
@@ -704,7 +637,7 @@ class HolidayController extends Controller
             //配列2(研修期間中の)
             'array2' => $array2,
             //配列3(初回基準月未満で退職した人の)
-            'array3' => $array3,
+            // 'array3' => $array3,
             //配列の指定
             'array_count' => $array_count,
 

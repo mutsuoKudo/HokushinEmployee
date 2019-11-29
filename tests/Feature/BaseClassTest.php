@@ -142,26 +142,29 @@ class BaseClassTest extends TestCase
         $result_kijun_month12 = $BaseClass->kijun_month("%-06-%");
 
         $this->assertEquals(2018100031, $result_kijun_month4[0]->shain_cd);
+
         $this->assertEquals(2018110031, $result_kijun_month5[0]->shain_cd);
+
         $this->assertEquals(2019010011, $result_kijun_month7[0]->shain_cd);
 
         $this->assertEquals(2019070011, $result_kijun_month1[0]->shain_cd);
         $this->assertEquals(202012, $result_kijun_month1[1]->shain_cd);
 
-        $this->assertEquals(2020, $result_kijun_month2[0]->shain_cd);
-
         $this->assertEquals(202013, $result_kijun_month12[0]->shain_cd);
 
         $this->assertEquals(202014, $result_kijun_month10[0]->shain_cd);
+        $this->assertEquals(202015, $result_kijun_month10[1]->shain_cd);
+        $this->assertEquals(202017, $result_kijun_month10[2]->shain_cd);
+        $this->assertEquals(202018, $result_kijun_month10[3]->shain_cd);
 
-        // $this->assertEmpty($result_kijun_month2);
+        $this->assertEquals(202016, $result_kijun_month9[0]->shain_cd);
+
+        $this->assertEmpty($result_kijun_month2);
         $this->assertEmpty($result_kijun_month3);
         $this->assertEmpty($result_kijun_month6);
         $this->assertEmpty($result_kijun_month8);
-        // $this->assertEmpty($result_kijun_month9);
-        // $this->assertEmpty($result_kijun_month10);
         $this->assertEmpty($result_kijun_month11);
-        // $this->assertEmpty($result_kijun_month12);
+
     }
 
     //退職したスタッフ情報
@@ -207,9 +210,9 @@ class BaseClassTest extends TestCase
     public function testBaseClass_variable_container2()
     {
 
-        $id2 = "2020";
+        $id2 = "202013";
 
-        $this->assertEquals('2020', $id2);
+        $this->assertEquals('202013', $id2);
 
         return $id2;
     }
@@ -775,26 +778,24 @@ class BaseClassTest extends TestCase
             // `created_at` => '""'
         ];
 
-        
+
 
         // 入力した内容を新規登録
         $BaseClass->employee_create((object) $request);
 
         $result_employee_create = DB::table('employees')
-            ->where('shain_cd','2021')
+            ->where('shain_cd', '2021')
             ->get();
 
-            // var_dump($result_employee_create[0]->shain_cd);
+        // var_dump($result_employee_create[0]->shain_cd);
 
         $this->assertEquals("2021", $result_employee_create[0]->shain_cd);
 
-         //　挿入したデータをを削除する
-         \DB::table('employees')
-         ->where('shain_cd', '2021')
-         ->delete();
+        //　挿入したデータをを削除する
+        \DB::table('employees')
+            ->where('shain_cd', '2021')
+            ->delete();
 
-         var_dump('BaseClassTest END');
-
+        var_dump('BaseClassTest END');
     }
-    
 }
