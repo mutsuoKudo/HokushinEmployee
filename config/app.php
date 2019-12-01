@@ -231,7 +231,6 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         /* originals */
-        // 'Common' => 'app\Library\Common', // 追加
         'BaseClass' => 'app\Library\BaseClass', // 追加
 
     ],

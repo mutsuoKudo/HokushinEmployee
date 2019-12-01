@@ -36,10 +36,6 @@ Route::group(['middleware' => ['web']], function () {
         // 社員情報取得
         $employees = $class->all();
 
-        // $employees = DB::table('employees')
-        //     ->whereNull('taishokubi')
-        //     ->get();
-
         $title = "在籍者";
 
         $select_nyusha_year = DB::table('employees')

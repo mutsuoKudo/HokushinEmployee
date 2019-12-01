@@ -36,7 +36,7 @@ $top_scroll_top = $scroll_top;
 
 
         <div class="panel panel-default mt-5">
-
+            <!-- 登録しようとした画像がjpg/png以外の場合エラー -->
             @if(isset($file_extension_error))
             <div class="text-center mt-5 mb-5">
                 <p style="color:red">写真の拡張子がjpg・png以外だったので更新できませんでした</p>
@@ -47,6 +47,7 @@ $top_scroll_top = $scroll_top;
 
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 編集
+                <div class="text-danger" style="font-size:15px; padding-bottom: 2em">※社員コード・社員名・社員名（カナ）・社員名（ローマ字）・性別・部門は必須項目です</div>
                 <p style="font-size:20px">社員名：{{ $employee->shain_mei }}</p>
             </div>
 
@@ -65,8 +66,8 @@ $top_scroll_top = $scroll_top;
                         </div>
 
                         <a href="#pic_edit" class="btn btn-primary mt-2">写真変更</a>
-                        @else
 
+                        @else
                         <div class="mb-2">
                             <p>現在使用中の写真</p>
                             <img src="../storage/post_images/{{ $employee->pic }}" style="width: 10%;">
@@ -81,11 +82,6 @@ $top_scroll_top = $scroll_top;
                         </div>
 
                         <a href="#pic_edit" class="btn btn-primary mt-2">写真変更</a>
-
-                        <!-- <div class="form-image_url mt-4">
-                            input type="hidden" name="_method" value="PATCH">
-                            <input type="file" name="pic" value="{{ $employee->pic }}" style="margin:0 auto;">
-                        </div> -->
 
                         @endif
 
@@ -374,6 +370,7 @@ $top_scroll_top = $scroll_top;
                                         {{-- 隠しフィールド --}}
                                         <input type="hidden" name="_method" value="PATCH">
                                         <input type="text" name="department" value="{{ $employee->department }}" class="form-control" placeholder="例）04">
+                                        <p class="mt-2" style="color:red">※05（研修生）にした場合、表示されません</p>
                                         {{-- バリデーション --}}
                                         @if($errors->has('department'))
                                         <p class="text-danger" style="margin-bottom: 30px;">{{ $errors->first('department') }}</p>
@@ -440,7 +437,7 @@ $top_scroll_top = $scroll_top;
                                         <input type="hidden" name="_method" value="PATCH">
                                         <div class="form-image_url">
                                             <input type="file" name="pic" value="{{ $employee->pic }}">
-                                            <p class="mt-2" style="color:red">※ファイル形式 jpg/png です。</p>
+                                            <p class="mt-2" style="color:red">※ファイル形式 はjpg/png です。</p>
                                         </div>
 
                                         {{-- バリデーション --}}
