@@ -36,10 +36,6 @@ Route::group(['middleware' => ['web']], function () {
         // 社員情報取得
         $employees = $class->all();
 
-        // $employees = DB::table('employees')
-        //     ->whereNull('taishokubi')
-        //     ->get();
-
         $title = "在籍者";
 
         $select_nyusha_year = DB::table('employees')
@@ -101,6 +97,9 @@ Route::group(['middleware' => ['web']], function () {
     //有給取得日数明細ボタンクリック→有給明細
     // Route::get('/holiday/{employee}', 'HolidayController@holiday');
     Route::post('/holiday/{employee}', 'HolidayController@holiday');
+
+    //扶養家族明細ボタンクリック→扶養家族明細
+    Route::post('/dependent_info/{employee}', 'DependentController@dependent_info');
 
     //更新ボタンクリック→更新完了の場合、トップページにリダイレクト
     Route::patch('/update/{id}', 'CRUDController@update');

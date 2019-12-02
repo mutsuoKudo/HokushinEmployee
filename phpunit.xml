@@ -11,7 +11,17 @@
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
+        <!-- コードカバレッジ：app以下を対象にする -->
             <directory suffix=".php">./app</directory>
+            <exclude>
+            <!-- コードカバレッジ除外リスト -->
+                <directory suffix=".php">./app/Console</directory>
+                <directory suffix=".php">./app/Exceptions</directory>
+                <directory suffix=".php">./app/Http/Middleware</directory>
+                <directory suffix=".php">./app/Http/Controllers/Auth</directory>
+                <file>./app/Http/Controllers/HomeController.php</file>
+                <directory suffix=".php">./app/Providers</directory>
+            </exclude>
         </whitelist>
     </filter>
     <extensions>
@@ -32,7 +42,8 @@
 
         <!-- テスト用データベース -->
         <server name="DB_DATABASE" value="test_laravel"/>
-
-
     </php>
+
+    
+
 </phpunit>

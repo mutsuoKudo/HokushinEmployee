@@ -30,6 +30,7 @@ $top_scroll_top = $scroll_top;
 
     <div class="panel panel-default mt-5 col-12">
 
+        <!-- 登録しようとした画像がjpg/png以外の場合エラー -->
         @if(isset($file_extension_error))
         <div class="text-center mt-5 mb-5">
             <p style="color:red">写真の拡張子がjpg・png以外だったので新規登録できませんでした</p>
@@ -39,7 +40,7 @@ $top_scroll_top = $scroll_top;
 
         <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
             新規登録
-                <div class="text-danger" style="font-size:15px;">※社員コード・社員名・社員名（カナ）・社員名（ローマ字）・性別・部門は必須項目です</div>
+            <div class="text-danger" style="font-size:15px;">※社員コード・社員名・社員名（カナ）・社員名（ローマ字）・性別・部門は必須項目です</div>
         </div>
 
         <div class="panel-body">
@@ -182,6 +183,7 @@ $top_scroll_top = $scroll_top;
                             <th>部門<small class="float-right text-danger">※必須</small></th>
                             <td>
                                 <input type="text" name="department" class="form-control" placeholder="例）04" value="{{old('department')}}">
+                                <p class="mt-2" style="color:red">※05（研修生）にした場合、表示されません</p>
                             </td>
                         </tr>
                         <tr>
@@ -213,6 +215,7 @@ $top_scroll_top = $scroll_top;
                             <td>
                                 <div class="form-image_url">
                                     <input type="file" name="pic" value="{{ old('pic') }}">
+                                    <p class="mt-2" style="color:red">※ファイル形式 はjpg/png です。</p>
                                 </div>
                             </td>
                         </tr>

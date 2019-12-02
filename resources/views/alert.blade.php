@@ -278,7 +278,7 @@
 					基準月が4か月以内にくる人で、有給を5日以上取得していない人が対象です
 				</p>
 				<p style="color:red; font-size:15px;">
-					<!-- DBのholidayテーブルに入力されている最新のデータ月 -->
+					<!-- DBのholidayテーブルに入力されているデータの最新月 -->
 					※{{$month}}月末時点のデータです
 				</p>
 
@@ -386,7 +386,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- 対象人数分繰り返します -->
+							<!-- アラート対象人数分繰り返します -->
 							@for ($i=0; $i < count($select_shain_cd3); $i++) <tr>
 								<td>
 									<form action="/employee/public/show/{{$employees2[$i][0][0][0]->shain_cd}}" method="POST">

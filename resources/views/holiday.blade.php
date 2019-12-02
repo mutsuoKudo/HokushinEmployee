@@ -35,8 +35,8 @@
 
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
-                <!-- 詳細画面の年度選択の際、初回基準月未満の人は00が送られてくる -->
-                @if($post_year ==00 or $post_year == 01)
+                <!-- 初回基準月未満の人は00が送られてくる -->
+                @if($post_year ==00)
                 初回基準月未満
                 @else
                 {{$post_year}} 年度　有給取得日明細
@@ -97,7 +97,7 @@
                     </tbody>
                 </table>
 
-                <!-- 初回基準月に達していない場合 ※基準日が最新データの月よりも大きい場合 -->
+                <!-- 初回基準月に達していない場合 -->
                 @elseif($post_year == 00)
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
@@ -158,8 +158,8 @@
 
                 </table>
 
-
-                @elseif($post_year == 01)
+                <!-- 初回基準月以降かつ正社員の場合 -->
+                @else
                 <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
                     <tbody>
@@ -174,113 +174,50 @@
 
                         <tr>
                             <th class="text-center">期首残高</th>
-                            <td> {{$array3[0][3]}}　日</td>
-
+                            <td> {{$array[$array_count][3]}}　日</td>
                         </tr>
 
                         <tr>
                             <th class="text-center">消化日数</th>
-                            <td> {{$array3[0][4]}} 　日　</td>
+                            <!-- 基準月が3ヶ月以内に来る人で、5日以上有給を取得していない場合、未消化アラートを表示-->
+                            @if($mishouka_alert == "yes")
+                            <td style="color:red"> {{$array[$array_count][4]}} 　日　
+                                <small> ※残り期間({{$first_day_max_month}}月末まで)で最低5日取得する必要があります！</small>
+                            </td>
+                            @else
+                            <td> {{$array[$array_count][4]}} 　日　</td>
+                            @endif
 
                         </tr>
+
 
                         <tr>
                             <th class="text-center">消化残</th>
-                            <!-- 消化残が0以上2以下の時 -->
-                            @if($array3[0][5] < 2 AND $array3[0][5]>0)
-                                <td style="color:green;">{{$array3[0][5]}}　日 <small> ※有給残り僅かです！</small></td>
-                                @elseif($array3[0][5] <=0) <td style="color:red;">{{$array3[0][5]}}　日 <small> ※有給なくなりました！</small></td>
+                            <!-- 有給算日数が3日以下になった場合、残数僅少アラートを表示 -->
+                            @if($array[$array_count][5] <=3 AND $array[$array_count][5]>0)
+                                <td style="color:green;">{{$array[$array_count][5]}}　日 <small> ※有給残り僅かです！</small></td>
+                                <!-- 有給算日数が0日になった場合、なくなりましたアラートを表示 -->
+                                @elseif($array[$array_count][5] <=0) <td style="color:red;">{{$array[$array_count][5]}}　日 <small> ※有給なくなりました！</small></td>
                                     @else
-                                    <td>{{$array3[0][5]}}　日</td>
+                                    <td>{{$array[$array_count][5]}}　日</td>
                                     @endif
                         </tr>
-
 
                         <tr>
                             <th class="text-center">月別有給取得日数</th>
                             <td></td>
                         </tr>
-
-                        @if(empty($array3[0][7]))
+                        @foreach($array[$array_count][7] as $array)
                         <tr>
-                            <th class="text-center"></th>
-                            <td></td>
-                        </tr>
-                        @else
-                        @foreach($array3[0][7] as $array3)
-                        <tr>
-                            <th class="text-center"> {{$array3->year}}年
-                                {{$array3->month}}月</th>
-                            <td>{{$array3->day}}日</td>
+                            <th class="text-center"> {{$array->year}}年
+                                {{$array->month}}月</th>
+                            <td>{{$array->day}}日</td>
                         </tr>
                         @endforeach
-                        @endif
                     </tbody>
-
                 </table>
-
-
-                    <!-- 初回基準月以降かつ正社員の場合 -->
-                    @else
-                    <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
-
-                        <tbody>
-                            <tr>
-                                <th class="text-center">有給基準月</th>
-                                @if(empty($kijunbi_month))
-                                <td>データがありません</td>
-                                @else
-                                <td>{{ $kijunbi_month }}　月</td>
-                                @endif
-                            </tr>
-
-                            <tr>
-                                <th class="text-center">期首残高</th>
-                                <td> {{$array[$array_count][3]}}　日</td>
-                            </tr>
-
-
-                            <tr>
-                                <th class="text-center">消化日数</th>
-                                <!-- 基準月が3ヶ月以内に来る人で、5日以上有給を取得していない場合、未消化アラートを表示-->
-                                @if($mishouka_alert == "yes")
-                                <td style="color:red"> {{$array[$array_count][4]}} 　日　
-                                    <small> ※残り期間({{$first_day_max_month}}月末まで)で最低5日取得する必要があります！</small>
-                                </td>
-                                @else
-                                <td> {{$array[$array_count][4]}} 　日　</td>
-                                @endif
-
-                            </tr>
-
-
-                            <tr>
-                                <th class="text-center">消化残</th>
-                                <!-- 有給算日数が3日以下になった場合、残数僅少アラートを表示 -->
-                                @if($array[$array_count][5] <=3 AND $array[$array_count][5]>0)
-                                <td style="color:green;">{{$array[$array_count][5]}}　日 <small> ※有給残り僅かです！</small></td>
-                                <!-- 有給算日数が0日になった場合、なくなりましたアラートを表示 -->
-                                    @elseif($array[$array_count][5] <=0) <td style="color:red;">{{$array[$array_count][5]}}　日 <small> ※有給なくなりました！</small></td>
-                                        @else
-                                        <td>{{$array[$array_count][5]}}　日</td>
-                                        @endif
-                            </tr>
-
-                            <tr>
-                                <th class="text-center">月別有給取得日数</th>
-                                <td></td>
-                            </tr>
-                            @foreach($array[$array_count][7] as $array)
-                            <tr>
-                                <th class="text-center"> {{$array->year}}年
-                                    {{$array->month}}月</th>
-                                <td>{{$array->day}}日</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    @endif
-                    <th class="text-center"> </th>
+                @endif
+                <th class="text-center"> </th>
 
 
 
