@@ -134,17 +134,28 @@ class DisplayTest extends DuskTestCase
 
                 // 画面下部にあるトップに戻るボタン
                 ->press('詳細')
+                ->assertSee('詳細表示')
+                ->press('有給取得日明細')
+                ->driver->executeScript('window.scrollTo(0, 5000);');
+
+            $browser->pause('2000')
                 ->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center > form:nth-child(1) > button')
                 ->screenshot('有給取得日明細からトップに戻った②' . date('Ymd-his'))
 
                 // ※有給取得日明細画面には2つ詳細画面に戻るボタンがあるので繰り返す
                 // 画面上部にある詳細画面に戻るボタン
                 ->press('詳細')
+                ->assertSee('詳細表示')
+                ->press('有給取得日明細')
                 ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
                 ->screenshot('有給取得日明細から詳細に戻った②' . date('Ymd-his'))
 
                 // 画面下部にある詳細画面に戻るボタン
-                ->press('詳細')
+                ->press('有給取得日明細')
+                ->driver->executeScript('window.scrollTo(0, 6000);');
+
+            $browser->pause('2000')
+                // ->screenshot('test' . date('Ymd-his'))
                 ->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center > form:nth-child(2) > button')
                 ->screenshot('有給取得日明細から詳細に戻った②' . date('Ymd-his'));
         });
@@ -225,8 +236,7 @@ class DisplayTest extends DuskTestCase
 
 
                 // 画面下部にある編集ボタン
-                ->driver->executeScript('window.scrollTo(0, 5000);');
-            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
+                ->driver->executeScript('window.scrollTo(0, 6000);');
             $browser->press('#show_bottom_edit_button')
                 ->screenshot('編集②' . date('Ymd-his'))
 
@@ -239,12 +249,10 @@ class DisplayTest extends DuskTestCase
                 // 詳細ボタン→編集ボタン→ 画面下部のトップに戻るボタン
                 ->press('詳細')
                 ->assertSee('詳細表示')
-                ->driver->executeScript('window.scrollTo(0, 5000);');
+                ->driver->executeScript('window.scrollTo(0, 6000);');
 
-            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
             $browser->pause('2000')
-            ->press('#show_bottom_edit_button')
-                // ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(1) > button')
+                ->press('#show_bottom_edit_button')
                 ->assertSee('編集')
                 ->driver->executeScript('window.scrollTo(0, 5000);');
 
@@ -257,30 +265,30 @@ class DisplayTest extends DuskTestCase
                 // 詳細ボタン→編集ボタン→ 画面上部の詳細に戻るボタン
                 ->press('詳細')
                 ->assertSee('詳細表示')
-                ->driver->executeScript('window.scrollTo(0, 5000);');
+                ->driver->executeScript('window.scrollTo(0, 6000);');
 
-            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
-            $browser->press('#show_bottom_edit_button')
-                // ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
-                ->assertSee('編集')
-                ->pause('2000')
-
-                ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
-                ->screenshot('編集②から詳細に戻った①' . date('Ymd-his'))
-
-                // 画面下部の詳細画面に戻るボタンを押すパターン
-                // 編集ボタン→ 画面下部の詳細に戻るボタン
-                ->driver->executeScript('window.scrollTo(0, 5000);');
-            // $browser->press('#app > main > div > div > div.panel.panel-default.mt-5 > div.mt-5.text-center.mb-5 > form:nth-child(2) > button')
             $browser->pause('2000')
                 ->press('#show_bottom_edit_button')
                 ->assertSee('編集')
                 ->pause('2000')
-                ->driver->executeScript('window.scrollTo(0, 5000);');
+
+                ->press('#app > main > div > div > div:nth-child(1) > div > div > form:nth-child(2) > button')
+                ->assertSee('詳細表示')
+                ->screenshot('編集②から詳細に戻った①' . date('Ymd-his'))
+
+                // 画面下部の詳細画面に戻るボタンを押すパターン
+                // 編集ボタン→ 画面下部の詳細に戻るボタン
+                ->driver->executeScript('window.scrollTo(0, 6000);');
+
+            $browser->pause('2000')
+                ->press('#show_bottom_edit_button')
+                ->assertSee('編集')
+                ->pause('2000')
+                ->driver->executeScript('window.scrollTo(0, 6000);');
 
             $browser->pause('2000')
                 ->press('#app > main > div > div > div.mt-3.p-0.text-center > form:nth-child(2) > button')
-                ->screenshot('編集②から詳細に戻った②' . date('Ymd-his'));
+                ->screenshot('編集②から詳細に戻った②' . date('Ymd-his'));;
         });
     }
 

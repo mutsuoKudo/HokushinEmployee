@@ -129,7 +129,7 @@
                 </div>
                 <div class="post-content">
 
-                    <p style="margin-top: 2em;">オリジナルで作成したもの、もしくは変更したファイル</p>
+                    <p style="margin-top: 2em; margin-bottom: 2em; font-weight: bold;">オリジナルで作成したもの、もしくは変更したファイル</p>
                     <ul>
                         <li>\employee\routes</li>
                         <ul>
@@ -144,10 +144,18 @@
                             <li>HolidayController.php→有給情報用コントローラー処理を書くファイル</li>
                         </ul>
 
+                        <li style="margin-top: 2em;">\employee\app\Http\Requests</li>
+                        <ul>
+                            <li>CreatePost.php→データ新規登録の際のバリデーションファイル</li>
+                            <li>UpdatePost.php→データ更新の際のバリデーションファイル</li>
+                        </ul>
+
                         <li style="margin-top: 2em;">\employee\app</li>
                         <ul>
-                            <li>Employee.php→従業員テーブルマイグレーションファイル</li>
-                            <li>Holiday.php→有給テーブルマイグレーションファイル</li>
+                            <li>Employee.php→従業員（employees）テーブルのモデルファイル</li>
+                            <li>Holiday.php→有給休暇（holidays）テーブルのモデルファイル</li>
+                            <p>※LaravelにおけるModelは、Eloquent（DBのデータを操作する実装）の機能とビジネスロジックを持ったクラス<br> （ <a href="https://udemy.benesse.co.jp/development/web/laravel-model.html" target="_blank">https://udemy.benesse.co.jp/development/web/laravel-model.html）</a>
+                            </p>
                         </ul>
 
                         <li style="margin-top: 2em;">\employee\public\css</li>
@@ -159,6 +167,13 @@
                         <ul>
                             <li>Add.js→追加で作成したjs</li>
                         </ul>
+
+                        <li style="margin-top: 2em;">\employee\public\employee_doc ：ドキュメントフォルダ</li>
+                        <ul>
+                            <li>Employee_doc.html→トップページ</li>
+                        </ul>
+
+                        <li style="margin-top: 2em;">\employee\public\image ：画像フォルダ</li>
 
                         <li style="margin-top: 2em;">\employee\resources\views</li>
                         <ul>
@@ -181,19 +196,51 @@
                             <li>BaseClass.php→各コントローラーで使用できる共通クラスを書いているファイル</li>
                         </ul>
 
+                        <li style="margin-top: 2em;">\employee\coverage ：コードカバレッジフォルダ</li>
+                        <ul>
+                            <li>Index.html→トップページ</li>
+                        </ul>
+
+                        <li style="margin-top: 2em;">\employee\database\migrations ：コードカバレッジフォルダ</li>
+                        <ul>
+                            <li>2019_09_11_041355_create_employees_table.php→従業員（employees）テーブルのマイグレーションファイル</li>
+                            <li>2019_10_01_002238_create_holidays_table.php→有給休暇（holidays）テーブルのマイグレーションファイル</li>
+                        </ul>
+
+                        <li style="margin-top: 2em;">\employee\storage\logs ：ログフォルダ</li>
+
+                        <li style="margin-top: 2em;">\employee\tests\Browser</li>
+                        <ul>
+                            <li>CRUDTest.php→CRUDテストファイル</li>
+                            <li>DisplayTest.php→アプリ本体の画面遷移テスト</li>
+                            <li>DocumentTest.php→ドキュメントの画面遷移テスト</li>
+                            <li>画像→テストで使用する画像ファイル</li>
+                        </ul>
+
+                        <li style="margin-top: 2em;">\employee\tests\Feature</li>
+                        <ul>
+                            <li>BaseClassTest.php→共通クラステスト</li>
+                            <li>ButtonControllerTest.php→Buttoncontrollerテスト</li>
+                            <li>CrudControllerTest.php→CRUDControllerテスト</li>
+                            <li>HolidayControllerTest.php→HolidayController及びAlertControllerテスト</li>
+                        </ul>
+
                         <li style="margin-top: 2em;">\employee</li>
                         <ul>
-                            <li>composer.json→各コントローラーで使用できる共通クラスを作成するためにオートロードの設定を追加するファイル</li>
+                            <li>composer.json→共通クラスを作成するためにオートロードの設定を追加・コードカバレッジ作成のためコマンド設定を追加</li>
                         </ul>
 
                         <li style="margin-top: 2em;">\employee\config</li>
                         <ul>
-                            <li>app.php→各コントローラーで使用できる共通クラスを作成するためにエイリアスの設定を追加するファイル</li>
+                            <li>app.php→共通クラスのエイリアス設定を追加</li>
                         </ul>
+
+                        <li style="margin-top: 2em;">.htaccess→URLからpublicを抜くための設定を追加</li>
 
                     </ul>
 
-                    <p style="margin-top: 4em;">※ここに記載されいているファイル以外のものは、laravelインストール時に作成されたファイルで、変更などしていません</p>
+                    <p style="margin-top: 4em;">※ここに記載されいているファイル以外のものは、laravelインストール時に作成されたファイルで、変更などしていません<br> (paddingやmarginの追加、コメントアウト、ツールインストール時のコード改変などは含んでおりません)
+                    </p>
 
                     <hr class="shaded" />
 
