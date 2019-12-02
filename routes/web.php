@@ -98,6 +98,9 @@ Route::group(['middleware' => ['web']], function () {
     // Route::get('/holiday/{employee}', 'HolidayController@holiday');
     Route::post('/holiday/{employee}', 'HolidayController@holiday');
 
+    //扶養家族明細ボタンクリック→扶養家族明細
+    Route::post('/dependent_info/{employee}', 'DependentController@dependent_info');
+
     //更新ボタンクリック→更新完了の場合、トップページにリダイレクト
     Route::patch('/update/{id}', 'CRUDController@update');
 

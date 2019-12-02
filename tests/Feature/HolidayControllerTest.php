@@ -98,12 +98,108 @@ class HolidaycontrollerTest extends TestCase
         $response->assertSee('社員コード');
         $response->assertSee('202018');
         $response->assertStatus(200);
-        
+
         $response = $this->json('get', '/zansu_kinshou');
         $response->assertSee('社員コード');
         $response->assertSee('202014');
         $response->assertSee('202017');
         $response->assertStatus(200);
+
+
+
+        // 未消化アラート（現在が1月の場合）
+        // 　holidaysデータを挿入する
+        \DB::table('holidays')->insert([
+            'shain_cd' => 01,
+            'year' => 2020,
+            'month' => 1,
+            'day' => 1
+        ]);
+
+        $response = $this->json('get', '/mishouka');
+        $response->assertStatus(200);
+
+        // 　挿入したデータをを削除する
+        \DB::table('holidays')
+            ->where('shain_cd', '1')
+            ->delete();
+
+
+
+        // 未消化アラート（現在が2月の場合）
+        // 　holidaysデータを挿入する
+        \DB::table('holidays')->insert([
+            'shain_cd' => 01,
+            'year' => 2020,
+            'month' => 2,
+            'day' => 1
+        ]);
+
+        $response = $this->json('get', '/mishouka');
+        $response->assertStatus(200);
+
+        // 　挿入したデータをを削除する
+        \DB::table('holidays')
+            ->where('shain_cd', '1')
+            ->delete();
+
+
+
+        // 未消化アラート（現在が3月の場合）
+        // 　holidaysデータを挿入する
+        \DB::table('holidays')->insert([
+            'shain_cd' => 01,
+            'year' => 2020,
+            'month' => 3,
+            'day' => 1
+        ]);
+
+        $response = $this->json('get', '/mishouka');
+        $response->assertStatus(200);
+
+        // 　挿入したデータをを削除する
+        \DB::table('holidays')
+            ->where('shain_cd', '1')
+            ->delete();
+
+
+
+        // 未消化アラート（現在が4月の場合）
+        // 　holidaysデータを挿入する
+        \DB::table('holidays')->insert([
+            'shain_cd' => 01,
+            'year' => 2020,
+            'month' => 4,
+            'day' => 1
+        ]);
+
+        $response = $this->json('get', '/mishouka');
+        $response->assertStatus(200);
+
+        // 　挿入したデータをを削除する
+        \DB::table('holidays')
+            ->where('shain_cd', '1')
+            ->delete();
+
+
+
+        // 未消化アラート（現在が5月の場合）
+        // 　holidaysデータを挿入する
+        \DB::table('holidays')->insert([
+            'shain_cd' => 01,
+            'year' => 2020,
+            'month' => 5,
+            'day' => 1
+        ]);
+
+        $response = $this->json('get', '/mishouka');
+        $response->assertStatus(200);
+
+        // 　挿入したデータをを削除する
+        \DB::table('holidays')
+            ->where('shain_cd', '1')
+            ->delete();
+
 
         var_dump('HolidayControllerTest END');
     }
