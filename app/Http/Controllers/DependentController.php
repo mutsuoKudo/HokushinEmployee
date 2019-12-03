@@ -28,21 +28,19 @@ class DependentController extends Controller
         //一番最近のデータの年月（0000年00月）
         $year_month_a = $year_month_a_pre;
 
+        // 扶養家族の情報を取得
         $dependent_info = DB::table('dependent_info')
             ->where('shain_cd', $id)
             ->orderBy('birthday', 'asc')
             ->get();
 
-            // var_dump($dependent_info);
 
 
         return view('/dependent_info')->with([
-            // トップページに戻るボタン押下時のスクロール位置とトップページURL
             'top_url' => $top_url,
             'scroll_top' => $scroll_top,
             'employee' => $employee,
             'dependent_info' => $dependent_info,
-            //現在の年月（月日入り）
             'year_month_a' => $year_month_a,
         ]);
     }
