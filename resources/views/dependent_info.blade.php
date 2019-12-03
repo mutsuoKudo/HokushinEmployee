@@ -50,7 +50,7 @@
                     <p>社員名：　{{ $employee -> shain_mei }} </p>
                 </div>
 
-                <table class="table table-striped task-table text-center" style="table-layout: fixed; width:100%;">
+                <table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
                     <thead>
                         <tr>
@@ -83,7 +83,7 @@
                         @foreach ($dependent_info as $dependent)
                         @if($dependent->haigusha == 1)
                         <tr>
-                            <td>配偶者</td>
+                            <td class="text-center font-weight-bold">配偶者</td>
 
                             <td>{{ $dependent->name }}</td>
 
