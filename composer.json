@@ -23,7 +23,9 @@
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
         "phpunit/phpunit": "^8.0",
-        "staudenmeir/dusk-updater": "^1.1"
+        "staudenmeir/dusk-updater": "^1.1",
+        "way/generators": "dev-feature/laravel-five-stable",
+        "xethron/migrations-generator": "dev-l5"
     },
     "config": {
         "optimize-autoloader": true,
@@ -70,5 +72,11 @@
             "phpunit --coverage-html coverage"
         ]
 
+    },
+    "repositories": {
+        "repo-name": {
+            "type": "git",
+            "url": "git@github.com:jamisonvalenta/Laravel-4-Generators.git"
+        }
     }
 }

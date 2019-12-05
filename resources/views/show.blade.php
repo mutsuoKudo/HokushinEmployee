@@ -41,7 +41,7 @@
 
             @if($employee->fuyo_kazoku !== 0)
             <div class="float-right mr-5">
-                <div style="display:inline-block" class="mr-2">
+                <div style="display:inline-block" class="mr-5">
 
                     <form action="/employee/public/dependent_info/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
@@ -54,7 +54,7 @@
 
                 <div style="display:inline-block">
                     @if(is_null($employee->nyushabi))
-                    <select name="year">
+                    <select name="year" style="background-color:lightblue">
                         <option selected>入社日が登録されていません</option>
                     </select>
                     <input type="submit" class="btn btn-info m-2" value="有給取得日明細" disabled>
@@ -63,7 +63,7 @@
                     <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
                         {{ csrf_field() }}
 
-                        <select name='year'>
+                        <select name='year' style="background-color:lightblue">
                             <?php
                             //  DBのholidayテーブルに入力されている最新データ月より入社月が大きいか、同じのとき　かつ　最新データ年より入社年が大きいとき＝初回基準月未満
                             if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
@@ -153,7 +153,7 @@
             @else
             <div class="float-right mr-5">
                 @if(is_null($employee->nyushabi))
-                <select name="year">
+                <select name="year" style="background-color:lightblue">
                     <option selected>入社日が登録されていません</option>
                 </select>
                 <input type="submit" class="btn btn-info m-2" value="有給取得日明細" disabled>
@@ -162,7 +162,7 @@
                 <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
                     {{ csrf_field() }}
 
-                    <select name='year'>
+                    <select name='year' style="background-color:lightblue">
                         <?php
                         //  DBのholidayテーブルに入力されている最新データ月より入社月が大きいか、同じのとき　かつ　最新データ年より入社年が大きいとき＝初回基準月未満
                         if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {

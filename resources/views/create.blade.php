@@ -56,7 +56,7 @@ $top_scroll_top = $scroll_top;
                     <tbody>
                         <tr>
                             <th>社員コード<small class="float-right text-danger">※必須</small></th>
-                            <td class="width:50%">
+                            <td>
                                 <input type="text" name="shain_cd" class="form-control" placeholder="例）2019123456" value="{{old('shain_cd')}}">
                                 @if($errors->has('shain_cd'))<br><span class="error">{{ $errors->first('shain_cd') }}</span> @endif
                             </td>
