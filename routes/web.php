@@ -1,5 +1,6 @@
 <?php
 
+use App\Dependent_info;
 use App\Employee;
 use App\Holiday;
 use Illuminate\Http\Request;
@@ -86,6 +87,7 @@ Route::group(['middleware' => ['web']], function () {
         return redirect('/')->with('delete', '削除完了!');
     });
 
+
     // 詳細ボタンクリック→詳細画面表示
     // Route::get('/show/{employee}', 'CRUDController@show');
     Route::post('/show/{employee}', 'CRUDController@show');
@@ -94,12 +96,31 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/edit/{employee}', 'CRUDController@edit');
     Route::get('/edit2/{employee}', 'CRUDController@edit2');
 
+    //扶養家族編集ボタンクリック→扶養家族編集画面表示
+    Route::post('/dependent_info_edit/{employee}', 'DependentController@dependent_info_edit');
+    
+    //扶養家族編集画面で更新ボタンクリック→詳細画面に戻る？
+    Route::patch('/dependent_info_update/{dependent}', 'DependentController@dependent_info_update');
+    
     //有給取得日数明細ボタンクリック→有給明細
     // Route::get('/holiday/{employee}', 'HolidayController@holiday');
     Route::post('/holiday/{employee}', 'HolidayController@holiday');
 
     //扶養家族明細ボタンクリック→扶養家族明細
     Route::post('/dependent_info/{employee}', 'DependentController@dependent_info');
+
+    //扶養家族明細画面で追加ボタンクリック→扶養家族追加画面表示
+    Route::post('/dependent_info_add/{employee}', 'DependentController@dependent_info_add');
+
+    //扶養家族明細画面で削除ボタンクリック→選択データを削除
+    Route::post('/dependent_info_delete/{employee}', 'DependentController@dependent_info_delete');
+
+    //扶養家族編集画面で削除ボタンクリック→選択データを削除
+    Route::post('/dependent_info_delete_to_edit/{employee}', 'DependentController@dependent_info_delete_to_edit');
+
+    //扶養家族追加画面で登録ボタンクリック→扶養家族追加画面表示
+    Route::post('/dependent_info_submit/{employee}', 'DependentController@dependent_info_submit');
+    
 
     //更新ボタンクリック→更新完了の場合、トップページにリダイレクト
     Route::patch('/update/{id}', 'CRUDController@update');

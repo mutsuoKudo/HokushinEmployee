@@ -15,6 +15,7 @@
 		<li>サーバーエラー</li>
 	</ul>
 	<p>などが考えられます。お手数ですが上記をお確かめのうえ、再度お試しください。</p>
+	<button type="button" onclick="history.back()" class="function-button">先ほどの画面に戻る</button>
 </div>
 @endif
 
@@ -261,20 +262,23 @@
 
 		@if(isset($title))
 		<div class="mt-5">
-			<form action="/employee/public/add" method="POST">
-				{{ csrf_field() }}
-				<?php
-				if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
-					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-				} else {
-					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
-				}
-				?>
-				<!-- 現在のURLとスクロール位置を次のページに送る -->
-				<input type="hidden" name="url" value={{$url}}>
-				<input type="hidden" name="scroll_top" value="" class="st">
-				<button type="submit" class="btn btn-info btn-lg">新規作成</button>
-			</form>
+			<div class="d-inline-block mr-5">
+				<form action="/employee/public/add" method="POST">
+					{{ csrf_field() }}
+					<?php
+					if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+						$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+					} else {
+						$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+					}
+					?>
+					<!-- 現在のURLとスクロール位置を次のページに送る -->
+					<input type="hidden" name="url" value={{$url}}>
+					<input type="hidden" name="scroll_top" value="" class="st">
+					<button type="submit" class="btn btn-info btn-lg">新規作成</button>
+				</form>
+			</div>
+			
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
 			</div>
