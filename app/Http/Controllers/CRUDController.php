@@ -40,8 +40,6 @@ class CRUDController extends Controller
         return view('/create')->with([
             'post_url' => $post_url,
             'scroll_top' => $scroll_top,
-
-
         ]);
     }
 
@@ -310,9 +308,6 @@ class CRUDController extends Controller
         $employee->save();
 
 
-        $top_url_edit = $request->top_url_edit;
-        // $top_url_edit = $_POST['top_url_edit'];
-
         // 画像はjpgとpngだけの対応で。
         if (isset($request->pic)) {
 
@@ -360,8 +355,6 @@ class CRUDController extends Controller
 
                 $top_url = $request->top_url_edit;
                 $scroll_top = $request->top_scroll_top;
-                // $top_url = $_POST['top_url_edit'];
-                // $scroll_top = $_POST['top_scroll_top'];
 
                 return view('/edit')->with([
                     'file_extension_error' => $file_extension_error,
@@ -372,7 +365,7 @@ class CRUDController extends Controller
             }
         }
 
-        return redirect($top_url_edit)->with('status', '更新完了!');
+        return redirect('/')->with('status', '更新完了!');
     }
 
 
