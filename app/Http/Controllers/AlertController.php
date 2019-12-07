@@ -41,27 +41,128 @@ class AlertController extends Controller
                 //一番最近のデータの月
                 $year_month_a2 = $year_month_a2_pre;
 
-                $before3_1_pre = $year_month_a2 - 5;
-                $before3_1 = str_pad($before3_1_pre, 2, 0, STR_PAD_LEFT);
-                // var_dump('入社月が' . $before3_1 . '月のひとが対象');
+                if ((int) $year_month_a2 >= 6) {
 
-                $before3_2_pre = $year_month_a2 - 4;
-                $before3_2 = str_pad($before3_2_pre, 2, 0, STR_PAD_LEFT);
-                // var_dump('入社月が' . $before3_2 . '月のひとが対象');
+                    $before3_1_pre = $year_month_a2 - 5;
+                    $before3_1 = str_pad($before3_1_pre, 2, 0, STR_PAD_LEFT);
+                    // var_dump('入社月が' . $before3_1 . '月のひとが対象');
 
-                $before3_3_pre = $year_month_a2 - 3;
-                $before3_3 = str_pad($before3_3_pre, 2, 0, STR_PAD_LEFT);
-                // var_dump('入社月が' . $before3_3 . '月のひとが対象');
+                    $before3_2_pre = $year_month_a2 - 4;
+                    $before3_2 = str_pad($before3_2_pre, 2, 0, STR_PAD_LEFT);
+                    // var_dump('入社月が' . $before3_2 . '月のひとが対象');
 
-                $before3_4_pre = $year_month_a2 - 2;
-                $before3_4 = str_pad($before3_4_pre, 2, 0, STR_PAD_LEFT);
-                // var_dump('入社月が' . $before3_4 . '月のひとが対象');
+                    $before3_3_pre = $year_month_a2 - 3;
+                    $before3_3 = str_pad($before3_3_pre, 2, 0, STR_PAD_LEFT);
+                    // var_dump('入社月が' . $before3_3 . '月のひとが対象');
 
-                $query->orwhere('nyushabi', 'LIKE', "%-" . $before3_1 . "-%")
-                    ->orWhere('nyushabi', 'LIKE', "%-" . $before3_4 . "-%")
-                    ->orwhere('nyushabi', 'LIKE', "%-" . $before3_2 . "-%")
-                    ->orWhere('nyushabi', 'LIKE', "%-" . $before3_3 . "-%");
+                    $before3_4_pre = $year_month_a2 - 2;
+                    $before3_4 = str_pad($before3_4_pre, 2, 0, STR_PAD_LEFT);
+                    // var_dump('入社月が' . $before3_4 . '月のひとが対象');
+
+                    $query->orwhere('nyushabi', 'LIKE', "%-" . $before3_1 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_4 . "-%")
+                        ->orwhere('nyushabi', 'LIKE', "%-" . $before3_2 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_3 . "-%");
+                } elseif ((int) $year_month_a2 == 1) {
+
+                    $before3_1 = '11';
+                    // var_dump('入社月が' . $before3_1 . '月のひとが対象');
+
+                    $before3_2 = '10';
+                    // var_dump('入社月が' . $before3_2 . '月のひとが対象');
+
+                    $before3_3 = '09';
+                    // var_dump('入社月が' . $before3_3 . '月のひとが対象');
+
+                    $before3_4 = '08';
+                    // var_dump('入社月が' . $before3_4 . '月のひとが対象');
+
+                    $query->orwhere('nyushabi', 'LIKE', "%-" . $before3_1 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_4 . "-%")
+                        ->orwhere('nyushabi', 'LIKE', "%-" . $before3_2 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_3 . "-%");
+                } elseif ((int) $year_month_a2 == 2) {
+
+                    $before3_1 = '12';
+                    // var_dump('入社月が' . $before3_1 . '月のひとが対象');
+
+                    $before3_2 = '11';
+                    // var_dump('入社月が' . $before3_2 . '月のひとが対象');
+
+                    $before3_3 = '10';
+                    // var_dump('入社月が' . $before3_3 . '月のひとが対象');
+
+                    $before3_4 = '09';
+                    // var_dump('入社月が' . $before3_4 . '月のひとが対象');
+
+                    $query->orwhere('nyushabi', 'LIKE', "%-" . $before3_1 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_4 . "-%")
+                        ->orwhere('nyushabi', 'LIKE', "%-" . $before3_2 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_3 . "-%");
+                } elseif ((int) $year_month_a2 == 3) {
+
+                    $before3_1 = '01';
+                    // var_dump('入社月が' . $before3_1 . '月のひとが対象');
+
+                    $before3_2 = '12';
+                    // var_dump('入社月が' . $before3_2 . '月のひとが対象');
+
+                    $before3_3 = '11';
+                    // var_dump('入社月が' . $before3_3 . '月のひとが対象');
+
+                    $before3_4 = '10';
+                    // var_dump('入社月が' . $before3_4 . '月のひとが対象');
+
+                    $query->orwhere('nyushabi', 'LIKE', "%-" . $before3_1 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_4 . "-%")
+                        ->orwhere('nyushabi', 'LIKE', "%-" . $before3_2 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_3 . "-%");
+                } elseif ((int) $year_month_a2 == 4) {
+
+                    $before3_1 = '02';
+                    // var_dump('入社月が' . $before3_1 . '月のひとが対象');
+
+                    $before3_2 = '01';
+                    // var_dump('入社月が' . $before3_2 . '月のひとが対象');
+
+                    $before3_3 = '12';
+                    // var_dump('入社月が' . $before3_3 . '月のひとが対象');
+
+                    $before3_4 = '11';
+                    // var_dump('入社月が' . $before3_4 . '月のひとが対象');
+
+                    $query->orwhere('nyushabi', 'LIKE', "%-" . $before3_1 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_4 . "-%")
+                        ->orwhere('nyushabi', 'LIKE', "%-" . $before3_2 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_3 . "-%");
+                } elseif ((int) $year_month_a2 == 5) {
+
+                    $before3_1 = '03';
+                    // var_dump('入社月が' . $before3_1 . '月のひとが対象');
+
+                    $before3_2 = '02';
+                    // var_dump('入社月が' . $before3_2 . '月のひとが対象');
+
+                    $before3_3 = '01';
+                    // var_dump('入社月が' . $before3_3 . '月のひとが対象');
+
+                    $before3_4 = '12';
+                    // var_dump('入社月が' . $before3_4 . '月のひとが対象');
+
+                    $query->orwhere('nyushabi', 'LIKE', "%-" . $before3_1 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_4 . "-%")
+                        ->orwhere('nyushabi', 'LIKE', "%-" . $before3_2 . "-%")
+                        ->orWhere('nyushabi', 'LIKE', "%-" . $before3_3 . "-%");
+                }
+
+                // var_dump($year_month_a2);
+                // var_dump($before3_1);
+                // var_dump($before3_2);
+                // var_dump($before3_3);
+                // var_dump($before3_4);
             })
+
+
 
             ->get();
 
@@ -72,7 +173,7 @@ class AlertController extends Controller
         }
 
 
-        // 3ヶ月以内に基準月がくる人の数分繰り返す
+        // 4ヶ月以内に基準月がくる人の数分繰り返す
         for ($i = 0; $i < count($select_shain_cd); $i++) {
 
             //基準日を求める
@@ -85,29 +186,93 @@ class AlertController extends Controller
             // 基準年月を抜き出す
             $kijunbi_year_month = $kijunbi_year_month_pre;
 
+            
             //  勤続年数を計算
+
             //一番最近のデータの年月(0000-00)を作成(=現在日時になる)
             list($year_month_a1_pre, $year_month_a2_pre, $year_month_a_pre, $year_month_b_pre) = $class->year_month();
 
             $year = $year_month_a1_pre;
             $month = $year_month_a2_pre;
 
-
-            // 基準年が最新データの年より大きければ、月数は関係なく勤続年数は0年
-            // 基準年が最新データの年と同じであれば、月数は大きい時勤続年数は０年
-
-            if (($kijunbi_year > $year and ($kijunbi_month > $month or $kijunbi_month =  $month or $kijunbi_month < $month)) or ($kijunbi_year == $year and $kijunbi_month > $month)
-            ) {
-                $kinzoku_year = 0;
-            } else {
-                $kinzoku_year = $year - $kijunbi_year;
-            }
-
-
+            $second_kijunbi_year = (int) $kijunbi_year + 1;
+            $second_kijunbi_month = (int) $kijunbi_month;
 
             // 入社日の取得
             list($nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre) = $class->nyushabi_year_month($select_shain_cd[$i]);
+            $nyushabi_year = $nyushabi_year_pre;
             $nyushabi_year_month = $nyushabi_year_month_pre;
+
+            // var_dump($select_shain_cd[$i]);
+
+
+            if (($second_kijunbi_year > (int) $year) or ($second_kijunbi_year == (int) $year and $second_kijunbi_month > (int) $month)) {
+
+                $kinzoku_year = 0;
+
+                // var_dump('0');
+                // var_dump($year);
+                // var_dump($month);
+                // var_dump($second_kijunbi_year);
+                // var_dump($second_kijunbi_month);
+            } else {
+                // if ((int) $nyushabi_year == $year - 1) {
+                    // 現在の年月と基準日年月が同じの時は勤続年数は1年
+                // if (($second_kijunbi_year == (int) $year and $second_kijunbi_month == (int) $month) or ((int) $nyushabi_year == $year - 1)) {
+
+                    // $kinzoku_year =  (int) $year - (int) $nyushabi_year;
+                    // $kinzoku_year =  1;
+
+                    // var_dump('2');
+                    // var_dump($year);
+                    // var_dump($month);
+                    // var_dump($second_kijunbi_year);
+                    // var_dump($second_kijunbi_month);
+                // } else {
+                    // 入社年が現在年-1と同じ場合、勤続年数は現在年-入社年（例えば、現在年が2019年の時、2018年のひとが対象になり、2019-2018になる。）
+                    // if ((int) $nyushabi_year == $year - 1) {
+
+                    //     // $kinzoku_array[] = 1;　でもいいのでは
+                    //     $kinzoku_year = (int) $year - (int) $nyushabi_year;
+
+                        // var_dump('3');
+                        // var_dump($nyushabi_year);
+                        // var_dump($year);
+                        // var_dump($month);
+                        // var_dump($second_kijunbi_year);
+                        // var_dump($second_kijunbi_month);
+                    // } else {
+
+                        $kinzoku_year = (int) $year - (int) $nyushabi_year - 1;
+
+                        // var_dump('通った4');
+                        // var_dump($nyushabi_year);
+                        // var_dump($year);
+                        // var_dump($month);
+                        // var_dump($second_kijunbi_year);
+                        // var_dump($second_kijunbi_month);
+                    // }
+                // }
+            }
+
+            // var_dump($kinzoku_year);
+
+
+            // // 基準年が最新データの年より大きければ、月数は関係なく勤続年数は0年
+            // // 基準年が最新データの年と同じであれば、月数は大きい時勤続年数は０年
+
+            // if (($kijunbi_year > $year and ($kijunbi_month > $month or $kijunbi_month =  $month or $kijunbi_month < $month)) or ($kijunbi_year == $year and $kijunbi_month > $month)
+            // ) {
+            //     $kinzoku_year = 0;
+            // } else {
+            //     $kinzoku_year = $year - $kijunbi_year;
+            // }
+
+
+
+            // // 入社日の取得
+            // list($nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre) = $class->nyushabi_year_month($select_shain_cd[$i]);
+            // $nyushabi_year_month = $nyushabi_year_month_pre;
 
 
             if ($kinzoku_year == 0) {
@@ -130,14 +295,18 @@ class AlertController extends Controller
             //本年度終わりの年を計算
             if ($kijunbi_month >= 7) {
                 $kijunbi_year = date('Y') - 1 + 1;
-            // } else {
-            //     $kijunbi_year = date('Y') - 1;
             }
 
 
-
             //本年度の終わりを作成
-            $day_max = $kijunbi_year . $kijunbi_month;
+
+            if ($kinzoku_year == 0) {
+
+                $day_max = $kijunbi_year + 1 . $kijunbi_month;
+            } else {
+
+                $day_max = $kijunbi_year . $kijunbi_month;
+            }
 
 
             // 本年度の有給取得数を計算
@@ -154,12 +323,18 @@ class AlertController extends Controller
             }
 
 
+
             // 取得日数が5日未満の人は配列に社員コードを入れ、5日以上取得している人は0を入れる。
             if ($holiday_count_int < 5) {
                 $select_employee[] = $select_shain_cd[$i];
             } else {
                 $select_employee[] = "0";
             }
+
+            // var_dump($select_shain_cd[$i]);
+            // var_dump($day_min);
+            // var_dump($day_max);
+            // var_dump($holiday_count);
         }
 
 
@@ -176,6 +351,8 @@ class AlertController extends Controller
                 $select_shain_cd2[] = $select_employee[$i];
             }
         }
+
+        // var_dump($select_shain_cd2);
 
 
 
@@ -221,13 +398,13 @@ class AlertController extends Controller
                 $first_kijunbi_year_result_pre = 'large';
             }
 
-            
+
 
 
             if ($kijunbi_month <= $year_month_a2) {
                 $first_kijunbi_month_result_pre = 'same_small';
-            // } elseif ($kijunbi_month == $year_month_a2) {
-            //     $first_kijunbi_month_result_pre = 'same';
+                // } elseif ($kijunbi_month == $year_month_a2) {
+                //     $first_kijunbi_month_result_pre = 'same';
             } else {
                 $first_kijunbi_month_result_pre = 'large';
             }
@@ -364,7 +541,7 @@ class AlertController extends Controller
             // if ($kijunbi_year + 1 >= $year and $kijunbi_month >= $month) {
             //     $kinzoku_year = 0;
             // } else {
-                $kinzoku_year = $year - $kijunbi_year;
+            $kinzoku_year = $year - $kijunbi_year;
             // }
 
 
@@ -960,22 +1137,56 @@ class AlertController extends Controller
             $second_kijunbi_month = (int) $kijunbi_array[$i][5];
 
 
+            // var_dump($employees_count[$i]->shain_cd);
 
             if (($second_kijunbi_year > (int) $year) or ($second_kijunbi_year == (int) $year and $second_kijunbi_month > (int) $month)) {
                 // if ((int) $kijunbi_array[$i][4] + 1 > (int) $year or ((int) $kijunbi_array[$i][4] + 1 == $year and (int) $kijunbi_array[$i][5] > $month)) {
 
                 $kinzoku_array[] = 0;
+                // var_dump('通った');
+                // var_dump($year);
+                // var_dump($month);
+                // var_dump($second_kijunbi_year);
+                // var_dump($second_kijunbi_month);
             } else {
-
-                if($second_kijunbi_year == (int) $year and $second_kijunbi_month == (int) $month){
+                // 現在の年月と基準日年月が同じの時は勤続年数は1年
+                if (($second_kijunbi_year == (int) $year and $second_kijunbi_month == (int) $month) or ((int) $kijunbi_array[$i][6] == $year - 1)) {
                     $kinzoku_array[] = $year - (int) $kijunbi_array[$i][6];
-                }else{
+                    // var_dump('通った2');
+                    // var_dump($year);
+                    // var_dump($month);
+                    // var_dump($second_kijunbi_year);
+                    // var_dump($second_kijunbi_month);
+                } else {
+                    // 入社年が現在年-1と同じ場合、勤続年数は現在年-入社年（例えば、現在年が2019年の時、2018年のひとが対象になり、2019-2018になる。）
+                    // if ((int) $kijunbi_array[$i][6] == $year - 1) {
 
-                    $kinzoku_array[] = $year - (int) $kijunbi_array[$i][6] - 1;
+                        // $kinzoku_array[] = 1;　でもいいのでは
+                        // $kinzoku_array[] = (int) $year - (int) $kijunbi_array[$i][6];
+
+                        // var_dump('通った3');
+                        // var_dump($kijunbi_array[$i][6]);
+                        // var_dump($year);
+                        // var_dump($month);
+                        // var_dump($second_kijunbi_year);
+                        // var_dump($second_kijunbi_month);
+                    // } else {
+
+                        $kinzoku_array[] = (int) $year - (int) $kijunbi_array[$i][6] - 1;
+
+                        // var_dump('通った4');
+                        // var_dump($kijunbi_array[$i][6]);
+                        // var_dump($year);
+                        // var_dump($month);
+                        // var_dump($second_kijunbi_year);
+                        // var_dump($second_kijunbi_month);
+                    // }
                 }
-
             }
+
+            // var_dump($kinzoku_array);
         }
+
 
 
 
@@ -1291,6 +1502,8 @@ class AlertController extends Controller
                 $array[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $shain_cd_array[$i]];
             }
         }
+
+        // var_dump($array);
 
 
         // 全社員数分繰り返す
