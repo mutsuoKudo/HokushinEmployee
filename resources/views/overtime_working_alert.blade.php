@@ -2,22 +2,7 @@
 
 @section('content')
 
-@if (count($errors) > 0)
-<!-- Form Error List -->
-<div class="alert alert-danger">
-	<strong>エラーが発生しました！</strong>
-
-	<br><br>
-
-	<ul>
-		<li>必須項目の未入力</li>
-		<li>社員コードの重複</li>
-		<li>サーバーエラー</li>
-	</ul>
-	<p>などが考えられます。お手数ですが上記をお確かめのうえ、再度お試しください。</p>
-	<button type="button" onclick="history.back()" class="function-button">先ほどの画面に戻る</button>
-</div>
-@endif
+<!-- 未消化アラート画面 -->
 
 <!-- 更新完了時に表示されるメッセージ -->
 @if (session('status'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('status') }}</div>@endif
@@ -31,6 +16,7 @@
 		<div class="panel panel-default">
 
 			<div class="panel-body">
+				@include('common.errors')
 
 				<!-- Button -->
 				<p class="mt-3 mb-0 font-weight-bold">名簿表示</p>
@@ -68,7 +54,10 @@
 								{{ csrf_field() }}
 								<input type="submit" name="department" value="システム開発部" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
 							</form>
-
+							<form action="/employee/public/department5" method="GET" class="mt-2">
+								{{ csrf_field() }}
+								<input type="submit" name="department" value="研修生" class="mr-2 mt-1 table_reset" style="border:none; background-color:#fff">
+							</form>
 						</div><!-- /.dropdown-menu -->
 					</div><!-- /.dropdown -->
 
@@ -193,8 +182,9 @@
 					<!-- 退職者 -->
 					<form action="/employee/public/retirement" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset" id="retirement">
+						<input type="submit" name="retirement" value="退職者" class="mr-2 mt-1 function-button table_reset">
 					</form>
+
 
 					<!-- 退職者年代別 -->
 					<div class="dropdown">
@@ -222,13 +212,12 @@
 					<!-- 未消化アラート -->
 					<form action="/employee/public/mishouka" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset" id="mishouka">
+						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
-
 					<!-- 残数僅少アラート -->
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset" id="zansu_kinshou">
+						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
 					<!-- 時間外労働アラート -->
 					<form action="/employee/public/overtime_working_alert" method="GET">
@@ -239,6 +228,7 @@
 
 
 				<p class="mt-4 mb-0 font-weight-bold">その他の機能</p>
+
 				<div class="col-12 mt-2 d-inline-flex">
 					<button type="submit" class="mr-2 mt-1 function-button" id="ajax_all_avg">平均年齢（在籍者）</button>
 
@@ -265,45 +255,52 @@
 			</div>
 		</div>
 
-		@if(isset($title))
-		<div class="mt-5 col-12">
-			<div class="d-inline-block mr-5">
-				<form action="/employee/public/add" method="POST">
-					{{ csrf_field() }}
-					<?php
-					if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
-						$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-					} else {
-						$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
-					}
-					?>
-					<!-- 現在のURLとスクロール位置を次のページに送る -->
-					<input type="hidden" name="url" value={{$url}}>
-					<input type="hidden" name="scroll_top" value="" class="st">
-					<button type="submit" class="btn btn-info btn-lg">新規作成</button>
-				</form>
-			</div>
 
+
+
+		@if(isset($title))
+		<div class="mt-5">
+			<form action="/employee/public/add" method="POST">
+				{{ csrf_field() }}
+				<?php
+				if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+				} else {
+					$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+				}
+				?>
+				<input type="hidden" name="url" value={{$url}}>
+				<input type="hidden" name="scroll_top" value="" class="st">
+				<button type="submit" class="btn btn-info btn-lg">新規作成</button>
+			</form>
+		</div>
+
+		<div id="table-area">
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
+
+				<p style="color:red; font-size:20px;" class="mt-2 mb-1">各規定に違反しそうな人が対象です。</p>
+				<!-- DBのoverti,e_workingsテーブルに入力されている最新のデータ月 -->
+				<p style="color:red; font-size:15px;">※{{$latest_month}}月末時点のデータです</p>
+
+				<p id="print" width="150" height="30"><a href="" class="btn btn-success btn-lg">このページを印刷</a></p>
 			</div>
-		</div>
-		@endif
+			@endif
 
-		<!-- テーブル -->
-		@if (count($employees) > 0)
-		<div class="panel panel-default mt-2">
 
-			<div class="panel-body">
-				<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
-					<thead>
-						<tr>
-							<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
+            <!-- テーブル -->
+            @if (count($employees_overtime_working_this_month) > 0)
+			<div class="panel panel-default mt-2">
+				<div class="panel-body">
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+						<thead>
+							<tr>
+                            <th class="table-text hs-md-th1" style="min-width:20px; width:60px">
 								<div>操作</div>
 							</th>
-							<th class="table-text hs-md-th1" style="min-width:30px; width:120px">
+							<!-- <th class="table-text hs-md-th1" style="min-width:30px; width:120px">
 								<div>写真</div>
-							</th>
+							</th> -->
 							<th class="table-text hs-md-th2" style="min-width:50px">
 								<div>社員コード</div>
 							</th>
@@ -385,46 +382,38 @@
 								<div>備考</div>
 							</th>
 
-						</tr>
-					</thead>
-					<tbody>
-						@foreach ($employees as $employee)
-						<tr>
-							<td>
-								<form action="/employee/public/show/{{$employee->shain_cd}}" method="POST">
-									{{ csrf_field() }}
-									<?php
-									if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
-										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-									} else {
-										$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
-									}
-									?>
-									<!-- 現在のURLとスクロール位置を次のページに送る -->
-									<input type="hidden" name="url" value={{$url}}>
-									<input type="hidden" name="scroll_top" value="" class="st">
-									<button type="submit" class="btn btn-info mr-2">詳細</button>
-								</form>
+							</tr>
+						</thead>
+						<tbody>
+                            <!-- 対象データ分繰り返します -->
+                            @foreach ($employees_overtime_working_this_month as $employee)
+							<tr>
+								<td>
+									<form action="/employee/public/show/" method="POST">
+										{{ csrf_field() }}
+										<?php
+										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
+										?>
+										<!-- 現在のURLとスクロール位置を次のページに送る -->
+										<input type="hidden" name="url" value={{$url}}>
+										<input type="hidden" name="scroll_top" value="" class="st">
+										<button type="submit" class="btn btn-info mr-2">詳細</button>
+									</form>
 
 
-								<form action="/employee/public/delete/{{ $employee->shain_cd }}" method="POST">
-									{{ csrf_field() }}
-									{{ method_field('DELETE') }}
-									<input type="submit" name="delete" value="削除" onClick="delete_alert(event);return false;" class="btn btn-danger mt-2">
-								</form>
+									<form action="/employee/public/delete/" method="POST">
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<input type="submit" name="delete" value="削除" onClick="delete_alert(event);return false;" class="btn btn-danger mt-2">
+									</form>
 
-							</td>
+								</td>
 
-							<td class="table-text">
-								<!-- 写真がない場合は、nodata画像を表示 -->
-								@if(is_null($employee->pic))
-								<img src="{{ asset('image/nodata.jpg') }}" alt="" width="80%">　　　　
-								@else
-								<img src="{{ asset('storage/post_images/' .$employee->pic) }}" style="width: 80%;">
-								@endif
-
-							</td>
-							<td class="table-text">
+								<td class="table-text">
 								<div>{{ $employee->shain_cd }}</div>
 							</td>
 							<td class="table-text">
@@ -504,17 +493,19 @@
 							<td class="table-text">
 								<div>{{ $employee->remarks }}</div>
 							</td>
+								</tr>
+                                @endforeach
 
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
+						</tbody>
+					</table>
 
+				</div>
 			</div>
+@else
+			<p class="mt-5 p-3" style="background-color: #F7F7EE">データはありません</p>
+@endif
+
 		</div>
-		@else
-		<p class="mt-5 p-3" style="background-color: #F7F7EE">データはありません</p>
-		@endif
 
 	</div>
 </div>
