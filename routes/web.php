@@ -106,6 +106,10 @@ Route::group(['middleware' => ['web']], function () {
     // Route::get('/holiday/{employee}', 'HolidayController@holiday');
     Route::post('/holiday/{employee}', 'HolidayController@holiday');
 
+    //時間外労働明細ボタンクリック→有給明細
+    // Route::get('/holiday/{employee}', 'HolidayController@holiday');
+    Route::post('/over_time_working/{employee}', 'OverTimeWorkingController@over_time');
+
     //扶養家族明細ボタンクリック→扶養家族明細
     Route::post('/dependent_info/{employee}', 'DependentController@dependent_info');
 
@@ -246,6 +250,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/mishouka', 'AlertController@mishouka');
     //残数僅少アラート一覧ボタンクリック→残数僅少アラート表示
     Route::get('/zansu_kinshou', 'AlertController@zansu_kinshou');
+    //時間外労働アラート一覧ボタンクリック→時間外労働アラート表示
+    Route::get('/overtime_working_alert', 'AlertController@overtime_working_alert');
 
 
 

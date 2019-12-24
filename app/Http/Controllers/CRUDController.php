@@ -208,6 +208,19 @@ class CRUDController extends Controller
         $post_url = $request->url;
         $scroll_top = $request->scroll_top;
 
+        // 時間外労働のデータで一番最近の日付
+        //一番最近のデータの年月を作成(=現在日時になる)
+        $overtime_working_year_month_pre = DB::table('overtime_workings')
+            ->select(db::raw('year,lpad(month, 2, "0") as month'))
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->first();
+        // var_dump($year_month_a_pre);
+        //一番最近のデータの年
+        $overtime_working_latest_year = $overtime_working_year_month_pre->year;
+        //一番最近のデータの月
+        $overtime_working_latest_month = $overtime_working_year_month_pre->month;
+
         return view('/show')->with([
             'employee' => $employee,
             'kijunbi_year' => $kijunbi_year,
@@ -222,6 +235,10 @@ class CRUDController extends Controller
             'year_month_b' => $year_month_b,
             'post_url' => $post_url,
             'scroll_top' => $scroll_top,
+            
+            'overtime_working_latest_year' => $overtime_working_latest_year,
+            'overtime_working_latest_month' => $overtime_working_latest_month,
+
 
         ]);
     }
