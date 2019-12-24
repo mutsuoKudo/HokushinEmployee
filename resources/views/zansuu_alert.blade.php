@@ -12,7 +12,7 @@
 @if (session('create'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('create') }}</div>@endif
 
 <div class="container">
-	<div class="col-12">
+	<div class="row">
 		<div class="panel panel-default">
 
 			<div class="panel-body">
@@ -218,6 +218,11 @@
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
+					</form>
+					<!-- 時間外労働アラート -->
+					<form action="/employee/public/overtime_working_alert" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="overtime_working_alert" value="時間外労働アラート" class="mr-2 mt-1 function-button table_reset">
 					</form>
 				</div>
 
