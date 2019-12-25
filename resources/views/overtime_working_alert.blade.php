@@ -386,7 +386,7 @@
 						</thead>
 						<tbody>
                             <!-- 対象データ分繰り返します -->
-                            @foreach ($employees_overtime_working_this_month as $employee)
+							@for ($i=0; $i < count($employees_overtime_working_this_month); $i++)
 							<tr>
 								<td>
 									<form action="/employee/public/show/" method="POST">
@@ -414,87 +414,87 @@
 								</td>
 
 								<td class="table-text">
-								<div>{{ $employee->shain_cd }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_cd }}</div>
 							</td>
 							<td class="table-text">
-								<div>{{ $employee->shain_mei }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei }}</div>
 							</td>
 							<td class="table-text">
-								<div>{{ $employee->shain_mei_kana }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei_kana }}</div>
 							</td>
 							<!-- <td class="table-text">
-								<div>{{ $employee->shain_mei_romaji }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei_romaji }}</div>
 							</td> -->
 							<td class="table-text">
-								<div>{{ $employee->shain_mail }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mail }}</div>
 							</td>
 							<!-- <td class="table-text">
-								<div>{{ $employee->gender }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->gender }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->shain_zip_code }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_zip_code }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->shain_jyusho }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_jyusho }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->shain_jyusho_tatemono }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_jyusho_tatemono }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->shain_birthday }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_birthday }}</div>
 							</td> -->
 							<td class="table-text">
-								<div>{{ $employee->nyushabi }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->nyushabi }}</div>
 							</td>
 							<!-- <td class="table-text">
-								<div>{{ $employee->seishain_tenkanbi }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->seishain_tenkanbi }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->tensekibi }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->tensekibi }}</div>
 							</td> -->
 							@if($title == '退職者')
 							<td class="table-text">
-								<div>{{ $employee->taishokubi }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->taishokubi }}</div>
 							</td>
 							@endif
 							<!-- <td class="table-text">
-								<div>{{ $employee->shain_keitai }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_keitai }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->shain_tel }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_tel }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->koyohoken_bango }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->koyohoken_bango }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->shakaihoken_bango }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->shakaihoken_bango }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->kisonenkin_bango }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->kisonenkin_bango }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->monthly_saraly }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->monthly_saraly }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->department }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->department }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->name_card }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->name_card }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->id_card }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->id_card }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->fuyo_kazoku }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->fuyo_kazoku }}</div>
 							</td> -->
 							<!-- <td class="table-text">
-								<div>{{ $employee->test }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->test }}</div>
 							</td> -->
 							<td class="table-text">
-								<div>{{ $employee->remarks }}</div>
+								<div>{{ $employees_overtime_working_this_month[$i][0]->remarks }}</div>
 							</td>
 								</tr>
-                                @endforeach
+                                @endfor
 
 						</tbody>
 					</table>
