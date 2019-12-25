@@ -329,13 +329,13 @@ class OverTimeWorkingController extends Controller
         $holiday_working_before_sum_array = [];
 
         // 5か月前から1か月前までの時間外労働を抽出
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 0; $i <= 4; $i++) {
 
             $holiday_working_before_months_pre = DB::table('holiday_workings')
                 // ->select('holiday_working')
                 ->select(DB::raw('sum(holiday_working) as holiday_working'))
-                ->where('year', $post_year)
-                ->where('month', $post_month - $i)
+                ->where('year', $before_year_array[$i])
+                ->where('month', $before_month_array[$i])
                 ->where('shain_cd', $id)
                 ->get();
 
@@ -366,15 +366,15 @@ class OverTimeWorkingController extends Controller
 
 
         // 2か月平均
-        $two_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[0] + $holiday_working_before_sum_array[0]) / 2;
+        $two_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[0] + $holiday_working_this_month + $holiday_working_before_sum_array[0]) / 2;
         // 3か月平均
-        $three_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[1] + $holiday_working_before_sum_array[1]) / 3;
+        $three_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[1] + $holiday_working_this_month + $holiday_working_before_sum_array[1]) / 3;
         // 4か月平均
-        $four_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[2] + $holiday_working_before_sum_array[2]) / 4;
+        $four_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[2] + $holiday_working_this_month + $holiday_working_before_sum_array[2]) / 4;
         // 5か月平均
-        $five_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[3] + $holiday_working_before_sum_array[3]) / 5;
+        $five_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[3] + $holiday_working_this_month + $holiday_working_before_sum_array[3]) / 5;
         // 6か月平均
-        $six_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[4] + $holiday_working_before_sum_array[4]) / 6;
+        $six_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[4] + $holiday_working_this_month + $holiday_working_before_sum_array[4]) / 6;
 
         // var_dump('2か月平均');
         // var_dump($overtime_working_this_month . '+' . $overtime_working_before_sum_array[0] . '+' . $holiday_working_before_sum_array[0] . '/ 2');
