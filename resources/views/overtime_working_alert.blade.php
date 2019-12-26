@@ -222,7 +222,7 @@
 					<!-- 時間外労働アラート -->
 					<form action="/employee/public/overtime_working_alert" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="overtime_working_alert" value="時間外労働アラート" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="overtime_working" value="アラート" class="mr-2 mt-1 table_reset function-button table_reset">
 					</form>
 				</div>
 
@@ -259,7 +259,7 @@
 
 
 		@if(isset($title))
-		<div class="mt-5">
+		<div class="mt-5 w-100">
 			<form action="/employee/public/add" method="POST">
 				{{ csrf_field() }}
 				<?php
@@ -275,11 +275,10 @@
 			</form>
 		</div>
 
-		<div id="table-area">
+		<div id="table-area" class="w-100">
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
 
-				<p style="color:red; font-size:20px;" class="mt-2 mb-1">各規定に違反しそうな人が対象です。</p>
 				<!-- DBのoverti,e_workingsテーブルに入力されている最新のデータ月 -->
 				<p style="color:red; font-size:15px;">※{{$latest_month}}月末時点のデータです</p>
 
@@ -288,106 +287,43 @@
 			@endif
 
 
-            <!-- テーブル -->
-            @if (count($employees_overtime_working_this_month) > 0)
-			<div class="panel panel-default mt-2">
+			<!-- テーブル -->
+			@if(is_null($employees_overtime_working_this_month[0]))
+			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働（月）アラート対象者はいません</p>
+			@else
+			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働（月）アラート対象者</p>
+			<div class="panel panel-default">
 				<div class="panel-body">
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+
 						<thead>
 							<tr>
-                            <th class="table-text hs-md-th1" style="min-width:20px; width:60px">
-								<div>操作</div>
-							</th>
-							<!-- <th class="table-text hs-md-th1" style="min-width:30px; width:120px">
-								<div>写真</div>
-							</th> -->
-							<th class="table-text hs-md-th2" style="min-width:50px">
-								<div>社員コード</div>
-							</th>
-							<th class="table-text hs-md-th3" style="min-width:50px">
-								<div>社員名</div>
-							</th>
-							<th class="table-text" style="min-width:50px">
-								<div>社員名（カナ）</div>
-							</th>
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>社員名（ローマ字）</div>
-							</th> -->
-							<th class="table-text" style="min-width:50px">
-								<div>メール</div>
-							</th>
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>性別</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>郵便番号</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>住所</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>住所（建物）</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>誕生日</div>
-							</th> -->
-							<th class="table-text" style="min-width:50px">
-								<div>入社日</div>
-							</th>
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>正社員転換日</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>転籍日</div>
-							</th> -->
-							@if($title == '退職者')
-							<th class="table-text" style="min-width:50px">
-								<div>退職日</div>
-							</th>
-							@endif
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>社員携帯</div>
-							</th> -->
-							<!-- <th class="table-text">
-								<div>電話番号</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>雇用保険番号</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>社会保険番号</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>基礎年金番号</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>月給</div>
-							</th> -->
-							<!-- <th class="table-text hs-md-th4" style="min-width:30px">
-								<div>部門</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>名刺</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>idカード</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>扶養家族</div>
-							</th> -->
-							<!-- <th class="table-text" style="min-width:50px">
-								<div>入社試験点数</div>
-							</th> -->
-							<th class="table-text" style="min-width:50px">
-								<div>備考</div>
-							</th>
-
+								<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
+									<div>操作</div>
+								</th>
+								<th class="table-text hs-md-th2" style="min-width:50px">
+									<div>社員コード</div>
+								</th>
+								<th class="table-text hs-md-th3" style="min-width:50px">
+									<div>社員名</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>社員名（カナ）</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>メール</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>入社日</div>
+								</th>
+								<th class="table-text text-center" style="min-width:50px">
+									<div>例外時間外労働（月）</div>
+								</th>
 							</tr>
 						</thead>
 						<tbody>
-                            <!-- 対象データ分繰り返します -->
-							@for ($i=0; $i < count($employees_overtime_working_this_month); $i++)
-							<tr>
+							<!-- 対象データ分繰り返します -->
+							@for ($i=0; $i < count($employees_overtime_working_this_month); $i++) <tr>
 								<td>
 									<form action="/employee/public/show/" method="POST">
 										{{ csrf_field() }}
@@ -414,96 +350,486 @@
 								</td>
 
 								<td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_cd }}</div>
-							</td>
-							<td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei }}</div>
-							</td>
-							<td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei_kana }}</div>
-							</td>
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei_romaji }}</div>
-							</td> -->
-							<td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mail }}</div>
-							</td>
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->gender }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_zip_code }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_jyusho }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_jyusho_tatemono }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_birthday }}</div>
-							</td> -->
-							<td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->nyushabi }}</div>
-							</td>
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->seishain_tenkanbi }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->tensekibi }}</div>
-							</td> -->
-							@if($title == '退職者')
-							<td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->taishokubi }}</div>
-							</td>
-							@endif
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_keitai }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shain_tel }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->koyohoken_bango }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->shakaihoken_bango }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->kisonenkin_bango }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->monthly_saraly }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->department }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->name_card }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->id_card }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->fuyo_kazoku }}</div>
-							</td> -->
-							<!-- <td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->test }}</div>
-							</td> -->
-							<td class="table-text">
-								<div>{{ $employees_overtime_working_this_month[$i][0]->remarks }}</div>
-							</td>
+									<div>{{ $employees_overtime_working_this_month[$i][0]->shain_cd }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mei_kana }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_this_month[$i][0]->shain_mail }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_this_month[$i][0]->nyushabi }}</div>
+								</td>
+								<td class="table-text">
+									<div></div>
+								</td>
 								</tr>
-                                @endfor
+								@endfor
 
 						</tbody>
 					</table>
 
 				</div>
 			</div>
-@else
-			<p class="mt-5 p-3" style="background-color: #F7F7EE">データはありません</p>
-@endif
+			@endif
+
+			<!-- テーブル -->
+			@if(is_null($employees_overtime_working_year))
+			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働（年）アラート対象者はいません</p>
+			@else
+			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働（年）アラート対象者</p>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+
+						<thead>
+							<tr>
+								<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
+									<div>操作</div>
+								</th>
+								<th class="table-text hs-md-th2" style="min-width:50px">
+									<div>社員コード</div>
+								</th>
+								<th class="table-text hs-md-th3" style="min-width:50px">
+									<div>社員名</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>社員名（カナ）</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>メール</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>入社日</div>
+								</th>
+								<th class="table-text text-center" style="min-width:50px">
+									<div>例外時間外労働（月）</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 対象データ分繰り返します -->
+							@for ($i=0; $i < count($employees_overtime_working_year); $i++) <tr>
+								<td>
+									<form action="/employee/public/show/" method="POST">
+										{{ csrf_field() }}
+										<?php
+										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
+										?>
+										<!-- 現在のURLとスクロール位置を次のページに送る -->
+										<input type="hidden" name="url" value={{$url}}>
+										<input type="hidden" name="scroll_top" value="" class="st">
+										<button type="submit" class="btn btn-info mr-2">詳細</button>
+									</form>
+
+
+									<form action="/employee/public/delete/" method="POST">
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<input type="submit" name="delete" value="削除" onClick="delete_alert(event);return false;" class="btn btn-danger mt-2">
+									</form>
+
+								</td>
+
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_year[$i][0]->shain_cd }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_year[$i][0]->shain_mei }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_year[$i][0]->shain_mei_kana }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_year[$i][0]->shain_mail }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_year[$i][0]->nyushabi }}</div>
+								</td>
+								<td class="table-text">
+									<div></div>
+								</td>
+								</tr>
+								@endfor
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			@endif
+
+
+			<!-- テーブル -->
+			@if(is_null($employees_overtime_working_avarege))
+			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働平均（月）アラート対象者はいません</p>
+			@else
+			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働平均（月）アラート対象者</p>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+
+						<thead>
+							<tr>
+								<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
+									<div>操作</div>
+								</th>
+								<th class="table-text hs-md-th2" style="min-width:50px">
+									<div>社員コード</div>
+								</th>
+								<th class="table-text hs-md-th3" style="min-width:50px">
+									<div>社員名</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>社員名（カナ）</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>メール</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>入社日</div>
+								</th>
+								<th class="table-text text-center" style="min-width:50px">
+									<div>例外時間外労働（月）</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 対象データ分繰り返します -->
+							@for ($i=0; $i < count($employees_overtime_working_avarege); $i++) <tr>
+								<td>
+									<form action="/employee/public/show/" method="POST">
+										{{ csrf_field() }}
+										<?php
+										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
+										?>
+										<!-- 現在のURLとスクロール位置を次のページに送る -->
+										<input type="hidden" name="url" value={{$url}}>
+										<input type="hidden" name="scroll_top" value="" class="st">
+										<button type="submit" class="btn btn-info mr-2">詳細</button>
+									</form>
+
+
+									<form action="/employee/public/delete/" method="POST">
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<input type="submit" name="delete" value="削除" onClick="delete_alert(event);return false;" class="btn btn-danger mt-2">
+									</form>
+
+								</td>
+
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_avarege[$i][0]->shain_cd }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_avarege[$i][0]->shain_mei }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_avarege[$i][0]->shain_mei_kana }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_avarege[$i][0]->shain_mail }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_avarege[$i][0]->nyushabi }}</div>
+								</td>
+								<td class="table-text">
+									<div></div>
+								</td>
+								</tr>
+								@endfor
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			@endif
+
+			<!-- テーブル -->
+			@if(is_null($employees_overtime_working_45))
+			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働時間が45時間を超えた月の回数（年）アラート対象者はいません</p>
+			@else
+			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働時間が45時間を超えた月の回数（年）アラート対象者</p>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+
+						<thead>
+							<tr>
+								<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
+									<div>操作</div>
+								</th>
+								<th class="table-text hs-md-th2" style="min-width:50px">
+									<div>社員コード</div>
+								</th>
+								<th class="table-text hs-md-th3" style="min-width:50px">
+									<div>社員名</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>社員名（カナ）</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>メール</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>入社日</div>
+								</th>
+								<th class="table-text text-center" style="min-width:50px">
+									<div>例外時間外労働（月）</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 対象データ分繰り返します -->
+							@for ($i=0; $i < count($employees_overtime_working_45); $i++) <tr>
+								<td>
+									<form action="/employee/public/show/" method="POST">
+										{{ csrf_field() }}
+										<?php
+										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
+										?>
+										<!-- 現在のURLとスクロール位置を次のページに送る -->
+										<input type="hidden" name="url" value={{$url}}>
+										<input type="hidden" name="scroll_top" value="" class="st">
+										<button type="submit" class="btn btn-info mr-2">詳細</button>
+									</form>
+
+
+									<form action="/employee/public/delete/" method="POST">
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<input type="submit" name="delete" value="削除" onClick="delete_alert(event);return false;" class="btn btn-danger mt-2">
+									</form>
+
+								</td>
+
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_45[$i][0]->shain_cd }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_45[$i][0]->shain_mei }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_45[$i][0]->shain_mei_kana }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_45[$i][0]->shain_mail }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_working_45[$i][0]->nyushabi }}</div>
+								</td>
+								<td class="table-text">
+									<div></div>
+								</td>
+								</tr>
+								@endfor
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			@endif
+
+			<!-- テーブル -->
+			@if(is_null($employees_holiday_working_this_month_count))
+			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">休日労働回数（月）アラート対象者はいません</p>
+			@else
+			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">休日労働回数（月）アラート対象者</p>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+
+						<thead>
+							<tr>
+								<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
+									<div>操作</div>
+								</th>
+								<th class="table-text hs-md-th2" style="min-width:50px">
+									<div>社員コード</div>
+								</th>
+								<th class="table-text hs-md-th3" style="min-width:50px">
+									<div>社員名</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>社員名（カナ）</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>メール</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>入社日</div>
+								</th>
+								<th class="table-text text-center" style="min-width:50px">
+									<div>例外時間外労働（月）</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 対象データ分繰り返します -->
+							@for ($i=0; $i < count($employees_holiday_working_this_month_count); $i++) <tr>
+								<td>
+									<form action="/employee/public/show/" method="POST">
+										{{ csrf_field() }}
+										<?php
+										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
+										?>
+										<!-- 現在のURLとスクロール位置を次のページに送る -->
+										<input type="hidden" name="url" value={{$url}}>
+										<input type="hidden" name="scroll_top" value="" class="st">
+										<button type="submit" class="btn btn-info mr-2">詳細</button>
+									</form>
+
+
+									<form action="/employee/public/delete/" method="POST">
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<input type="submit" name="delete" value="削除" onClick="delete_alert(event);return false;" class="btn btn-danger mt-2">
+									</form>
+
+								</td>
+
+								<td class="table-text">
+									<div>{{ $employees_holiday_working_this_month_count[$i][0]->shain_cd }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_holiday_working_this_month_count[$i][0]->shain_mei }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_holiday_working_this_month_count[$i][0]->shain_mei_kana }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_holiday_working_this_month_count[$i][0]->shain_mail }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_holiday_working_this_month_count[$i][0]->nyushabi }}</div>
+								</td>
+								<td class="table-text">
+									<div></div>
+								</td>
+								</tr>
+								@endfor
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			@endif
+
+			<!-- テーブル -->
+			@if(is_null($employees_overtime_and_holiday_working_sum))
+			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">休日+時間外労働（月）アラート対象者はいません</p>
+			@else
+			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">休日+時間外労働（月）アラート対象者</p>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+
+						<thead>
+							<tr>
+								<th class="table-text hs-md-th1" style="min-width:20px; width:60px">
+									<div>操作</div>
+								</th>
+								<th class="table-text hs-md-th2" style="min-width:50px">
+									<div>社員コード</div>
+								</th>
+								<th class="table-text hs-md-th3" style="min-width:50px">
+									<div>社員名</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>社員名（カナ）</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>メール</div>
+								</th>
+								<th class="table-text" style="min-width:50px">
+									<div>入社日</div>
+								</th>
+								<th class="table-text text-center" style="min-width:50px">
+									<div>例外時間外労働（月）</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 対象データ分繰り返します -->
+							@for ($i=0; $i < count($employees_overtime_and_holiday_working_sum); $i++) <tr>
+								<td>
+									<form action="/employee/public/show/" method="POST">
+										{{ csrf_field() }}
+										<?php
+										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+										} else {
+											$url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . 'localhost/employee/public/';
+										}
+										?>
+										<!-- 現在のURLとスクロール位置を次のページに送る -->
+										<input type="hidden" name="url" value={{$url}}>
+										<input type="hidden" name="scroll_top" value="" class="st">
+										<button type="submit" class="btn btn-info mr-2">詳細</button>
+									</form>
+
+
+									<form action="/employee/public/delete/" method="POST">
+										{{ csrf_field() }}
+										{{ method_field('DELETE') }}
+										<input type="submit" name="delete" value="削除" onClick="delete_alert(event);return false;" class="btn btn-danger mt-2">
+									</form>
+
+								</td>
+
+								<td class="table-text">
+									<div>{{ $employees_overtime_and_holiday_working_sum[$i][0]->shain_cd }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_and_holiday_working_sum[$i][0]->shain_mei }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_and_holiday_working_sum[$i][0]->shain_mei_kana }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_and_holiday_working_sum[$i][0]->shain_mail }}</div>
+								</td>
+								<td class="table-text">
+									<div>{{ $employees_overtime_and_holiday_working_sum[$i][0]->nyushabi }}</div>
+								</td>
+								<td class="table-text">
+									<div></div>
+								</td>
+								</tr>
+								@endfor
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			@endif
+
+
+
 
 		</div>
 

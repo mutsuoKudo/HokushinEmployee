@@ -222,7 +222,7 @@
 					<!-- 時間外労働アラート -->
 					<form action="/employee/public/overtime_working_alert" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="overtime_working_alert" value="時間外労働アラート" class="mr-2 mt-1 function-button table_reset">
+						<input type="submit" name="overtime_working" value="アラート" class="mr-2 mt-1 table_reset function-button table_reset">
 					</form>
 				</div>
 

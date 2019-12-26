@@ -20,16 +20,55 @@ class OverTimeWorkingController extends Controller
     // public function holiday($id)
     {
 
-        // 時間外労働の定数取得
+        // 定数取得
         // 基本時間外労働（日）
-        $base_working_overtime_month_pre = DB::table('overtime_working_constants')
-            ->select('base_working_overtime_month')
+        $overtime_working_constants_pre = DB::table('overtime_working_constants')
             ->first();
+        // $base_working_overtime_month_pre = DB::table('overtime_working_constants')
+        //     ->select('base_working_overtime_month')
+        //     ->first();
 
-        $base_working_overtime_month = $base_working_overtime_month_pre->base_working_overtime_month;
+        var_dump('定数取得');
+        var_dump($overtime_working_constants_pre);
 
-        // var_dump('基本時間外労働（日):');
-        // var_dump($base_working_overtime_month);
+
+        // 基本時間外労働（日）
+        $base_working_overtime_day = $overtime_working_constants_pre->base_working_overtime_day;
+        var_dump('基本時間外労働（日）');
+        var_dump($base_working_overtime_day);
+
+        // 基本時間外労働時間（月）
+        $base_working_overtime_month = $overtime_working_constants_pre->base_working_overtime_month;
+        var_dump('基本時間外労働時間（月）');
+        var_dump($base_working_overtime_month);
+
+        // 基本時間外労働時間（年）
+        $base_working_overtime_year = $overtime_working_constants_pre->base_working_overtime_year;
+        var_dump('基本時間外労働時間（年）');
+        var_dump($base_working_overtime_year);
+
+        // 例外時間外労働（月）
+        $exception_working_overtime_month = $overtime_working_constants_pre->exception_working_overtime_month;
+        var_dump('例外時間外労働（月）');
+        var_dump($exception_working_overtime_month);
+
+        // 例外時間外労働（年）
+        $exception_working_overtime_year = $overtime_working_constants_pre->exception_working_overtime_year;
+        var_dump('例外時間外労働（年）');
+        var_dump($exception_working_overtime_year);
+
+        // 時間外労働平均
+        $overtime_working_average = $overtime_working_constants_pre->overtime_working_average;
+        var_dump('時間外労働平均');
+        var_dump($overtime_working_average);
+
+        // 時間外労働+休日労働	
+        $overtime_and_holiday_working = $overtime_working_constants_pre->overtime_and_holiday_working;
+        var_dump('時間外労働+休日労働	');
+        var_dump($overtime_and_holiday_working);
+
+
+
 
         //employeesテーブルのデータを詳細テーブルで表示していた社員コードの分取得
         $employee = Employee::find($id);
@@ -452,6 +491,28 @@ class OverTimeWorkingController extends Controller
             'latest_month' => $latest_month,
             // 最新年月
             'latest_year_month' => $latest_year_month,
+
+            // 基本時間外労働時間（日）
+            'base_working_overtime_day' => $base_working_overtime_day,
+
+            // 基本時間外労働時間（月）
+            'base_working_overtime_month' => $base_working_overtime_month,
+
+            // 基本時間外労働時間（年）
+            'base_working_overtime_year' => $base_working_overtime_year,
+
+            // 例外時間外労働（月）
+            'exception_working_overtime_month' => $exception_working_overtime_month,
+
+            // 例外時間外労働（年）
+            'exception_working_overtime_year' => $exception_working_overtime_year,
+
+            // 時間外労働平均
+            'overtime_working_average' => $overtime_working_average,
+
+            // 時間外労働+休日労働
+            'overtime_and_holiday_working' => $overtime_and_holiday_working,
+
 
             // トップページに戻るボタン押下時のスクロール位置とトップページURL
             'top_url' => $top_url,
