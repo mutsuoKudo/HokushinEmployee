@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Library\BaseClass;
+use App\Library\OverTimeWorkingClass;
 
 
 class AlertController extends Controller
@@ -1595,298 +1596,80 @@ class AlertController extends Controller
 
         // クラスのインスタンス化
         $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
 
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
 
-        // 入社年月の取得
+        // 入社年月・退職年月の取得
         list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
         $select_nyusha_year = $select_nyusha_year_pre;
         $select_taishoku_year = $select_taishoku_year_pre;
 
-        // 在籍者の社員情報データを取得します
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
 
-        //一番最近のデータの年月を作成(=現在日時になる)
-        $year_month_a_pre = DB::table('overtime_workings')
-            ->select(db::raw('year,lpad(month, 2, "0") as month'))
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->first();
-        // var_dump($year_month_a_pre);
         //一番最近のデータの年
-        $latest_year = $year_month_a_pre->year;
+        $latest_year = $latest_year_pre;
         //一番最近のデータの月
-        $latest_month = $year_month_a_pre->month;
-        //一番最近のデータの年月
-        $latest_year_month = $latest_year . $latest_month;
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
 
-        //一番最近のデータの年月（000000：文字なし）
-        $latest_year_month = $latest_year . '年' . $latest_month . '月';
-        // var_dump('現在年:' . $latest_year);
-        // var_dump('現在月:' . $latest_month);
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
 
 
 
+        // 時間外労働（月）アラート対象者を取得
+        $employees_overtime_working_this_month = [];
+        $employees_overtime_working_this_month = $o_class->overtime_working_this_month($latest_year, $latest_month);
+        var_dump('ここだ1');
+        var_dump($employees_overtime_working_this_month);
+        var_dump(count($employees_overtime_working_this_month));
 
+        // 時間外労働（年）アラート対象者を取得
+        $employees_overtime_working_year = [];
+        $employees_overtime_working_year = $o_class->overtime_working_year($latest_year, $latest_month);
+        var_dump('ここだ2');
+        var_dump($employees_overtime_working_year);
+        var_dump(count($employees_overtime_working_year));
 
+        // 平均（月）アラート対象者を取得
+        $employees_overtime_working_avarege = [];
+        $employees_overtime_working_avarege = $o_class->overtime_working_avarage($latest_year, $latest_month);
+        var_dump('ここだ3');
+        var_dump($employees_overtime_working_avarege);
+        var_dump(count($employees_overtime_working_avarege));
 
+        // 時間外労働時間が45時間を超えた月の回数（年）アラート対象者を取得
+        $employees_overtime_working_45 = [];
+        $employees_overtime_working_45 = $o_class->overtime_working_45($latest_year, $latest_month);
+        var_dump('ここだ4');
+        var_dump($employees_overtime_working_45);
+        var_dump(count($employees_overtime_working_45));
 
+        // 休日労働回数（月）アラート対象者を取得
+        $employees_holiday_working_this_month_count = [];
+        $employees_holiday_working_this_month_count = $o_class->holiday_working_this_month_count($latest_year, $latest_month);
+        var_dump('ここだ5');
+        var_dump($employees_holiday_working_this_month_count);
+        // var_dump(count($employees_holiday_working_this_month_count));
 
-        $employees = $class->all();
+        // if(is_null($employees_holiday_working_this_month_count)){
+        //     $employees_holiday_working_this_month_count[] = 0;
+        // }
 
-        // 在籍者の人数
-        $employees_count = count($employees);
-        // var_dump($employees_count);
-
-        // 在籍者の社員コード
-        for ($i = 0; $i < $employees_count; $i++) {
-            $shain_cd_array[] = $employees[$i]->shain_cd;
-        }
-        // var_dump($shain_cd_array);
-
-
-        // $overtime_working_this_month_array_pre = [];
-
-        // 時間外労働（月）
-        for ($i = 0; $i <= $employees_count - 1; $i++) {
-
-            $overtime_working_this_month_pre = DB::table('overtime_workings')
-                ->where('year', $latest_year)
-                ->where('month', $latest_month)
-                ->where('shain_cd', $shain_cd_array[$i])
-                ->first();
-
-            // var_dump($overtime_working_this_month_pre);
-
-            if (is_null($overtime_working_this_month_pre)) {
-                $overtime_working_this_month = 0;
-            } else {
-                $overtime_working_this_month = (float) $overtime_working_this_month_pre->overtime_working;
-            }
-
-            // はいれつの中に社員コードと当月の時間外労働を入れておく
-            // array_push($overtime_working_this_month_array_pre, $shain_cd_array[$i],$overtime_working_this_month);
-            $overtime_working_this_month_array_pre[] = [$shain_cd_array[$i], $overtime_working_this_month];
-        }
-
-
-        // 在籍者全員の当月時間外労働データ
-        var_dump('在籍者全員の当月時間外労働データ');
-        var_dump($overtime_working_this_month_array_pre);
-
-
-        // 例外時間外労働上限（月）に引っ掛かるものを抽出する
-        $exception_working_overtime_month_pre = DB::table('overtime_working_constants')
-            ->select('exception_working_overtime_month')
-            ->first();
-
-        $exception_working_overtime_month = $exception_working_overtime_month_pre->exception_working_overtime_month;
-        // var_dump('例外時間外労働上限（月）');
-        // var_dump($exception_working_overtime_month);
-
-        for ($i = 0; $i <= $employees_count - 1; $i++) {
-            // アラートなので規定時間-10で判断
-            if ($overtime_working_this_month_array_pre[$i][1] >= $exception_working_overtime_month -10) {
-                // var_dump($overtime_working_this_month_array_pre[$i][1]);
-                // var_dump('罰金');
-                $overtime_working_this_month_array[] = [$shain_cd_array[$i], $overtime_working_this_month_array_pre[$i][1]];
-            }else{
-                $overtime_working_this_month_array[] = null;
-            }
-        }
-        var_dump('罰金のひと1');
-        if(is_null($overtime_working_this_month_array[0])){
-            var_dump('罰金のひとはいません');
-        }else{
-            var_dump($overtime_working_this_month_array);
-        }
-
-        // 時間外労働上限（月）に引っ掛かった人の従業員データ
-        for ($i = 0; $i <= count($overtime_working_this_month_array) - 1; $i++) {
-            $employees_overtime_working_this_month = DB::table('employees')
-                ->whereNull('taishokubi')
-                ->where('department', '!=', '05')
-                ->where('shain_cd', $overtime_working_this_month_array[$i][0])
-                ->get();
-        }
-
-        // var_dump($employees_overtime_working_this_month);
-
-
-
-        // 休日労働回数（月）
-        for ($i = 0; $i <= $employees_count - 1; $i++) {
-            $holiday_working_this_month_count = DB::table('holiday_workings')
-                ->where('year', $latest_year)
-                ->where('month', $latest_month)
-                ->where('shain_cd', $shain_cd_array[$i])
-                ->count();
-
-            $holiday_working_this_month_count_array_pre[] = [$shain_cd_array[$i], $holiday_working_this_month_count];
-        }
-
-
-        // 在籍者全員の当月休日労働回数データ
-        var_dump('在籍者全員の当月休日労働回数データ');
-        var_dump($holiday_working_this_month_count_array_pre);
-
-        // 休日労働回数上限（月）に引っ掛かるものを抽出する
-        for ($i = 0; $i <= $employees_count - 1; $i++) {
-            if ($holiday_working_this_month_count_array_pre[$i][1] >= 1) {
-                // var_dump($holiday_working_this_month_count_array_pre[$i][1]);
-                // var_dump('罰金');
-                $holiday_working_this_month_count_array[] = [$shain_cd_array[$i], $holiday_working_this_month_count_array_pre[$i][1]];
-            }else{
-                $holiday_working_this_month_count_array[] = null;
-            }
-        }
-        var_dump('罰金のひと2');
-        if(is_null($holiday_working_this_month_count_array[0])){
-            var_dump('罰金のひとはいません');
-        }else{
-            var_dump($holiday_working_this_month_count_array);
-        }
-
-        // 時間外労働上限（月）に引っ掛かった人の従業員データ
-        for ($i = 0; $i <= count($holiday_working_this_month_count_array) - 1; $i++) {
-
-            $employees_holiday_working_this_month_count = DB::table('employees')
-                ->whereNull('taishokubi')
-                ->where('department', '!=', '05')
-                ->where('shain_cd', $holiday_working_this_month_count_array[$i][0])
-                ->get();
-        }
         // var_dump($employees_holiday_working_this_month_count);
+        // var_dump(count($employees_holiday_working_this_month_count));
 
 
+        // 時間外労働+休日労働（月）アラート対象者を取得
+        $employees_overtime_and_holiday_working_sum = [];
+        $employees_overtime_and_holiday_working_sum = $o_class->overtime_and_holiday_working_sum($latest_year, $latest_month);
 
-
-
-
-        // 休日労働（月）
-        for ($i = 0; $i <= $employees_count - 1; $i++) {
-
-            // 休日労働（月）
-            $holiday_working_this_month_pre = DB::table('holiday_workings')
-                ->select(DB::raw('sum(holiday_working) as holiday_working'))
-                ->where('year', $latest_year)
-                ->where('month', $latest_month)
-                ->where('shain_cd', $shain_cd_array[$i])
-                ->get();
-            // ->toSql();
-            // dd($overtime_working_this_month);
-
-            // var_dump($holiday_working_this_month_pre);
-
-            if (is_null($holiday_working_this_month_pre)) {
-                $holiday_working_this_month = 0;
-            } else {
-                // $holiday_working_this_month = (float) $holiday_working_this_month_pre->overtime_working;
-                $holiday_working_this_month = (float) $holiday_working_this_month_pre[0]->holiday_working;
-            }
-
-            $holiday_working_this_month_array_pre[] = [$shain_cd_array[$i], $holiday_working_this_month];
-        }
-
-        // 在籍者全員の当月休日労働データ
-        var_dump('在籍者全員の当月休日労働データ');
-        var_dump($holiday_working_this_month_array_pre);
-
-
-
-
-
-
-
-
-        // 時間外労働+休日労働
-        for ($i = 0; $i <= $employees_count - 1; $i++) {
-            $overtime_and_holiday_working_sum_array_pre = $overtime_working_this_month_array_pre[$i][1] + $holiday_working_this_month_array_pre[$i][1];
-        }
-
-        //  時間外労働+休日労働上限（月）に引っ掛かるものを抽出する
-        $overtime_and_holiday_working_pre = DB::table('overtime_working_constants')
-            ->select('overtime_and_holiday_working')
-            ->first();
-
-            $overtime_and_holiday_working = $overtime_and_holiday_working_pre->overtime_and_holiday_working;
-            // var_dump('時間外労働+休日労働上限（月）');
-            // var_dump($overtime_and_holiday_working);
-
-
-        for ($i = 0; $i <= $employees_count - 1; $i++) {
-            // アラートなので規定時間-10で判断
-            if ($overtime_and_holiday_working_sum_array_pre[$i][1] >= $overtime_and_holiday_working -10) {
-
-                $overtime_and_holiday_working_sum_array[] = [$shain_cd_array[$i], $overtime_and_holiday_working_sum_array_pre[$i][1]];
-            }else{
-                $overtime_and_holiday_working_sum_array[] = null;
-            }
-        }
-
-        var_dump('罰金のひと3');
-        if(is_null($overtime_and_holiday_working_sum_array[0])){
-            var_dump('罰金のひとはいません');
-        }else{
-            var_dump($overtime_and_holiday_working_sum_array);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        var_dump('ここだ6');
+        var_dump($employees_overtime_and_holiday_working_sum);
+        var_dump(count($employees_overtime_and_holiday_working_sum));
 
 
 
@@ -1909,10 +1692,543 @@ class AlertController extends Controller
             'latest_year_month' => $latest_year_month,
 
             // 当月時間外労働アラート
-            'overtime_working_this_month_array' => $overtime_working_this_month_array,
+            // 'overtime_working_this_month_array' => $overtime_working_this_month_array,
 
             // アラート引っ掛かった人たち
             'employees_overtime_working_this_month' => $employees_overtime_working_this_month,
+            'employees_overtime_working_45' => $employees_overtime_working_45,
+            'employees_holiday_working_this_month_count' => $employees_holiday_working_this_month_count,
+            'employees_overtime_working_year' => $employees_overtime_working_year,
+            'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
+            'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
+
+
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    // 時間外労働（月）アラート
+    public function overtime_working_this_month_alert()
+    {
+        $title = "時間外労働（月）アラート対象者";
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
+
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
+
+        // 入社年月・退職年月の取得
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
+
+        //一番最近のデータの年
+        $latest_year = $latest_year_pre;
+        //一番最近のデータの月
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
+
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
+
+
+
+        // 時間外労働（月）アラート対象者を取得
+        $employees_overtime_working_this_month = $o_class->overtime_working_this_month($latest_year, $latest_month);
+
+        // 時間外労働（年）アラート対象者を0にしとく
+        $employees_overtime_working_year[] = null;
+        // 時間外労働平均（月）アラート対象者を0にしとく
+        $employees_overtime_working_avarege[] = null;
+        // 時間外労働時間が45時間を超えた月の回数（年）アラート対象者を0にしとく
+        $employees_overtime_working_45[] = null;
+        // 休日労働回数（月）アラート対象者を0にしとく
+        $employees_holiday_working_this_month_count[] = null;
+        // 時間外労働+休日労働（月）アラート対象者を0にしとく
+        $employees_overtime_and_holiday_working_sum[] = null;
+
+
+
+        return view('overtime_working_alert')->with([
+            'title' => $title,
+
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+            // 社員情報はいれつ
+            'employees' => $employees,
+
+
+            // 最新年
+            'latest_year' => $latest_year,
+            // 最新月
+            'latest_month' => $latest_month,
+            // 最新年月
+            'latest_year_month' => $latest_year_month,
+
+            // 当月時間外労働アラート
+            // 'overtime_working_this_month_array' => $overtime_working_this_month_array,
+
+            // アラート引っ掛かった人たち
+            'employees_overtime_working_this_month' => $employees_overtime_working_this_month,
+
+            // 表示しないアラート
+            'employees_overtime_working_year' => $employees_overtime_working_year,
+            'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
+            'employees_overtime_working_45' => $employees_overtime_working_45,
+            'employees_holiday_working_this_month_count' => $employees_holiday_working_this_month_count,
+            'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
+
+
+        ]);
+    }
+
+
+
+
+    // 時間外労働（年）アラート
+    public function overtime_working_year_alert()
+    {
+        $title = "時間外労働（年）アラート対象者";
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
+
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
+
+        // 入社年月・退職年月の取得
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
+
+        //一番最近のデータの年
+        $latest_year = $latest_year_pre;
+        //一番最近のデータの月
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
+
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
+
+
+
+        // 時間外労働（年）アラート対象者を取得
+        $employees_overtime_working_year = $o_class->overtime_working_year($latest_year, $latest_month);
+
+        // 時間外労働（月）アラート対象者を0にしとく
+        $employees_overtime_working_this_month[] = null;
+        // 時間外労働平均（月）アラート対象者を0にしとく
+        $employees_overtime_working_avarege[] = null;
+        // 時間外労働時間が45時間を超えた月の回数（年）アラート対象者を0にしとく
+        $employees_overtime_working_45[] = null;
+        // 休日労働回数（月）アラート対象者を0にしとく
+        $employees_holiday_working_this_month_count[] = null;
+        // 時間外労働+休日労働（月）アラート対象者を0にしとく
+        $employees_overtime_and_holiday_working_sum[] = null;
+
+        // var_dump($employees_overtime_working_this_month);
+        // var_dump($employees_overtime_working_avarege);
+
+
+
+        return view('overtime_working_alert')->with([
+            'title' => $title,
+
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+            // 社員情報はいれつ
+            'employees' => $employees,
+
+
+            // 最新年
+            'latest_year' => $latest_year,
+            // 最新月
+            'latest_month' => $latest_month,
+            // 最新年月
+            'latest_year_month' => $latest_year_month,
+
+            // 当月時間外労働アラート
+            // 'overtime_working_this_month_array' => $overtime_working_this_month_array,
+
+            // アラート引っ掛かった人たち
+            'employees_overtime_working_year' => $employees_overtime_working_year,
+
+            // 表示しないアラート
+            'employees_overtime_working_this_month' => $employees_overtime_working_this_month,
+            'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
+            'employees_overtime_working_45' => $employees_overtime_working_45,
+            'employees_holiday_working_this_month_count' => $employees_holiday_working_this_month_count,
+            'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
+
+
+        ]);
+    }
+
+
+
+
+
+    // 平均（月）アラート
+    public function overtime_working_avarage_alert()
+    {
+        $title = "平均（月）アラート対象者";
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
+
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
+
+        // 入社年月・退職年月の取得
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
+
+        //一番最近のデータの年
+        $latest_year = $latest_year_pre;
+        //一番最近のデータの月
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
+
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
+
+
+
+        // 平均（月）アラート対象者を取得
+        $employees_overtime_working_avarege = $o_class->overtime_working_avarage($latest_year, $latest_month);
+
+        // 時間外労働（月）アラート対象者を0にしとく
+        $employees_overtime_working_this_month[] = null;
+        // 時間外労働（年）アラート対象者を0にしとく
+        $employees_overtime_working_year[] = null;
+        // 時間外労働時間が45時間を超えた月の回数（年）アラート対象者を0にしとく
+        $employees_overtime_working_45[] = null;
+        // 休日労働回数（月）アラート対象者を0にしとく
+        $employees_holiday_working_this_month_count[] = null;
+        // 時間外労働+休日労働（月）アラート対象者を0にしとく
+        $employees_overtime_and_holiday_working_sum[] = null;
+
+        var_dump($employees_overtime_working_this_month);
+        var_dump($employees_overtime_working_year);
+
+
+
+        return view('overtime_working_alert')->with([
+            'title' => $title,
+
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+            // 社員情報はいれつ
+            'employees' => $employees,
+
+
+            // 最新年
+            'latest_year' => $latest_year,
+            // 最新月
+            'latest_month' => $latest_month,
+            // 最新年月
+            'latest_year_month' => $latest_year_month,
+
+            // 当月時間外労働アラート
+            // 'overtime_working_this_month_array' => $overtime_working_this_month_array,
+
+            // アラート引っ掛かった人たち
+            'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
+
+            // 表示しないアラート
+            'employees_overtime_working_this_month' => $employees_overtime_working_this_month,
+            'employees_overtime_working_year' => $employees_overtime_working_year,
+            'employees_overtime_working_45' => $employees_overtime_working_45,
+            'employees_holiday_working_this_month_count' => $employees_holiday_working_this_month_count,
+            'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
+
+
+        ]);
+    }
+
+
+
+
+
+
+    // 時間外労働時間が45時間を超えた月の回数（年）アラート
+    public function overtime_working_45()
+    {
+        $title = "時間外労働時間が45時間を超えた月の回数（年）アラート対象者";
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
+
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
+
+        // 入社年月・退職年月の取得
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
+
+        //一番最近のデータの年
+        $latest_year = $latest_year_pre;
+        //一番最近のデータの月
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
+
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
+
+
+
+        // 時間外労働時間が45時間を超えた月の回数（年）アラート対象者を取得
+        $employees_overtime_working_45 = $o_class->overtime_working_45($latest_year, $latest_month);
+
+        // 時間外労働（月）アラート対象者を0にしとく
+        $employees_overtime_working_this_month[] = null;
+        // 時間外労働（年）アラート対象者を0にしとく
+        $employees_overtime_working_year[] = null;
+        // 時間外労働平均（月）アラート対象者を0にしとく
+        $employees_overtime_working_avarege[] = null;
+        // 休日労働回数（月）アラート対象者を0にしとく
+        $employees_holiday_working_this_month_count[] = null;
+        // 時間外労働+休日労働（月）アラート対象者を0にしとく
+        $employees_overtime_and_holiday_working_sum[] = null;
+
+        var_dump($employees_overtime_working_this_month);
+        var_dump($employees_overtime_working_year);
+
+
+
+        return view('overtime_working_alert')->with([
+            'title' => $title,
+
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+            // 社員情報はいれつ
+            'employees' => $employees,
+
+
+            // 最新年
+            'latest_year' => $latest_year,
+            // 最新月
+            'latest_month' => $latest_month,
+            // 最新年月
+            'latest_year_month' => $latest_year_month,
+
+            // 当月時間外労働アラート
+            // 'overtime_working_this_month_array' => $overtime_working_this_month_array,
+
+            // アラート引っ掛かった人たち
+            'employees_overtime_working_45' => $employees_overtime_working_45,
+
+            // 表示しないアラート
+            'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
+            'employees_overtime_working_this_month' => $employees_overtime_working_this_month,
+            'employees_overtime_working_year' => $employees_overtime_working_year,
+            'employees_holiday_working_this_month_count' => $employees_holiday_working_this_month_count,
+            'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
+
+
+        ]);
+    }
+
+
+
+
+
+    // 休日労働回数（月）アラート
+    public function holiday_working_this_month_count()
+    {
+        $title = "時間外労働時間が45時間を超えた月の回数（年）アラート対象者";
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
+
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
+
+        // 入社年月・退職年月の取得
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
+
+        //一番最近のデータの年
+        $latest_year = $latest_year_pre;
+        //一番最近のデータの月
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
+
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
+
+
+
+        // 休日労働回数（月）アラート対象者を取得
+        $employees_holiday_working_this_month_count = $o_class->holiday_working_this_month_count($latest_year, $latest_month);
+
+        // 時間外労働（月）アラート対象者を0にしとく
+        $employees_overtime_working_this_month[] = null;
+        // 時間外労働（年）アラート対象者を0にしとく
+        $employees_overtime_working_year[] = null;
+        // 時間外労働平均（月）アラート対象者を0にしとく
+        $employees_overtime_working_avarege[] = null;
+        // 時間外労働時間が45時間を超えた月の回数（年）アラート対象者を0にしとく
+        $employees_overtime_working_45[] = null;
+
+        // 時間外労働+休日労働（月）アラート対象者を0にしとく
+        $employees_overtime_and_holiday_working_sum[] = null;
+
+        var_dump($employees_overtime_working_this_month);
+        var_dump($employees_overtime_working_year);
+
+
+
+        return view('overtime_working_alert')->with([
+            'title' => $title,
+
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+            // 社員情報はいれつ
+            'employees' => $employees,
+
+
+            // 最新年
+            'latest_year' => $latest_year,
+            // 最新月
+            'latest_month' => $latest_month,
+            // 最新年月
+            'latest_year_month' => $latest_year_month,
+
+            // 当月時間外労働アラート
+            // 'overtime_working_this_month_array' => $overtime_working_this_month_array,
+
+            // アラート引っ掛かった人たち
+            'employees_holiday_working_this_month_count' => $employees_holiday_working_this_month_count,
+
+            // 表示しないアラート
+            'employees_overtime_working_45' => $employees_overtime_working_45,
+            'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
+            'employees_overtime_working_this_month' => $employees_overtime_working_this_month,
+            'employees_overtime_working_year' => $employees_overtime_working_year,
+            'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
+
+
+        ]);
+    }
+
+
+
+
+
+    // 時間外労働+休日労働（月）アラート
+    public function overtime_and_holiday_working_sum()
+    {
+        $title = "時間外労働+休日労働（月）アラート対象者";
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
+
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
+
+        // 入社年月・退職年月の取得
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
+
+        //一番最近のデータの年
+        $latest_year = $latest_year_pre;
+        //一番最近のデータの月
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
+
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
+
+
+
+        // 時間外労働+休日労働（月）アラート対象者を取得
+        $employees_overtime_and_holiday_working_sum = $o_class->overtime_and_holiday_working_sum($latest_year, $latest_month);
+
+        // 時間外労働（月）アラート対象者を0にしとく
+        $employees_overtime_working_this_month[] = null;
+        // 時間外労働（年）アラート対象者を0にしとく
+        $employees_overtime_working_year[] = null;
+        // 時間外労働平均（月）アラート対象者を0にしとく
+        $employees_overtime_working_avarege[] = null;
+        // 時間外労働時間が45時間を超えた月の回数（年）アラート対象者を0にしとく
+        $employees_overtime_working_45[] = null;
+        // 休日労働回数（月）アラート対象者を0にしとく
+        $employees_holiday_working_this_month_count[] = null;
+
+
+        var_dump($employees_overtime_working_this_month);
+        var_dump($employees_overtime_working_year);
+
+
+
+        return view('overtime_working_alert')->with([
+            'title' => $title,
+
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+            // 社員情報はいれつ
+            'employees' => $employees,
+
+
+            // 最新年
+            'latest_year' => $latest_year,
+            // 最新月
+            'latest_month' => $latest_month,
+            // 最新年月
+            'latest_year_month' => $latest_year_month,
+
+            // 当月時間外労働アラート
+            // 'overtime_working_this_month_array' => $overtime_working_this_month_array,
+
+            // アラート引っ掛かった人たち
+            'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
+
+            // 表示しないアラート
+            'employees_holiday_working_this_month_count' => $employees_holiday_working_this_month_count,
+            'employees_overtime_working_45' => $employees_overtime_working_45,
+            'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
+            'employees_overtime_working_this_month' => $employees_overtime_working_this_month,
+            'employees_overtime_working_year' => $employees_overtime_working_year,
 
 
         ]);

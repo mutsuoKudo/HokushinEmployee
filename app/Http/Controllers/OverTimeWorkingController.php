@@ -20,16 +20,55 @@ class OverTimeWorkingController extends Controller
     // public function holiday($id)
     {
 
-        // 時間外労働の定数取得
+        // 定数取得
         // 基本時間外労働（日）
-        $base_working_overtime_month_pre = DB::table('overtime_working_constants')
-            ->select('base_working_overtime_month')
+        $overtime_working_constants_pre = DB::table('overtime_working_constants')
             ->first();
+        // $base_working_overtime_month_pre = DB::table('overtime_working_constants')
+        //     ->select('base_working_overtime_month')
+        //     ->first();
 
-        $base_working_overtime_month = $base_working_overtime_month_pre->base_working_overtime_month;
+        var_dump('定数取得');
+        var_dump($overtime_working_constants_pre);
 
-        // var_dump('基本時間外労働（日):');
-        // var_dump($base_working_overtime_month);
+
+        // 基本時間外労働（日）
+        $base_working_overtime_day = $overtime_working_constants_pre->base_working_overtime_day;
+        var_dump('基本時間外労働（日）');
+        var_dump($base_working_overtime_day);
+
+        // 基本時間外労働時間（月）
+        $base_working_overtime_month = $overtime_working_constants_pre->base_working_overtime_month;
+        var_dump('基本時間外労働時間（月）');
+        var_dump($base_working_overtime_month);
+
+        // 基本時間外労働時間（年）
+        $base_working_overtime_year = $overtime_working_constants_pre->base_working_overtime_year;
+        var_dump('基本時間外労働時間（年）');
+        var_dump($base_working_overtime_year);
+
+        // 例外時間外労働（月）
+        $exception_working_overtime_month = $overtime_working_constants_pre->exception_working_overtime_month;
+        var_dump('例外時間外労働（月）');
+        var_dump($exception_working_overtime_month);
+
+        // 例外時間外労働（年）
+        $exception_working_overtime_year = $overtime_working_constants_pre->exception_working_overtime_year;
+        var_dump('例外時間外労働（年）');
+        var_dump($exception_working_overtime_year);
+
+        // 時間外労働平均
+        $overtime_working_average = $overtime_working_constants_pre->overtime_working_average;
+        var_dump('時間外労働平均');
+        var_dump($overtime_working_average);
+
+        // 時間外労働+休日労働	
+        $overtime_and_holiday_working = $overtime_working_constants_pre->overtime_and_holiday_working;
+        var_dump('時間外労働+休日労働	');
+        var_dump($overtime_and_holiday_working);
+
+
+
 
         //employeesテーブルのデータを詳細テーブルで表示していた社員コードの分取得
         $employee = Employee::find($id);
@@ -329,13 +368,13 @@ class OverTimeWorkingController extends Controller
         $holiday_working_before_sum_array = [];
 
         // 5か月前から1か月前までの時間外労働を抽出
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 0; $i <= 4; $i++) {
 
             $holiday_working_before_months_pre = DB::table('holiday_workings')
                 // ->select('holiday_working')
                 ->select(DB::raw('sum(holiday_working) as holiday_working'))
-                ->where('year', $post_year)
-                ->where('month', $post_month - $i)
+                ->where('year', $before_year_array[$i])
+                ->where('month', $before_month_array[$i])
                 ->where('shain_cd', $id)
                 ->get();
 
@@ -366,15 +405,15 @@ class OverTimeWorkingController extends Controller
 
 
         // 2か月平均
-        $two_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[0] + $holiday_working_before_sum_array[0]) / 2;
+        $two_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[0] + $holiday_working_this_month + $holiday_working_before_sum_array[0]) / 2;
         // 3か月平均
-        $three_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[1] + $holiday_working_before_sum_array[1]) / 3;
+        $three_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[1] + $holiday_working_this_month + $holiday_working_before_sum_array[1]) / 3;
         // 4か月平均
-        $four_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[2] + $holiday_working_before_sum_array[2]) / 4;
+        $four_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[2] + $holiday_working_this_month + $holiday_working_before_sum_array[2]) / 4;
         // 5か月平均
-        $five_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[3] + $holiday_working_before_sum_array[3]) / 5;
+        $five_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[3] + $holiday_working_this_month + $holiday_working_before_sum_array[3]) / 5;
         // 6か月平均
-        $six_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[4] + $holiday_working_before_sum_array[4]) / 6;
+        $six_months_average = ($overtime_working_this_month + $overtime_working_before_sum_array[4] + $holiday_working_this_month + $holiday_working_before_sum_array[4]) / 6;
 
         // var_dump('2か月平均');
         // var_dump($overtime_working_this_month . '+' . $overtime_working_before_sum_array[0] . '+' . $holiday_working_before_sum_array[0] . '/ 2');
@@ -452,6 +491,28 @@ class OverTimeWorkingController extends Controller
             'latest_month' => $latest_month,
             // 最新年月
             'latest_year_month' => $latest_year_month,
+
+            // 基本時間外労働時間（日）
+            'base_working_overtime_day' => $base_working_overtime_day,
+
+            // 基本時間外労働時間（月）
+            'base_working_overtime_month' => $base_working_overtime_month,
+
+            // 基本時間外労働時間（年）
+            'base_working_overtime_year' => $base_working_overtime_year,
+
+            // 例外時間外労働（月）
+            'exception_working_overtime_month' => $exception_working_overtime_month,
+
+            // 例外時間外労働（年）
+            'exception_working_overtime_year' => $exception_working_overtime_year,
+
+            // 時間外労働平均
+            'overtime_working_average' => $overtime_working_average,
+
+            // 時間外労働+休日労働
+            'overtime_and_holiday_working' => $overtime_and_holiday_working,
+
 
             // トップページに戻るボタン押下時のスクロール位置とトップページURL
             'top_url' => $top_url,
