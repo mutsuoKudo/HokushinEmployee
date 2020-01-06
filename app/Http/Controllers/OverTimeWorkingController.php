@@ -28,44 +28,44 @@ class OverTimeWorkingController extends Controller
         //     ->select('base_working_overtime_month')
         //     ->first();
 
-        var_dump('定数取得');
-        var_dump($overtime_working_constants_pre);
+        // var_dump('定数取得');
+        // var_dump($overtime_working_constants_pre);
 
 
         // 基本時間外労働（日）
         $base_working_overtime_day = $overtime_working_constants_pre->base_working_overtime_day;
-        var_dump('基本時間外労働（日）');
-        var_dump($base_working_overtime_day);
+        // var_dump('基本時間外労働（日）');
+        // var_dump($base_working_overtime_day);
 
         // 基本時間外労働時間（月）
         $base_working_overtime_month = $overtime_working_constants_pre->base_working_overtime_month;
-        var_dump('基本時間外労働時間（月）');
-        var_dump($base_working_overtime_month);
+        // var_dump('基本時間外労働時間（月）');
+        // var_dump($base_working_overtime_month);
 
         // 基本時間外労働時間（年）
         $base_working_overtime_year = $overtime_working_constants_pre->base_working_overtime_year;
-        var_dump('基本時間外労働時間（年）');
-        var_dump($base_working_overtime_year);
+        // var_dump('基本時間外労働時間（年）');
+        // var_dump($base_working_overtime_year);
 
         // 例外時間外労働（月）
         $exception_working_overtime_month = $overtime_working_constants_pre->exception_working_overtime_month;
-        var_dump('例外時間外労働（月）');
-        var_dump($exception_working_overtime_month);
+        // var_dump('例外時間外労働（月）');
+        // var_dump($exception_working_overtime_month);
 
         // 例外時間外労働（年）
         $exception_working_overtime_year = $overtime_working_constants_pre->exception_working_overtime_year;
-        var_dump('例外時間外労働（年）');
-        var_dump($exception_working_overtime_year);
+        // var_dump('例外時間外労働（年）');
+        // var_dump($exception_working_overtime_year);
 
         // 時間外労働平均
         $overtime_working_average = $overtime_working_constants_pre->overtime_working_average;
-        var_dump('時間外労働平均');
-        var_dump($overtime_working_average);
+        // var_dump('時間外労働平均');
+        // var_dump($overtime_working_average);
 
         // 時間外労働+休日労働	
         $overtime_and_holiday_working = $overtime_working_constants_pre->overtime_and_holiday_working;
-        var_dump('時間外労働+休日労働	');
-        var_dump($overtime_and_holiday_working);
+        // var_dump('時間外労働+休日労働	');
+        // var_dump($overtime_and_holiday_working);
 
 
 
@@ -74,10 +74,16 @@ class OverTimeWorkingController extends Controller
         $employee = Employee::find($id);
 
         //詳細ページのプルダウンで選択された年度
-        $post_year_month_pre = $request->year_month;
-        $post_year = substr($post_year_month_pre, 0, 4);
-        $post_month = substr($post_year_month_pre, 4, 2);
+        $post_year = $request->year;
+        $post_month = $request->month;
+        // $post_year = substr($post_year_month_pre, 0, 4);
+        // $post_month = substr($post_year_month_pre, 4, 2);
+        // $post_year_month_pre = $request->year_month;
+        // $post_year = substr($post_year_month_pre, 0, 4);
+        // $post_month = substr($post_year_month_pre, 4, 2);
         $post_year_month = $post_year . '年' . $post_month . '月';
+
+
 
         // var_dump($post_year_month_pre);
         // var_dump($post_year);
@@ -100,9 +106,9 @@ class OverTimeWorkingController extends Controller
         } else {
             $overtime_working_this_month = (float) $overtime_working_this_month_pre->overtime_working;
         }
-        echo ('<pre>');
-        var_dump('当月時間外労働:' . $overtime_working_this_month);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('当月時間外労働:' . $overtime_working_this_month);
+        // echo ('</pre>');
         // dd($overtime_working_this_month);
 
 
@@ -116,7 +122,7 @@ class OverTimeWorkingController extends Controller
         // ->toSql();
         // dd($overtime_working_this_month);
 
-        var_dump($holiday_working_this_month_pre);
+        // var_dump($holiday_working_this_month_pre);
 
         if (is_null($holiday_working_this_month_pre)) {
             $holiday_working_this_month = 0;
@@ -125,16 +131,16 @@ class OverTimeWorkingController extends Controller
             $holiday_working_this_month = (float) $holiday_working_this_month_pre[0]->holiday_working;
         }
 
-        echo ('<pre>');
-        var_dump('当月休日労働:' . $holiday_working_this_month);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('当月休日労働:' . $holiday_working_this_month);
+        // echo ('</pre>');
 
 
         $overtime_and_holiday_working_sum = $overtime_working_this_month + $holiday_working_this_month;
 
-        echo ('<pre>');
-        var_dump('当月時間外+休日労働:' . $overtime_and_holiday_working_sum);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('当月時間外+休日労働:' . $overtime_and_holiday_working_sum);
+        // echo ('</pre>');
 
         // 休日労働回数（月）
         $holiday_working_this_month_count = DB::table('holiday_workings')
@@ -144,9 +150,9 @@ class OverTimeWorkingController extends Controller
             ->count();
 
 
-        echo ('<pre>');
-        var_dump('当月休日労働回数:' . $holiday_working_this_month_count);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('当月休日労働回数:' . $holiday_working_this_month_count);
+        // echo ('</pre>');
 
 
 
@@ -234,7 +240,7 @@ class OverTimeWorkingController extends Controller
             $overtime_working_sum += (float) $owa;
             // 45時間超えることができるのは年6回までの計算
             if ($owa >= $base_working_overtime_month) {
-                var_dump('この一年のうちに45時間以上時間外労働してる月があるぞ！');
+                // var_dump('この一年のうちに45時間以上時間外労働してる月があるぞ！');
                 array_push($overtime_working_count_array, 1);
             }
         }
@@ -243,10 +249,10 @@ class OverTimeWorkingController extends Controller
         // var_dump($overtime_working_sum);
 
 
-        echo ('<pre>');
-        var_dump('1年のうち45時間以上の時間が一労働をした月数:');
-        var_dump($overtime_working_count_array);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('1年のうち45時間以上の時間が一労働をした月数:');
+        // var_dump($overtime_working_count_array);
+        // echo ('</pre>');
 
         $overtime_working_count_array_result = count($overtime_working_count_array);
 
@@ -266,52 +272,52 @@ class OverTimeWorkingController extends Controller
         $before_1_year = substr($before_1_year_month_pre, 0, 4);
         $before_1_month = substr($before_1_year_month_pre, 5, 2);
 
-        echo ('<pre>');
-        var_dump('1か月前:');
-        var_dump($before_1_year);
-        var_dump($before_1_month);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('1か月前:');
+        // var_dump($before_1_year);
+        // var_dump($before_1_month);
+        // echo ('</pre>');
 
 
         $before_2_year_month_pre = date('Y/m/d', strtotime($post_year_month_slash . "-2 month"));
         $before_2_year = substr($before_2_year_month_pre, 0, 4);
         $before_2_month = substr($before_2_year_month_pre, 5, 2);
 
-        echo ('<pre>');
-        var_dump('2か月前:');
-        var_dump($before_2_year);
-        var_dump($before_2_month);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('2か月前:');
+        // var_dump($before_2_year);
+        // var_dump($before_2_month);
+        // echo ('</pre>');
 
         $before_3_year_month_pre = date('Y/m/d', strtotime($post_year_month_slash . "-3 month"));
         $before_3_year = substr($before_3_year_month_pre, 0, 4);
         $before_3_month = substr($before_3_year_month_pre, 5, 2);
 
-        echo ('<pre>');
-        var_dump('3か月前:');
-        var_dump($before_3_year);
-        var_dump($before_3_month);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('3か月前:');
+        // var_dump($before_3_year);
+        // var_dump($before_3_month);
+        // echo ('</pre>');
 
         $before_4_year_month_pre = date('Y/m/d', strtotime($post_year_month_slash . "-4 month"));
         $before_4_year = substr($before_4_year_month_pre, 0, 4);
         $before_4_month = substr($before_4_year_month_pre, 5, 2);
 
-        echo ('<pre>');
-        var_dump('4か月前:');
-        var_dump($before_4_year);
-        var_dump($before_4_month);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('4か月前:');
+        // var_dump($before_4_year);
+        // var_dump($before_4_month);
+        // echo ('</pre>');
 
         $before_5_year_month_pre = date('Y/m/d', strtotime($post_year_month_slash . "-5 month"));
         $before_5_year = substr($before_5_year_month_pre, 0, 4);
         $before_5_month = substr($before_5_year_month_pre, 5, 2);
 
-        echo ('<pre>');
-        var_dump('5か月前:');
-        var_dump($before_5_year);
-        var_dump($before_5_month);
-        echo ('</pre>');
+        // echo ('<pre>');
+        // var_dump('5か月前:');
+        // var_dump($before_5_year);
+        // var_dump($before_5_month);
+        // echo ('</pre>');
 
         $before_year_array = [$before_1_year, $before_2_year, $before_3_year, $before_4_year, $before_5_year];
         // var_dump($before_year_array);
@@ -467,6 +473,29 @@ class OverTimeWorkingController extends Controller
         // var_dump('現在年:' . $latest_year);
         // var_dump('現在月:' . $latest_month);
 
+
+        // 選択した年＝最新データ年で月数が大きい場合と、選択した年の方が最新データ年より大きい場合はエラーを表示
+        // 2019年4月より前の年月を選択した場合もエラーを表示
+        $overtime_working_error = null;
+        $overtime_working_error2 = null;
+        if(((int)$post_year == $latest_year and (int)$post_month > (int)$latest_month)){
+        // if((int)$post_year > $latest_year){
+            $overtime_working_error = '最新データよりも未来の年月を選択しないでください～';
+        }elseif((int)$post_year <= 2019 and (int)$post_month < 4){
+            $overtime_working_error2 = '2019年4月よりも前の年月を選択しないでください～';
+        }
+        // var_dump((int)$post_year);
+        // var_dump($latest_year);
+        // var_dump((int)$post_month);
+        // var_dump((int)$latest_month);
+        // var_dump($overtime_working_error);
+        // var_dump($overtime_working_error2);
+
+
+
+
+
+
         // トップページに戻るボタン押下時のスクロール位置とトップページURL
         $top_url = $request->top_url;
         $scroll_top = $request->scroll_top2;
@@ -545,6 +574,12 @@ class OverTimeWorkingController extends Controller
             'five_months_average' => round($five_months_average, 2),
             // 六か月平均
             'six_months_average' => round($six_months_average, 2),
+
+
+            // 最新データよりも未来の年月を選択しないでくださいエラー
+            'overtime_working_error' => $overtime_working_error,
+            // 2019年4月よりも前の年月を選択しないでくださいエラー
+            'overtime_working_error2' => $overtime_working_error2,
 
         ]);
     }

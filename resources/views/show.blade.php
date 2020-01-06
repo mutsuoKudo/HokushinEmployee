@@ -158,8 +158,15 @@
 
                         @if(is_null($employee->nyushabi))
                         <div class="mr-5">
-                            <select name="year_month" style="background-color:lightblue">
+                            <select name="year_month" style="background-color:lightgoldenrodyellow">
                                 <option selected>入社日が登録されていません</option>
+                            </select>
+                            <input type="submit" class="btn  btn-success m-2" value="時間外労働明細" disabled>
+                        </div>
+                        @elseif(isset($employee->taishokubi))
+                        <div class="mr-5">
+                            <select name="year_month" style="background-color:lightgoldenrodyellow">
+                                <option selected>退職者は選択できません</option>
                             </select>
                             <input type="submit" class="btn  btn-success m-2" value="時間外労働明細" disabled>
                         </div>
@@ -168,29 +175,43 @@
                         <div class="mr-5">
                             <form action="/employee/public/over_time_working/{{$employee->shain_cd}}" method="POST">
                                 {{ csrf_field() }}
+                                <select name='year' style="background-color:lightgoldenrodyellow">
+                                    <?php
+                                    //基準日からDBの時間外労働テーブルに入力されている最新データ年まで（最新データ年は含む）
+                                    for ($i = 2019; $i <= $overtime_working_latest_year; $i++) {
+                                        // for ($i = 2019; $i <= 2020; $i++) {
+                                        if ($i == $overtime_working_latest_year) {
+                                            //最新データ年にselected
+                                            echo '<option value="', $i, '" selected >', $i, '年</option>';
+                                        } else{
+                                            echo '<option value="', $i, '">', $i, '年</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
 
-                                <select name='year_month' style="background-color:lightgoldenrodyellow">
-                                    <option value="201904" selected>2019年4月</option>';
-                                    <option value="201905" selected>2019年5月</option>';
-                                    <option value="201906" selected>2019年6月</option>';
-                                    <option value="201907" selected>2019年7月</option>';
-                                    <option value="201908" selected>2019年8月</option>';
-                                    <option value="201909" selected>2019年9月</option>';
-                                    <option value="201910" selected>2019年10月</option>';
-                                    <option value="201911" selected>2019年11月</option>';
-                                    <option value="201912" selected>2019年12月</option>';
-                                    <option value="202001" selected>2020年1月</option>';
-                                    <option value="202002" selected>2020年2月</option>';
-                                    <option value="202003" selected>2020年3月</option>';
+                                <select name='month' style="background-color:lightgoldenrodyellow">
+                                    <?php
+                                    //基準日からDBの時間外労働テーブルに入力されている最新データ月まで（最新データ月は含む）
+                                    for ($i = 1; $i <= 12; $i++) {
+                                        if ($i == $overtime_working_latest_month) {
+                                            //最新データ年にselected
+                                            echo '<option value="', $i, '" selected >', $i, '月</option>';
+                                        } else{
+                                            echo '<option value="', $i, '">', $i, '月</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
 
-
-                                    <!-- トップのURLとスクロール位置を次のページに送る -->
-                                    <input type="hidden" name="top_url" value={{$post_url}}>
-                                    <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
-                                    <input type="submit" class="btn  btn-success m-2" value="時間外労働明細">
+                                <!-- トップのURLとスクロール位置を次のページに送る -->
+                                <input type="hidden" name="top_url" value={{$post_url}}>
+                                <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
+                                <input type="submit" class="btn  btn-success m-2" value="時間外労働明細">
                             </form>
                         </div>
                         @endif
+                        <p style="font-size:13px">※時間外労働の上限規制適用は2019年4月～ </p>
                     </div>
 
 
@@ -199,17 +220,17 @@
 
 
                     @if($employee->fuyo_kazoku !== 0)
-                        <div class="mr-5 float-right">
+                    <div class="mr-5 float-right">
 
-                            <form action="/employee/public/dependent_info/{{$employee->shain_cd}}" method="POST">
-                                {{ csrf_field() }}
-                                <!-- トップのURLとスクロール位置を次のページに送る -->
-                                <input type="hidden" name="top_url" value={{$post_url}}>
-                                <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
-                                <input type="submit" class="btn btn-warning m-2" value="扶養家族明細">
-                            </form>
-                        </div>
-                        @endif
+                        <form action="/employee/public/dependent_info/{{$employee->shain_cd}}" method="POST">
+                            {{ csrf_field() }}
+                            <!-- トップのURLとスクロール位置を次のページに送る -->
+                            <input type="hidden" name="top_url" value={{$post_url}}>
+                            <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
+                            <input type="submit" class="btn btn-warning m-2" value="扶養家族明細">
+                        </form>
+                    </div>
+                    @endif
 
 
 

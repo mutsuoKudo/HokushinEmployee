@@ -222,7 +222,7 @@
 					<!-- 時間外労働アラート -->
 					<form action="/employee/public/overtime_working_alert" method="GET">
 						{{ csrf_field() }}
-						<input type="submit" name="overtime_working" value="アラート" class="mr-2 mt-1 table_reset function-button table_reset">
+						<input type="submit" name="overtime_working" value="時間外労働アラート一覧" class="mr-2 mt-1 table_reset function-button table_reset">
 					</form>
 				</div>
 
@@ -288,13 +288,14 @@
 
 
 			<!-- テーブル -->
-			@if(is_null($employees_overtime_working_this_month[0]))
+			@if(empty($employees_overtime_working_this_month[0]))
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働（月）アラート対象者</p>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
 						<thead>
 							<tr>
@@ -325,7 +326,8 @@
 							<!-- 対象データ分繰り返します -->
 							@for ($i=0; $i < count($employees_overtime_working_this_month); $i++) <tr>
 								<td>
-									<form action="/employee/public/show/" method="POST">
+									<!-- <form action="/employee/public/show/" method="POST"> -->
+									<form action="/employee/public/show/{{$employees_overtime_working_this_month[$i][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
 										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
@@ -364,8 +366,8 @@
 								<td class="table-text">
 									<div>{{ $employees_overtime_working_this_month[$i][0]->nyushabi }}</div>
 								</td>
-								<td class="table-text">
-									<div></div>
+								<td class="table-text text-center">
+									<div style="color:red">{{ $overtime_working_this_month_array_result[$i][1]}} / 80 時間</div>
 								</td>
 								</tr>
 								@endfor
@@ -378,13 +380,14 @@
 			@endif
 
 			<!-- テーブル -->
-			@if(is_null($employees_overtime_working_year))
+			@if(empty($employees_overtime_working_year))
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働（年）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働（年）アラート対象者</p>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
 						<thead>
 							<tr>
@@ -407,7 +410,7 @@
 									<div>入社日</div>
 								</th>
 								<th class="table-text text-center" style="min-width:50px">
-									<div>例外時間外労働（月）</div>
+									<div>時間外労働（年）</div>
 								</th>
 							</tr>
 						</thead>
@@ -415,7 +418,8 @@
 							<!-- 対象データ分繰り返します -->
 							@for ($i=0; $i < count($employees_overtime_working_year); $i++) <tr>
 								<td>
-									<form action="/employee/public/show/" method="POST">
+									<!-- <form action="/employee/public/show/" method="POST"> -->
+									<form action="/employee/public/show/{{$employees_overtime_working_year[$i][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
 										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
@@ -454,8 +458,8 @@
 								<td class="table-text">
 									<div>{{ $employees_overtime_working_year[$i][0]->nyushabi }}</div>
 								</td>
-								<td class="table-text">
-									<div></div>
+								<td class="table-text text-center" style="color:red">
+									<div>{{ $overtime_working_year_array_result[$i][1]}} / 720 時間</div>
 								</td>
 								</tr>
 								@endfor
@@ -469,13 +473,14 @@
 
 
 			<!-- テーブル -->
-			@if(is_null($employees_overtime_working_avarege))
+			@if(empty($employees_overtime_working_avarege))
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働平均（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働平均（月）アラート対象者</p>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
 						<thead>
 							<tr>
@@ -498,7 +503,7 @@
 									<div>入社日</div>
 								</th>
 								<th class="table-text text-center" style="min-width:50px">
-									<div>例外時間外労働（月）</div>
+									<div>時間外労働平均（月）</div>
 								</th>
 							</tr>
 						</thead>
@@ -506,7 +511,8 @@
 							<!-- 対象データ分繰り返します -->
 							@for ($i=0; $i < count($employees_overtime_working_avarege); $i++) <tr>
 								<td>
-									<form action="/employee/public/show/" method="POST">
+									<!-- <form action="/employee/public/show/" method="POST"> -->
+									<form action="/employee/public/show/{{$employees_overtime_working_avarege[$i][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
 										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
@@ -546,7 +552,14 @@
 									<div>{{ $employees_overtime_working_avarege[$i][0]->nyushabi }}</div>
 								</td>
 								<td class="table-text">
-									<div></div>
+									@for($m = 0; $m < count($test_result); $m++) @if($test_result[$m][0]==$employees_overtime_working_avarege[$i][0]->shain_cd)
+										<div style="color:red">
+											{{ $test_result[$m][1]}} ：
+										</div>
+										<div>{{ round($test_result[$m][2], 2)}} / 80時間
+										</div>
+										@endif
+										@endfor
 								</td>
 								</tr>
 								@endfor
@@ -559,13 +572,14 @@
 			@endif
 
 			<!-- テーブル -->
-			@if(is_null($employees_overtime_working_45))
+			@if(empty($employees_overtime_working_45))
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働時間が45時間を超えた月の回数（年）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働時間が45時間を超えた月の回数（年）アラート対象者</p>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
 						<thead>
 							<tr>
@@ -588,7 +602,7 @@
 									<div>入社日</div>
 								</th>
 								<th class="table-text text-center" style="min-width:50px">
-									<div>例外時間外労働（月）</div>
+									<div>時間外労働時間が45時間を超えた月の回数（年）</div>
 								</th>
 							</tr>
 						</thead>
@@ -596,7 +610,8 @@
 							<!-- 対象データ分繰り返します -->
 							@for ($i=0; $i < count($employees_overtime_working_45); $i++) <tr>
 								<td>
-									<form action="/employee/public/show/" method="POST">
+									<!-- <form action="/employee/public/show/" method="POST"> -->
+									<form action="/employee/public/show/{{$employees_overtime_working_45[$i][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
 										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
@@ -635,8 +650,8 @@
 								<td class="table-text">
 									<div>{{ $employees_overtime_working_45[$i][0]->nyushabi }}</div>
 								</td>
-								<td class="table-text">
-									<div></div>
+								<td class="table-text text-center" style="color:red">
+									<div>{{ $overtime_working_45_array_count_values[$employees_overtime_working_45[$i][0]->shain_cd]}}  / 6回</div>
 								</td>
 								</tr>
 								@endfor
@@ -649,13 +664,14 @@
 			@endif
 
 			<!-- テーブル -->
-			@if(is_null($employees_holiday_working_this_month_count))
+			@if(empty($employees_holiday_working_this_month_count))
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">休日労働回数（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">休日労働回数（月）アラート対象者</p>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
 						<thead>
 							<tr>
@@ -678,7 +694,7 @@
 									<div>入社日</div>
 								</th>
 								<th class="table-text text-center" style="min-width:50px">
-									<div>例外時間外労働（月）</div>
+									<div>休日労働回数（月）</div>
 								</th>
 							</tr>
 						</thead>
@@ -686,7 +702,8 @@
 							<!-- 対象データ分繰り返します -->
 							@for ($i=0; $i < count($employees_holiday_working_this_month_count); $i++) <tr>
 								<td>
-									<form action="/employee/public/show/" method="POST">
+									<!-- <form action="/employee/public/show/" method="POST"> -->
+									<form action="/employee/public/show/{{$employees_holiday_working_this_month_count[$i][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
 										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
@@ -725,8 +742,8 @@
 								<td class="table-text">
 									<div>{{ $employees_holiday_working_this_month_count[$i][0]->nyushabi }}</div>
 								</td>
-								<td class="table-text">
-									<div></div>
+								<td class="table-text text-center" style="color:red">
+									<div>{{$holiday_working_this_month_count_array_result[$i][1]}} / 2回</div>
 								</td>
 								</tr>
 								@endfor
@@ -739,13 +756,14 @@
 			@endif
 
 			<!-- テーブル -->
-			@if(is_null($employees_overtime_and_holiday_working_sum))
+			@if(empty($employees_overtime_and_holiday_working_sum))
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">休日+時間外労働（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">休日+時間外労働（月）アラート対象者</p>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
+					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
+					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
 
 						<thead>
 							<tr>
@@ -768,7 +786,7 @@
 									<div>入社日</div>
 								</th>
 								<th class="table-text text-center" style="min-width:50px">
-									<div>例外時間外労働（月）</div>
+									<div>休日+時間外労働（月）</div>
 								</th>
 							</tr>
 						</thead>
@@ -776,7 +794,8 @@
 							<!-- 対象データ分繰り返します -->
 							@for ($i=0; $i < count($employees_overtime_and_holiday_working_sum); $i++) <tr>
 								<td>
-									<form action="/employee/public/show/" method="POST">
+									<!-- <form action="/employee/public/show/" method="POST"> -->
+									<form action="/employee/public/show/{{$employees_overtime_and_holiday_working_sum[$i][0]->shain_cd}}" method="POST">
 										{{ csrf_field() }}
 										<?php
 										if (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])) {
@@ -815,8 +834,8 @@
 								<td class="table-text">
 									<div>{{ $employees_overtime_and_holiday_working_sum[$i][0]->nyushabi }}</div>
 								</td>
-								<td class="table-text">
-									<div></div>
+								<td class="table-text text-center" style="color:red">
+									<div>{{ $overtime_and_holiday_working_sum_array_result[$i][1] }} / 100 時間</div>
 								</td>
 								</tr>
 								@endfor
@@ -827,8 +846,6 @@
 				</div>
 			</div>
 			@endif
-
-
 
 
 		</div>
