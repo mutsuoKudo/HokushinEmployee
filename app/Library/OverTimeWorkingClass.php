@@ -111,7 +111,7 @@ class OverTimeWorkingClass
         $employees_overtime_working_this_month_pre = [];
         // if (is_null($overtime_working_this_month_array)) {
         if (empty($overtime_working_this_month_array)) {
-            var_dump('例外時間外労働上限（月）に引っ掛かったひとはいません');
+            // var_dump('例外時間外労働上限（月）に引っ掛かったひとはいません');
         } else {
             // 例外時間外労働上限（月）に引っ掛かったひと
 
@@ -126,11 +126,13 @@ class OverTimeWorkingClass
                     ->get();
             }
         }
-        var_dump('例外時間外労働上限（月）に引っ掛かったひとの従業員データ');
-        var_dump($employees_overtime_working_this_month_pre);
+        // var_dump('例外時間外労働上限（月）に引っ掛かったひとの従業員データ');
+        // var_dump($employees_overtime_working_this_month_pre);
+        // var_dump($employees_overtime_working_this_month_pre[0][0]);
 
 
-        return $employees_overtime_working_this_month_pre;
+        // return $employees_overtime_working_this_month_pre;
+        return [$employees_overtime_working_this_month_pre, $overtime_working_this_month_array];
     }
 
 
@@ -235,11 +237,12 @@ class OverTimeWorkingClass
             }
         }
 
-        var_dump('例外時間外労働上限（月）に引っ掛かったひとの従業員データ');
-        var_dump($employees_overtime_working_year_pre);
+        // var_dump('例外時間外労働上限（月）に引っ掛かったひとの従業員データ');
+        // var_dump($employees_overtime_working_year_pre);
         // var_dump($employees_overtime_working_year[0][0]->shain_cd);
 
-        return $employees_overtime_working_year_pre;
+        // return $employees_overtime_working_year_pre;
+        return [$employees_overtime_working_year_pre, $overtime_working_year_array];
     }
 
     // 平均（月）アラート
@@ -262,7 +265,7 @@ class OverTimeWorkingClass
         }
         // var_dump($shain_cd_array);
 
-        // 時間外労働（月）
+        // 最新データ年月の時間外労働（月）を在籍者全員分抽出する
         for ($i = 0; $i <= $employees_count - 1; $i++) {
 
             $overtime_working_this_month_pre = DB::table('overtime_workings')
@@ -273,6 +276,7 @@ class OverTimeWorkingClass
 
             // var_dump($overtime_working_this_month_pre);
 
+            // 時間外労働が登録されていない場合は0時間と入れるようにする。それ以外は抽出した時間を入れる。
             if (is_null($overtime_working_this_month_pre)) {
                 $overtime_working_this_month = 0;
             } else {
@@ -284,7 +288,7 @@ class OverTimeWorkingClass
         }
 
 
-        // 休日労働（月）
+        // 最新データ年月の休日労働（月）を在籍者全員分抽出する
         for ($i = 0; $i <= $employees_count - 1; $i++) {
             // 休日労働（月）
             $holiday_working_this_month_pre = DB::table('holiday_workings')
@@ -292,23 +296,26 @@ class OverTimeWorkingClass
                 ->where('year', $latest_year)
                 ->where('month', $latest_month)
                 ->where('shain_cd', $shain_cd_array[$i])
-                ->get();
+                // ->get();
+                ->first();
             // ->toSql();
             // dd($overtime_working_this_month);
 
-            // var_dump($holiday_working_this_month_pre[0]);
+            // var_dump('look');
+            // var_dump($holiday_working_this_month_pre);
 
             if (is_null($holiday_working_this_month_pre)) {
                 $holiday_working_this_month = 0;
             } else {
-                // $holiday_working_this_month = (float) $holiday_working_this_month_pre->overtime_working;
-                $holiday_working_this_month = (float) $holiday_working_this_month_pre[0]->holiday_working;
+                // $holiday_working_this_month = (float) $holiday_working_this_month_pre[0]->holiday_working;
+                $holiday_working_this_month = (float) $holiday_working_this_month_pre->holiday_working;
             }
 
             $holiday_working_this_month_array_pre[] = [$shain_cd_array[$i], $holiday_working_this_month];
         }
 
 
+        // 最新データの年月に対して1か月前～5か月前までの年月を抽出
 
         $post_year_month_slash = $latest_year . '/' . $latest_month . '/1';
         $before_1_year_month_pre = date('Y/m/d', strtotime($post_year_month_slash . "-1 month"));
@@ -362,11 +369,11 @@ class OverTimeWorkingClass
         // var_dump($before_5_month);
         // echo ('</pre>');
 
-        // 5ヶ月前の年を入れます
+        // 1か月前～5ヶ月前の年を入れます
         $before_year_array = [$before_1_year, $before_2_year, $before_3_year, $before_4_year, $before_5_year];
         // var_dump($before_year_array);
 
-        // 5か月前の月をいれます
+        // 1か月前～5か月前の月をいれます
         $before_month_array = [$before_1_month, $before_2_month, $before_3_month, $before_4_month, $before_5_month];
         // var_dump($before_month_array);
 
@@ -375,18 +382,19 @@ class OverTimeWorkingClass
 
 
         // 例外時間外労働（平均）
-        // 5か月分の時間外労働を入れておく配列
+        // 1か月前～5か月分の時間外労働を入れておく配列
         $overtime_working_before_array = [];
-        // 上の配列に入った労働時間の合計を計算し入れておく配列
+        // 上の配列に入った時間外労働時間の合計を計算し入れておく配列
         $overtime_working_before_sum_array = [];
 
-        // 5か月分の時間外労働を入れておく配列
+        // 1か月前～5か月分の休日労働を入れておく配列
         $holiday_working_before_array = [];
-        // 上の配列に入った労働時間の合計を計算し入れておく配列
+        // 上の配列に入った休日労働時間の合計を計算し入れておく配列
         $holiday_working_before_sum_array = [];
 
 
         // 平均の上限に引っ掛かるものを抽出する
+        // 平均の上限である定数を取得
         $overtime_working_average_pre = DB::table('overtime_working_constants')
             ->select('overtime_working_average')
             ->first();
@@ -396,14 +404,18 @@ class OverTimeWorkingClass
         // var_dump($overtime_working_average);
 
         $avarege = [];
+        $test = [];
+        $avarege_month = [];
 
-        // for ($m = 0; $m <= $employees_count - 1; $m++) {
-        for ($m = 0; $m <= 2 - 1; $m++) {
-            // 5か月前から1か月前までの時間外労働を抽出
+        // 在籍者全員分
+        for ($m = 0; $m <= $employees_count - 1; $m++) {
+            // for ($m = 0; $m <= 2 - 1; $m++) {
+
+            // 5か月前から1か月前までの時間外労働を抽出　※5ヶ月分なので5回繰り返したい
             for ($i = 0; $i <= 4; $i++) {
                 // for ($i = 0; $i <= 1; $i++) {
 
-
+                // 先ほど抽出した1か月～5か月前の年月で指定して取得していく
                 $overtime_working_before_months_pre = DB::table('overtime_workings')
                     ->select('overtime_working')
                     ->where('year', $before_year_array[$i])
@@ -412,7 +424,7 @@ class OverTimeWorkingClass
                     ->first();
 
 
-
+                // 時間外労働のデータが入力されていない場合は0時間とする
                 if (is_null($overtime_working_before_months_pre)) {
                     $overtime_working_before_months = 0;
                 } else {
@@ -429,10 +441,13 @@ class OverTimeWorkingClass
                 // echo '</pre>';
 
 
+
+
                 // var_dump($overtime_working_before_months);
-                // 5か月分の時間外労働をどんどん入れてく
+
+                // 5か月分の時間外労働をどんどん入れてく 社員コードが変わるたびに配列をリセットさせる
                 if ($m >= 1 and $i == 0) {
-                    // var_dump('リセット2');
+                    // var_dump('はいれつリセット2');
                     $overtime_working_before_array = [];
                 }
                 $overtime_working_before_array[] = $overtime_working_before_months;
@@ -443,7 +458,8 @@ class OverTimeWorkingClass
                 // var_dump($overtime_working_before_sum_pre);
 
                 // $overtime_working_before_sum_array[] = [$shain_cd_array[$m], $i + 1, $overtime_working_before_sum_pre];
-                // var_dump('$i' . $i);
+
+                // 社員コードが変わるたびに配列をリセットさせる
                 if ($m >= 1 and $i == 0) {
                     // var_dump('リセット');
                     $overtime_working_before_sum_array = [];
@@ -458,10 +474,9 @@ class OverTimeWorkingClass
             }
 
 
+            // 5か月前から1か月前までの休日労働を抽出　※5ヶ月分なので5回繰り返したい
             for ($i = 0; $i <= 4; $i++) {
-                // 5か月前から1か月前までの休日労働を抽出
                 $holiday_working_before_months_pre = DB::table('holiday_workings')
-                    // ->select('holiday_working')
                     ->select(DB::raw('sum(holiday_working) as holiday_working'))
                     ->where('year', $before_year_array[$i])
                     ->where('month', $before_month_array[$i])
@@ -487,6 +502,10 @@ class OverTimeWorkingClass
 
 
                 // 5か月分の休日労働をどんどん入れてく
+                if ($m >= 1 and $i == 0) {
+                    // var_dump('はいれつリセット2');
+                    $holiday_working_before_array = [];
+                }
                 $holiday_working_before_array[] = $holiday_working_before_months;
 
                 // var_dump($holiday_working_before_array);
@@ -496,6 +515,10 @@ class OverTimeWorkingClass
                 // var_dump($holiday_working_before_sum_pre);
 
                 // $holiday_working_before_sum_array[] = [$shain_cd_array[$m], $i + 1,  $holiday_working_before_sum_pre];
+                if ($m >= 1 and $i == 0) {
+                    // var_dump('はいれつリセット');
+                    $holiday_working_before_sum_array = [];
+                }
                 $holiday_working_before_sum_array[] = array_sum($holiday_working_before_array);
                 // var_dump($holiday_working_before_sum_array);
 
@@ -504,31 +527,48 @@ class OverTimeWorkingClass
                 // var_dump($shain_cd_array[$m]);
                 // var_dump($months_average);
             }
+
             $months_average = [];
             for ($i = 0; $i <= 4; $i++) {
+                // 最新データ年月の時間外労働+休日労働+1か月～5か月前の時間外労働+休日労働　/ 何カ月分の平均か　ex:2か月平均　=　最新データ年月の時間外労働+休日労働+一か月前の時間外労働+休日労働 / 2
                 $months_average_pre = [(float) $overtime_working_this_month_array_pre[$m][1], (float) $overtime_working_before_sum_array[$i], (float) $holiday_working_this_month_array_pre[$m][1], (float) $holiday_working_before_sum_array[$i]];
                 $months_average = array_sum($months_average_pre) / ($i + 2);
 
                 // echo '<pre>';
                 // var_dump('平均');
+                // var_dump($before_year_array[$i]);
+                // var_dump($before_month_array[$i]);
                 // var_dump((float)$overtime_working_this_month_array_pre[$m][1]);
                 // var_dump((float)$overtime_working_before_sum_array[$i]);
                 // var_dump((float)$holiday_working_this_month_array_pre[$m][1]);
                 // var_dump((float)$holiday_working_before_sum_array[$i]);
-                // var_dump($i + 2);
                 // var_dump('ここよ');
                 // var_dump(array_sum($months_average_pre));
-                // var_dump($i + 2);
                 // var_dump($months_average);
                 // echo '</pre>';
 
+                // 何か月平均か
+                if ($m >= 1 and $i == 0) {
+                    // var_dump('はいれつリセット2');
+                    $avarege_month = [];
+                }
+                $avarege_month[] = $i + 2 . 'ヶ月平均';
+                // var_dump('look');
+                // var_dump($avarege_month);
+
+                // 平均の上限を超えている社員コードのみ抽出
                 if ($months_average >= $overtime_working_average - 10) {
                     $avarege[] = $shain_cd_array[$m];
+                    $test[] = [$shain_cd_array[$m], $avarege_month[$i], $months_average];
                 }
+                // echo '<pre>';
                 // var_dump('平均越え');
                 // var_dump($avarege);
+                // var_dump($test);
+                // echo '</pre>';
             }
         }
+
 
         // 重複した社員コードを消しちゃう
         $overtime_working_avarege_unique = array_unique($avarege);
@@ -541,7 +581,7 @@ class OverTimeWorkingClass
 
         $employees_overtime_working_avarege_pre = [];
         if (empty($overtime_working_avarege_unique_values)) {
-            var_dump('平均（月）に引っ掛かったひとはいません');
+            // var_dump('平均（月）に引っ掛かったひとはいません');
         } else {
             // 平均（月）に引っ掛かったひと
 
@@ -557,11 +597,12 @@ class OverTimeWorkingClass
                     ->get();
             }
         }
-        var_dump('平均（月）に引っ掛かったひとの従業員データ');
-        var_dump($employees_overtime_working_avarege_pre);
+        // var_dump('平均（月）に引っ掛かったひとの従業員データ');
+        // var_dump($employees_overtime_working_avarege_pre);
         // var_dump($employees_overtime_and_holiday_working_sum[0][0]->shain_cd);
 
-        return $employees_overtime_working_avarege_pre;
+        // return $employees_overtime_working_avarege_pre;
+        return [$employees_overtime_working_avarege_pre, $test];
     }
 
 
@@ -657,7 +698,7 @@ class OverTimeWorkingClass
 
                     // 入力されていない場合は0時間とする
                     if (is_null($overtime_working_45)) {
-                        $overtime_working_result = 0;
+                        $overtime_working_45_result = 0;
                         // 入力されている場合は配列使いやすくするために入れ替える
                     } else {
                         $overtime_working_45_result = $overtime_working_45->overtime_working;
@@ -686,15 +727,21 @@ class OverTimeWorkingClass
             }
         }
 
+        // var_dump('45');
         // var_dump($overtime_working_45_array);
 
-        // 45時間以上時間外労働している月が入った配列を社員コードが重複したものでまとめる
+        // 45時間以上時間外労働している月が入った配列を、社員コードが重複したものでまとめる
         $array = array_count_values($overtime_working_45_array);
         // var_dump('ここみて');
         // var_dump($array);
+        // var_dump(count($overtime_working_45_array));
+        // var_dump($array[$overtime_working_45_array[0]]);
+        // var_dump($array[$overtime_working_45_array[1]]);
+
 
         $overtime_working_45_array_result = [];
-        for ($i = 1; $i <= count($overtime_working_45_array) - 1; $i++) {
+        for ($i = 0; $i <= count($overtime_working_45_array) - 1; $i++) {
+            // for ($i = 1; $i <= count($overtime_working_45_array)-1; $i++) {
 
             // 同じ社員コードが5回以上カウントされている場合はアラートを表示するので社員コードのみを配列に入れなおす
             if ($array[$overtime_working_45_array[$i]] >= 6 - 1) {
@@ -705,6 +752,11 @@ class OverTimeWorkingClass
 
         // アラートを出す社員コード※重複分そのまま入ってしまっている
         // var_dump($overtime_working_45_array_result);
+
+        // 社員コードが何回重複しているか数える
+        $overtime_working_45_array_count_values_pre = array_count_values($overtime_working_45_array_result);
+        // var_dump('ここ見て～');
+        // var_dump($overtime_working_45_array_count_values_pre);
 
         // 重複した社員コードを消しちゃう
         $overtime_working_45_array_result_unique = array_unique($overtime_working_45_array_result);
@@ -726,11 +778,12 @@ class OverTimeWorkingClass
                 ->get();
         }
 
-        var_dump('時間外労働45時間以上が一年で規定回数以上あった従業員データ');
-        var_dump($employees_overtime_working_45_pre);
+        // var_dump('時間外労働45時間以上が一年で規定回数以上あった従業員データ');
+        // var_dump($employees_overtime_working_45_pre);
         // var_dump($employees_overtime_working_45[0][0]->shain_cd);
 
-        return $employees_overtime_working_45_pre;
+        // return $employees_overtime_working_45_pre;
+        return [$employees_overtime_working_45_pre, $overtime_working_45_array_count_values_pre];
     }
 
 
@@ -785,10 +838,12 @@ class OverTimeWorkingClass
             // }
         }
 
+        // var_dump('hoyo');
+        // var_dump($holiday_working_this_month_count_array);
 
         $employees_holiday_working_this_month_count_pre = [];
         if (empty($holiday_working_this_month_count_array)) {
-            var_dump('休日労働回数上限（月）に引っ掛かったひとはいません');
+            // var_dump('休日労働回数上限（月）に引っ掛かったひとはいません');
         } else {
             // 休日労働回数上限（月）に引っ掛かったひと
 
@@ -804,14 +859,17 @@ class OverTimeWorkingClass
                     ->get();
             }
         }
-        var_dump('休日労働回数上限（月）に引っ掛かったひとの従業員データ');
-        var_dump($employees_holiday_working_this_month_count_pre);
+        // var_dump('休日労働回数上限（月）に引っ掛かったひとの従業員データ');
+        // var_dump($employees_holiday_working_this_month_count_pre);
+        // var_dump($employees_holiday_working_this_month_count_pre[0]);
         // var_dump($employees_holiday_working_this_month_count[0][0]->shain_cd);
+
+        return [$employees_holiday_working_this_month_count_pre, $holiday_working_this_month_count_array];
     }
 
 
     // 時間外労働+休日労働（月）アラート
-    public function overtime_and_holiday_working_sum($latest_year,$latest_month)
+    public function overtime_and_holiday_working_sum($latest_year, $latest_month)
     {
 
         // クラスのインスタンス化
@@ -905,12 +963,13 @@ class OverTimeWorkingClass
             // }
         }
 
+        // var_dump('ほい');
         // var_dump($overtime_and_holiday_working_sum_array);
 
 
         $employees_overtime_and_holiday_working_sum_pre = [];
         if (empty($overtime_and_holiday_working_sum_array)) {
-            var_dump('時間外労働+休日労働上限（月）に引っ掛かったひとはいません');
+            // var_dump('時間外労働+休日労働上限（月）に引っ掛かったひとはいません');
         } else {
             // 時間外労働+休日労働上限（月）に引っ掛かったひと
 
@@ -926,11 +985,11 @@ class OverTimeWorkingClass
                     ->get();
             }
         }
-        var_dump('時間外労働+休日労働上限（月）に引っ掛かったひとの従業員データ');
-        var_dump($employees_overtime_and_holiday_working_sum_pre);
+        // var_dump('時間外労働+休日労働上限（月）に引っ掛かったひとの従業員データ');
+        // var_dump($employees_overtime_and_holiday_working_sum_pre);
         // var_dump($employees_overtime_and_holiday_working_sum[0][0]->shain_cd);
 
-        return $employees_overtime_and_holiday_working_sum_pre;
-
+        // return $employees_overtime_and_holiday_working_sum_pre;
+        return [$employees_overtime_and_holiday_working_sum_pre, $overtime_and_holiday_working_sum_array];
     }
 }

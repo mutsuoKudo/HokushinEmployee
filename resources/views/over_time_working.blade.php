@@ -2,7 +2,7 @@
 
 @section('content')
 
-<!-- 有給情報画面 -->
+<!-- 時間外労働画面 -->
 
 <div class="container">
     <div class="col-12">
@@ -36,7 +36,8 @@
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 <div>
-                    {{$post_year_month}} 年 時間外労働
+                    {{$post_year_month}} 時間外労働
+                    <p style="font-size:20px;">協定期間： {{ $post_year }}年 4月 ～ {{ $post_year + 1}}年 3月</p>
                     <!-- DBのholidayテーブルに入力されている最新のデータ月 -->
                     <p style="font-size:20px; color:red;">※{{ $latest_year_month }}末時点のデータです。</p>
                 </div>
@@ -51,6 +52,16 @@
                 </div>
 
                 <div class="mb-5">
+                    @if(isset($overtime_working_error))
+                    <p class="mt-5 p-3 font-weight-bold text-center" style="background-color: #F7F7EE">最新データ年月よりも未来を選択しちゃってます。<br>
+                        <small class="mt-5 p-3 font-weight-bold text-center" style="font-size:15px; color:red">詳細画面に戻って最初からセレクトされている年月が時間外労働の最新データになります。</small></p>
+
+                    @elseif(isset($overtime_working_error2))
+                    <p class="mt-5 p-3 font-weight-bold text-center" style="background-color: #F7F7EE">2019年4月（時間外労働の上限規制初回協定期間）以前の年月を選択しています。<br>
+                        <small class="mt-5 p-3 font-weight-bold text-center" style="font-size:15px; color:red">詳細画面に戻って最初からセレクトされている年月が時間外労働の最新データになります。</small></p>
+
+
+                    @else
                     <table class="table table-striped task-table text-center" style="table-layout: fixed; width:100%;">
                         <tr>
                             <!-- <th class="text-center">所定労働時間</th> -->
@@ -179,9 +190,20 @@
                 </div>
 
 
+                @endif
+
                 <th class="text-center"> </th>
 
 
+                <div class="mt-5">
+                    <ul style="list-style:none">
+                        <li>※時間外労働45時間越えた回数について<br>
+                            選択した年月が属する、協定期間開始（協定期間はテーブル上部に表示されています）から選択した年月までの間で、45時間以上の時間外労働をした月が何回あったかを表します。</li>
+                        <li>※2～6ヶ月平均について
+                            前年度の36協定の対象期間の時間数についても2～6か月平均の算定時間に含みます。<br>
+                            例）2020年4月について計算するためには、直前の五か月分（2019年11月～2020年3月）の実績も必要になります。</li>
+                    </ul>
+                </div>
 
 
             </div>

@@ -220,6 +220,7 @@ class CRUDController extends Controller
         $overtime_working_latest_year = $overtime_working_year_month_pre->year;
         //一番最近のデータの月
         $overtime_working_latest_month = $overtime_working_year_month_pre->month;
+        
 
         return view('/show')->with([
             'employee' => $employee,
