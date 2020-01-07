@@ -91,7 +91,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'pic' => $file_jpg,
             'remarks' => null,
@@ -137,7 +137,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'pic' => $file_png,
             'remarks' => null,
@@ -193,7 +193,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'pic' => $file_gif,
             'remarks' => null,
@@ -230,7 +230,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'remarks' => null,
         ]);
@@ -238,12 +238,28 @@ class CrudControllerTest extends TestCase
         $this->assertDatabaseHas('employees', ['shain_cd' => '00']);
 
 
-        $response = $this->post('/show/00', [
-            'url' => 'http://localhost/employee/public/',
+        // $response = $this->post('/show/00');
+        // $response->assertStatus(200);
+
+        $response = $this->post('/show/202020', [
+            'url' => '/employee/public',
             'scroll_top' => '0',
         ]);
-        $response->assertStatus(200);
+        // $response->assertStatus(200);
+        // $id = 202020;
+        // $this->json('post', '/show/' . $id, [
 
+        //     'url' => '/employee/public',
+        //     'scroll_top' => '0',
+            
+        // ]);
+
+        // $this->assertDatabaseHas('employees', ['shain_cd' => '00']);
+        // $this->json('post', '/show/' . $id, [
+        //     'post_url' => 'http://localhost/employee/public/',
+        //     'scroll_top' => '0',
+        // ]);
+        $response->assertStatus(200);
 
         $response = $this->post('/edit/00');
         $response->assertStatus(200);
@@ -280,7 +296,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'pic' => $file_jpg,
             'remarks' => null,
@@ -320,7 +336,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'pic' => $file_png,
             'remarks' => null,
@@ -363,7 +379,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'pic' => $file_gif,
             'remarks' => null,
@@ -404,7 +420,7 @@ class CrudControllerTest extends TestCase
             'department' => '04',
             'name_card' => null,
             'id_card' => null,
-            'fuyo_kazoku' => null,
+            'fuyo_kazoku' => 0,
             'test' => null,
             'remarks' => null,
         ]);

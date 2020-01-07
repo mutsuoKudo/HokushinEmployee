@@ -10,7 +10,7 @@ use App\Employee;
 class OverTimeWorkingClass
 {
 
-    // 時間外労働アラートで使用する必須項目たち
+    // ☆時間外労働アラートで使用する必須項目たち
     public function overtime_working_all()
     {
         //一番最近のデータの年月を作成(=現在日時になる)
@@ -20,22 +20,80 @@ class OverTimeWorkingClass
             ->orderBy('month', 'desc')
             ->first();
         // var_dump($year_month_a_pre);
-        //一番最近のデータの年
-        $latest_year_pre = $year_month_a_pre->year;
-        //一番最近のデータの月
-        $latest_month_pre = $year_month_a_pre->month;
-        // $latest_month = 2;
 
-        //一番最近のデータの年月
-        $latest_year_month_pre = $latest_year_pre . '年' . $latest_month_pre . '月';
-        // var_dump('現在年:' . $latest_year);
-        // var_dump('現在月:' . $latest_month);
+        // 時間外労働テーブルにデータが一つもない場合、
+        if (is_null($year_month_a_pre)) {
+            // 一番最近のデータの年は0にしとく
+            $latest_year_pre1 = 0;
+            //一番最近のデータの月は0にしとく
+            $latest_month_pre1 = 0;
+            //一番最近のデータの年月は00にしとく
+            $latest_year_month_pre1 = $latest_year_pre1 . $latest_month_pre1;
+        } else {
+            //一番最近のデータの年
+            $latest_year_pre1 = $year_month_a_pre->year;
+            //一番最近のデータの月
+            $latest_month_pre1 = $year_month_a_pre->month;
+            // $latest_month = 2;
+
+            //一番最近のデータの年月
+            $latest_year_month_pre1 = $latest_year_pre1 . '年' . $latest_month_pre1 . '月';
+            // var_dump('現在年:' . $latest_year);
+            // var_dump('現在月:' . $latest_month);
+        }
+
+
+        // 休日労働テーブルも参照する
+        $holiday_working_year_month_pre = DB::table('holiday_workings')
+            ->select(db::raw('year,lpad(month, 2, "0") as month'))
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->first();
+
+        // 休日労働テーブルにもデータが入っていない場合はデータが入っていないことを表示するので最新データ年月は0にしとく
+        if (is_null($holiday_working_year_month_pre)) {
+            //一番最近のデータの年は0にしとく
+            $latest_year_pre2 = 0;
+            //一番最近のデータの月は0にしとく
+            $latest_month_pre2 = 0;
+            //一番最近のデータの年月は00にしとく
+            $latest_year_month_pre2 = $latest_year_pre2 . $latest_month_pre2;
+
+            // 休日労働テーブルにデータが入っているならそれを最新データ年月にする
+        } else {
+            //一番最近のデータの年
+            $latest_year_pre2 = $holiday_working_year_month_pre->year;
+            //一番最近のデータの月
+            $latest_month_pre2 = $holiday_working_year_month_pre->month;
+            //一番最近のデータの年月
+            $latest_year_month_pre2 = $latest_year_pre2 . '年' . $latest_month_pre2 . '月';
+        }
+
+
+        // var_dump('現在年1:' . $latest_year_pre1);
+        // var_dump('現在月1:' . $latest_month_pre1);
+        // var_dump('現在年2:' . $latest_year_pre2);
+        // var_dump('現在月2:' . $latest_month_pre2);
+
+        // 年月が新しい方を最新データにする
+        if ($latest_year_pre1 > $latest_year_pre2 or ($latest_year_pre1 == $latest_year_pre2 and $latest_month_pre1 >= $latest_month_pre2)) {
+            $latest_year_pre = $latest_year_pre1;
+            $latest_month_pre = $latest_month_pre1;
+            $latest_year_month_pre = $latest_year_month_pre1;
+        } else {
+            $latest_year_pre = $latest_year_pre2;
+            $latest_month_pre = $latest_month_pre2;
+            $latest_year_month_pre = $latest_year_month_pre2;
+        }
+
+
+        
 
         return [$latest_year_pre, $latest_month_pre, $latest_year_month_pre];
     }
 
 
-    // 時間外労働（月）アラート
+    // ☆時間外労働（月）アラート
     public function overtime_working_this_month($latest_year, $latest_month)
     {
 
@@ -136,7 +194,7 @@ class OverTimeWorkingClass
     }
 
 
-    // 時間外労働（年）アラート
+    // ☆時間外労働（年）アラート
     public function overtime_working_year($latest_year, $latest_month)
     {
 
@@ -222,7 +280,7 @@ class OverTimeWorkingClass
         $employees_overtime_working_year_pre = [];
 
         if (empty($overtime_working_year_array)) {
-            var_dump('例外時間外労働上限（月）に引っ掛かったひとはいません');
+            // var_dump('例外時間外労働上限（月）に引っ掛かったひとはいません');
         } else {
             // 例外時間外労働上限（月）に引っ掛かったひと
             // var_dump($overtime_working_year_array);
@@ -245,7 +303,7 @@ class OverTimeWorkingClass
         return [$employees_overtime_working_year_pre, $overtime_working_year_array];
     }
 
-    // 平均（月）アラート
+    // ☆平均（月）アラート
     public function overtime_working_avarage($latest_year, $latest_month)
     {
 
@@ -606,7 +664,7 @@ class OverTimeWorkingClass
     }
 
 
-    // 時間外労働時間が45時間を超えた月が年に6回まで
+    // ☆時間外労働時間が45時間を超えた月が年に6回まで
     public function overtime_working_45($latest_year, $latest_month)
     {
 
@@ -665,7 +723,7 @@ class OverTimeWorkingClass
         } else {
 
             for ($m = 0; $m <= $employees_count - 1; $m++) {
-                // 1月からデータ最新年月まで繰り返す
+                // 選択した年月が、1.2.3月達だっ場合、1月からデータ最新年月まで繰り返す
                 for ($i = 1; $i <= (int) $latest_month; $i++) {
                     $overtime_working_45 = DB::table('overtime_workings')
                         ->select('overtime_working')
@@ -692,9 +750,14 @@ class OverTimeWorkingClass
                     $overtime_working_45 = DB::table('overtime_workings')
                         ->select('overtime_working')
                         ->where('year', $latest_year - 1)
-                        ->where('month', $m)
+                        ->where('month', $i2)
                         ->where('shain_cd', $shain_cd_array[$m])
                         ->first();
+
+                    // var_dump($overtime_working_45);
+                    // var_dump($latest_year-1);
+                    // var_dump($i2);
+                    // var_dump($shain_cd_array[$m]);
 
                     // 入力されていない場合は0時間とする
                     if (is_null($overtime_working_45)) {
@@ -704,7 +767,7 @@ class OverTimeWorkingClass
                         $overtime_working_45_result = $overtime_working_45->overtime_working;
                     }
                     // 順番に追加していく
-                    $overtime_working_45_array_pre[] = [$shain_cd_array[$m], $latest_year, $i2, $overtime_working_45_result];
+                    $overtime_working_45_array_pre[] = [$shain_cd_array[$m], $latest_year - 1, $i2, $overtime_working_45_result];
                 }
             }
         }
@@ -744,7 +807,7 @@ class OverTimeWorkingClass
             // for ($i = 1; $i <= count($overtime_working_45_array)-1; $i++) {
 
             // 同じ社員コードが5回以上カウントされている場合はアラートを表示するので社員コードのみを配列に入れなおす
-            if ($array[$overtime_working_45_array[$i]] >= 6 - 1) {
+            if ($array[$overtime_working_45_array[$i]] >= 6 - 2) {
                 // var_dump('5回以上');
                 $overtime_working_45_array_result[] = $overtime_working_45_array[$i];
             }
@@ -787,7 +850,7 @@ class OverTimeWorkingClass
     }
 
 
-    // 休日労働回数（月）アラート
+    // ☆休日労働回数（月）アラート
     public function holiday_working_this_month_count($latest_year, $latest_month)
     {
 
@@ -868,7 +931,7 @@ class OverTimeWorkingClass
     }
 
 
-    // 時間外労働+休日労働（月）アラート
+    // ☆時間外労働+休日労働（月）アラート
     public function overtime_and_holiday_working_sum($latest_year, $latest_month)
     {
 

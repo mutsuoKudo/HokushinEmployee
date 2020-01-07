@@ -51,6 +51,7 @@
                 <div class="float-right mb-5">
                     <div class="float-right">
 
+                        <!-- 有給取得日明細 -->
                         <div class="float-right mr-5">
                             @if(is_null($employee->nyushabi))
                             <select name="year" style="background-color:lightblue">
@@ -148,14 +149,9 @@
                         </div>
 
 
-
-
-
-
-
-
-
-
+                        <!-- 時間外労働明細 -->
+                        <!-- 入社日が入力されていない場合、退職日が入力されている場合は明細の表示ができません。
+                    時間外労働テーブルに一つもデータがない場合は、休日労働のテーブルを参照します。休日労働のテーブルにもデータが一つもない場合は明細の表示ができません-->
                         @if(is_null($employee->nyushabi))
                         <div class="mr-5">
                             <select name="year_month" style="background-color:lightgoldenrodyellow">
@@ -167,6 +163,13 @@
                         <div class="mr-5">
                             <select name="year_month" style="background-color:lightgoldenrodyellow">
                                 <option selected>退職者は選択できません</option>
+                            </select>
+                            <input type="submit" class="btn  btn-success m-2" value="時間外労働明細" disabled>
+                        </div>
+                        @elseif($overtime_working_latest_year == 0 and $overtime_working_latest_month == 0)
+                        <div class="mr-5">
+                            <select name="year_month" style="background-color:lightgoldenrodyellow">
+                                <option selected>時間外労働のデータがありません</option>
                             </select>
                             <input type="submit" class="btn  btn-success m-2" value="時間外労働明細" disabled>
                         </div>
@@ -183,7 +186,7 @@
                                         if ($i == $overtime_working_latest_year) {
                                             //最新データ年にselected
                                             echo '<option value="', $i, '" selected >', $i, '年</option>';
-                                        } else{
+                                        } else {
                                             echo '<option value="', $i, '">', $i, '年</option>';
                                         }
                                     }
@@ -197,7 +200,7 @@
                                         if ($i == $overtime_working_latest_month) {
                                             //最新データ年にselected
                                             echo '<option value="', $i, '" selected >', $i, '月</option>';
-                                        } else{
+                                        } else {
                                             echo '<option value="', $i, '">', $i, '月</option>';
                                         }
                                     }
@@ -212,33 +215,27 @@
                         </div>
                         @endif
                         <p style="font-size:13px">※時間外労働の上限規制適用は2019年4月～ </p>
-                    </div>
 
-
-
-
-
-
-                    @if($employee->fuyo_kazoku !== 0)
-                    <div class="mr-5 float-right">
-
-                        <form action="/employee/public/dependent_info/{{$employee->shain_cd}}" method="POST">
+                        <!-- 扶養家族明細 -->
+                        <!-- 扶養家族欄が1になっている社員のみ表示されます。 -->
+                        @if($employee->fuyo_kazoku !== 0)
+                        <form action="/employee/public/dependent_info/{{$employee->shain_cd}}" method="POST" class="float-right mr-5">
                             {{ csrf_field() }}
                             <!-- トップのURLとスクロール位置を次のページに送る -->
                             <input type="hidden" name="top_url" value={{$post_url}}>
                             <input type="hidden" name="scroll_top2" value="{{$scroll_top}}" class="st">
                             <input type="submit" class="btn btn-warning m-2" value="扶養家族明細">
                         </form>
+
+                        <!-- ※扶養家族明細ボタンを表示するときは写真のトップにマージン16％ -->
                     </div>
-                    @endif
-
-
-
-
-
-
-
+                    <div class="text-center mb-3" style="margin-top:16%;">
+                        @else
+                        <!-- ※扶養家族明細ボタンを表示しないときは写真のトップにマージン12％ -->
+                    </div>
                     <div class="text-center mb-3" style="margin-top:12%;">
+                        @endif
+
                         @if ($employee->pic)
                         <p>使用中の写真</p>
                         <img src="../storage/post_images/{{ $employee->pic }}" style="width: 20%;">

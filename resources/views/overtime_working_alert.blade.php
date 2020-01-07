@@ -274,14 +274,18 @@
 				<button type="submit" class="btn btn-info btn-lg">新規作成</button>
 			</form>
 		</div>
-
+		
 		<div id="table-area" class="w-100">
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
-
+				
+				@if($latest_year == 0 and $latest_month == 0)
+				<p style="color:red; font-size:15px;">時間外労働テーブルおよび休日労働テーブルにデータが入力されていません。</p>
+				@else
 				<!-- DBのoverti,e_workingsテーブルに入力されている最新のデータ月 -->
-				<p style="color:red; font-size:15px;">※{{$latest_month}}月末時点のデータです</p>
-
+				<p style="color:red; font-size:15px;">※{{$latest_year}}年{{$latest_month}}月末時点のデータです</p>
+				@endif
+				
 				<p id="print" width="150" height="30"><a href="" class="btn btn-success btn-lg">このページを印刷</a></p>
 			</div>
 			@endif
