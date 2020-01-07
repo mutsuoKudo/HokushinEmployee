@@ -90,14 +90,20 @@
 
                         <tr>
                             <!-- 例外時間外労働（月） -->
-                            @if($overtime_working_this_month >= 70)
+                            <?php
+                            $exception_working_overtime_month_10 = $exception_working_overtime_month-10;
+                            ?>
+                            @if($overtime_working_this_month >= $exception_working_overtime_month_10)
                             <td style="color:red">{{$overtime_working_this_month}} / {{$exception_working_overtime_month}}時間</td>
                             @else
                             <td>{{$overtime_working_this_month}} / {{$exception_working_overtime_month}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（年） -->
-                            @if($overtime_working_sum >= 700)
+                            <?php
+                            $exception_working_overtime_year_20 = $exception_working_overtime_year-20;
+                            ?>
+                            @if($overtime_working_sum >= $exception_working_overtime_year_20)
                             <td style="color:red">{{$overtime_working_sum}} / {{$exception_working_overtime_year}}時間</td>
                             @else
                             <td>{{$overtime_working_sum}} / {{$exception_working_overtime_year}}時間</td>
@@ -131,21 +137,28 @@
                             @endif
 
                             <!-- 時間外労働+休日労働（月） -->
-                            @if($overtime_and_holiday_working_sum >= 90)
+                            <?php
+                            $overtime_and_holiday_working_10 = $overtime_and_holiday_working-10;
+                            ?>
+                            @if($overtime_and_holiday_working_sum >= $overtime_and_holiday_working_10)
                             <td style="color:red">{{$overtime_and_holiday_working_sum}} / {{$overtime_and_holiday_working}}時間</td>
                             @else
                             <td>{{$overtime_and_holiday_working_sum}} / {{$overtime_and_holiday_working}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（2か月平均） -->
-                            @if($two_months_average >= 70)
+                            <?php
+                            $overtime_working_average_10 = $overtime_working_average-10;
+                            var_dump($overtime_working_average_10);
+                            ?>
+                            @if($two_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$two_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$two_months_average}} / {{$overtime_working_average}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（3か月平均） -->
-                            @if($three_months_average >= 70)
+                            @if($three_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$three_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$three_months_average}} / {{$overtime_working_average}}時間</td>
@@ -162,21 +175,21 @@
 
                         <tr>
                             <!-- 例外時間外労働（4か月平均） -->
-                            @if($four_months_average >= 70)
+                            @if($four_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$four_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$four_months_average}} / {{$overtime_working_average}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（5か月平均） -->
-                            @if($five_months_average >= 70)
+                            @if($five_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$five_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$five_months_average}} / {{$overtime_working_average}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（6か月平均） -->
-                            @if($six_months_average >= 70)
+                            @if($six_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$six_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$six_months_average}} / {{$overtime_working_average}}時間</td>

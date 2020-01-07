@@ -1670,6 +1670,7 @@ class AlertController extends Controller
         // var_dump($employees_overtime_working_45);
         // var_dump($employees_overtime_working_45[0]);
         // var_dump(count($employees_overtime_working_45));
+        // var_dump($overtime_working_45_array_count_values);
 
         // 休日労働回数（月）アラート対象者を取得
         $employees_holiday_working_this_month_count = [];

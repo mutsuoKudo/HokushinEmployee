@@ -54,7 +54,8 @@ class DependentController extends Controller
 
         // 扶養家族の情報を取得
         $dependent_info = DB::table('dependent_infos')
-            ->where('shain_cd', $id)
+            // ->where('shain_cd', $id)
+            ->where('shain_cd', 202020)
             ->orderBy('birthday', 'asc')
             ->get();
 

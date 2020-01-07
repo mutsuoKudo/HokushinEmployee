@@ -161,7 +161,9 @@ class OverTimeWorkingController extends Controller
         // 選択された月までの例外時間外労働を抜き出す
         // 選択した月数が4月より大きい場合は4月から選択した月数まで繰り返してOK（年数が全て同じなので…）
         if ((int) $post_month >= 4) {
+            // var_dump('通った1');
             for ($i = 4; $i <= (int) $post_month; $i++) {
+                // var_dump('通った1-1');
                 $overtime_working = DB::table('overtime_workings')
                     ->select('overtime_working')
                     ->where('year', $post_year)
@@ -183,8 +185,10 @@ class OverTimeWorkingController extends Controller
 
             // 選択した月数が1・2・3月だった場合、前年の4月から今年の選択した年数になる
         } else {
+            // var_dump('通った2');
             // 1月から選択した年まで繰り返す
             for ($i = 1; $i <= (int) $post_month; $i++) {
+                // var_dump('通った2-1');
                 $overtime_working = DB::table('overtime_workings')
                     ->select('overtime_working')
                     ->where('year', $post_year)
@@ -206,13 +210,15 @@ class OverTimeWorkingController extends Controller
             // var_dump($overtime_working_array);
 
             // 前年の4月から12月まで繰り返す
-            for ($i = 4; $i <= 12; $i++) {
+            for ($i2 = 4; $i2 <= 12; $i2++) {
                 $overtime_working = DB::table('overtime_workings')
                     ->select('overtime_working')
                     ->where('year', $post_year - 1)
-                    ->where('month', $i)
+                    ->where('month', $i2)
                     ->where('shain_cd', $id)
                     ->first();
+
+
 
                 // 入力されていない場合は0時間とする
                 if (is_null($overtime_working)) {
@@ -220,6 +226,7 @@ class OverTimeWorkingController extends Controller
                     // 入力されている場合は配列使いやすくするために入れ替える
                 } else {
                     $overtime_working_result = $overtime_working->overtime_working;
+                    var_dump($overtime_working_result);
                 }
                 // 順番に追加していく
                 array_push($overtime_working_array, $overtime_working_result);
@@ -461,27 +468,76 @@ class OverTimeWorkingController extends Controller
             ->orderBy('month', 'desc')
             ->first();
         // var_dump($year_month_a_pre);
-        //一番最近のデータの年
-        $latest_year = $year_month_a_pre->year;
-        //一番最近のデータの月
-        $latest_month = $year_month_a_pre->month;
-        //一番最近のデータの年月
-        $latest_year_month = $latest_year . $latest_month;
 
-        //一番最近のデータの年月（000000：文字なし）
-        $latest_year_month = $latest_year . '年' . $latest_month . '月';
-        // var_dump('現在年:' . $latest_year);
-        // var_dump('現在月:' . $latest_month);
+        if (is_null($year_month_a_pre)) {
+
+            //一番最近のデータの年は0にしとく
+            $latest_year1 = 0;
+            //一番最近のデータの月は0にしとく
+            $latest_month1 = 0;
+            //一番最近のデータの年月は00にしとく
+            $latest_year_month1 = $latest_year1 . $latest_month1;
+        } else {
+            //一番最近のデータの年
+            $latest_year1 = $year_month_a_pre->year;
+            //一番最近のデータの月
+            $latest_month1 = $year_month_a_pre->month;
+
+            //一番最近のデータの年月
+            $latest_year_month1 = $latest_year1 . '年' . $latest_month1 . '月';
+        }
+
+        $holiday_working_year_month_pre = DB::table('holiday_workings')
+            ->select(db::raw('year,lpad(month, 2, "0") as month'))
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->first();
+
+        if (is_null($holiday_working_year_month_pre)) {
+            //一番最近のデータの年は0にしとく
+            $latest_year2 = 0;
+            //一番最近のデータの月は0にしとく
+            $latest_month2 = 0;
+            //一番最近のデータの年月は00にしとく
+            $latest_year_month2 = $latest_year2 . $latest_month2;
+
+            // 休日労働テーブルにデータが入っているならそれを最新データ年月にする
+        } else {
+            //一番最近のデータの年
+            $latest_year2 = $holiday_working_year_month_pre->year;
+            //一番最近のデータの月
+            $latest_month2 = $holiday_working_year_month_pre->month;
+            //一番最近のデータの年月
+            $latest_year_month2 = $latest_year2 . '年' . $latest_month2 . '月';
+        }
+
+        var_dump('現在年1:' . $latest_year1);
+        var_dump('現在月1:' . $latest_month1);
+        var_dump('現在年2:' . $latest_year2);
+        var_dump('現在月2:' . $latest_month2);
+
+        // 年月が新しい方を最新データにする
+        if ($latest_year1 > $latest_year2 or ($latest_year1 == $latest_year2 and $latest_month1 >= $latest_month2)) {
+            $latest_year = $latest_year1;
+            $latest_month = $latest_month1;
+            $latest_year_month = $latest_year_month1;
+        } else {
+            $latest_year = $latest_year2;
+            $latest_month = $latest_month2;
+            $latest_year_month = $latest_year_month2;
+        }
+
+
 
 
         // 選択した年＝最新データ年で月数が大きい場合と、選択した年の方が最新データ年より大きい場合はエラーを表示
         // 2019年4月より前の年月を選択した場合もエラーを表示
         $overtime_working_error = null;
         $overtime_working_error2 = null;
-        if(((int)$post_year == $latest_year and (int)$post_month > (int)$latest_month)){
-        // if((int)$post_year > $latest_year){
+        if (((int) $post_year == $latest_year and (int) $post_month > (int) $latest_month)) {
+            // if((int)$post_year > $latest_year){
             $overtime_working_error = '最新データよりも未来の年月を選択しないでください～';
-        }elseif((int)$post_year <= 2019 and (int)$post_month < 4){
+        } elseif ((int) $post_year <= 2019 and (int) $post_month < 4) {
             $overtime_working_error2 = '2019年4月よりも前の年月を選択しないでください～';
         }
         // var_dump((int)$post_year);
