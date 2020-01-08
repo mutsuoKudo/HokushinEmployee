@@ -13,7 +13,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="panel panel-default">
+		<div class="panel panel-default w-100">
 
 			<div class="panel-body">
 				@include('common.errors')
@@ -296,7 +296,7 @@
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働（月）アラート対象者</p>
-			<div class="panel panel-default">
+			<div class="panel panel-default w-100">
 				<div class="panel-body">
 					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -388,7 +388,7 @@
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働（年）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働（年）アラート対象者</p>
-			<div class="panel panel-default">
+			<div class="panel panel-default w-100">
 				<div class="panel-body">
 					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -481,7 +481,7 @@
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働平均（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働平均（月）アラート対象者</p>
-			<div class="panel panel-default">
+			<div class="panel panel-default w-100">
 				<div class="panel-body">
 					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -580,7 +580,7 @@
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">時間外労働時間が45時間を超えた月の回数（年）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">時間外労働時間が45時間を超えた月の回数（年）アラート対象者</p>
-			<div class="panel panel-default">
+			<div class="panel panel-default w-100">
 				<div class="panel-body">
 					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -672,7 +672,7 @@
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">休日労働回数（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">休日労働回数（月）アラート対象者</p>
-			<div class="panel panel-default">
+			<div class="panel panel-default w-100">
 				<div class="panel-body">
 					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -764,7 +764,7 @@
 			<p class="mt-5 p-3 font-weight-bold" style="background-color: #F7F7EE">休日+時間外労働（月）アラート対象者はいません</p>
 			@else
 			<p class="mt-5 p-3 mb-0 font-weight-bold" style="background-color: #F7F7EE">休日+時間外労働（月）アラート対象者</p>
-			<div class="panel panel-default">
+			<div class="panel panel-default w-100">
 				<div class="panel-body">
 					<!-- <table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble"> -->
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;">
@@ -857,7 +857,7 @@
 	</div>
 </div>
 
-<script>
+<script type="application/javascript">
 	$('form').submit(function() {
 		var scroll_top = $(window).scrollTop(); //送信時の位置情報を取得
 		$('input.st', this).prop('value', scroll_top); //隠しフィールドに位置情報を設定
