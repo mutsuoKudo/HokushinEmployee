@@ -2,7 +2,7 @@
 
 @section('content')
 
-<!-- 有給情報画面 -->
+<!-- 時間外労働画面 -->
 
 <div class="container">
     <div class="col-12">
@@ -36,7 +36,8 @@
         <div class="panel panel-default mt-5">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 <div>
-                    {{$post_year_month}} 年 時間外労働
+                    {{$post_year_month}} 時間外労働
+                    <p style="font-size:20px;">協定期間： {{ $post_year }}年 4月 ～ {{ $post_year + 1}}年 3月</p>
                     <!-- DBのholidayテーブルに入力されている最新のデータ月 -->
                     <p style="font-size:20px; color:red;">※{{ $latest_year_month }}末時点のデータです。</p>
                 </div>
@@ -51,6 +52,16 @@
                 </div>
 
                 <div class="mb-5">
+                    @if(isset($overtime_working_error))
+                    <p class="mt-5 p-3 font-weight-bold text-center" style="background-color: #F7F7EE">最新データ年月よりも未来を選択しちゃってます。<br>
+                        <small class="mt-5 p-3 font-weight-bold text-center" style="font-size:15px; color:red">詳細画面に戻って最初からセレクトされている年月が時間外労働の最新データになります。</small></p>
+
+                    @elseif(isset($overtime_working_error2))
+                    <p class="mt-5 p-3 font-weight-bold text-center" style="background-color: #F7F7EE">2019年4月（時間外労働の上限規制初回協定期間）以前の年月を選択しています。<br>
+                        <small class="mt-5 p-3 font-weight-bold text-center" style="font-size:15px; color:red">詳細画面に戻って最初からセレクトされている年月が時間外労働の最新データになります。</small></p>
+
+
+                    @else
                     <table class="table table-striped task-table text-center" style="table-layout: fixed; width:100%;">
                         <tr>
                             <!-- <th class="text-center">所定労働時間</th> -->
@@ -79,14 +90,20 @@
 
                         <tr>
                             <!-- 例外時間外労働（月） -->
-                            @if($overtime_working_this_month >= 70)
+                            <?php
+                            $exception_working_overtime_month_10 = $exception_working_overtime_month-10;
+                            ?>
+                            @if($overtime_working_this_month >= $exception_working_overtime_month_10)
                             <td style="color:red">{{$overtime_working_this_month}} / {{$exception_working_overtime_month}}時間</td>
                             @else
                             <td>{{$overtime_working_this_month}} / {{$exception_working_overtime_month}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（年） -->
-                            @if($overtime_working_sum >= 700)
+                            <?php
+                            $exception_working_overtime_year_20 = $exception_working_overtime_year-20;
+                            ?>
+                            @if($overtime_working_sum >= $exception_working_overtime_year_20)
                             <td style="color:red">{{$overtime_working_sum}} / {{$exception_working_overtime_year}}時間</td>
                             @else
                             <td>{{$overtime_working_sum}} / {{$exception_working_overtime_year}}時間</td>
@@ -120,21 +137,28 @@
                             @endif
 
                             <!-- 時間外労働+休日労働（月） -->
-                            @if($overtime_and_holiday_working_sum >= 90)
+                            <?php
+                            $overtime_and_holiday_working_10 = $overtime_and_holiday_working-10;
+                            ?>
+                            @if($overtime_and_holiday_working_sum >= $overtime_and_holiday_working_10)
                             <td style="color:red">{{$overtime_and_holiday_working_sum}} / {{$overtime_and_holiday_working}}時間</td>
                             @else
                             <td>{{$overtime_and_holiday_working_sum}} / {{$overtime_and_holiday_working}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（2か月平均） -->
-                            @if($two_months_average >= 70)
+                            <?php
+                            $overtime_working_average_10 = $overtime_working_average-10;
+                            var_dump($overtime_working_average_10);
+                            ?>
+                            @if($two_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$two_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$two_months_average}} / {{$overtime_working_average}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（3か月平均） -->
-                            @if($three_months_average >= 70)
+                            @if($three_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$three_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$three_months_average}} / {{$overtime_working_average}}時間</td>
@@ -151,21 +175,21 @@
 
                         <tr>
                             <!-- 例外時間外労働（4か月平均） -->
-                            @if($four_months_average >= 70)
+                            @if($four_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$four_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$four_months_average}} / {{$overtime_working_average}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（5か月平均） -->
-                            @if($five_months_average >= 70)
+                            @if($five_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$five_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$five_months_average}} / {{$overtime_working_average}}時間</td>
                             @endif
 
                             <!-- 例外時間外労働（6か月平均） -->
-                            @if($six_months_average >= 70)
+                            @if($six_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$six_months_average}} / {{$overtime_working_average}}時間</td>
                             @else
                             <td>{{$six_months_average}} / {{$overtime_working_average}}時間</td>
@@ -179,9 +203,20 @@
                 </div>
 
 
+                @endif
+
                 <th class="text-center"> </th>
 
 
+                <div class="mt-5">
+                    <ul style="list-style:none">
+                        <li>※時間外労働45時間越えた回数について<br>
+                            選択した年月が属する、協定期間開始（協定期間はテーブル上部に表示されています）から選択した年月までの間で、45時間以上の時間外労働をした月が何回あったかを表します。</li>
+                        <li>※2～6ヶ月平均について
+                            前年度の36協定の対象期間の時間数についても2～6か月平均の算定時間に含みます。<br>
+                            例）2020年4月について計算するためには、直前の五か月分（2019年11月～2020年3月）の実績も必要になります。</li>
+                    </ul>
+                </div>
 
 
             </div>

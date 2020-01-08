@@ -250,19 +250,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/mishouka', 'AlertController@mishouka');
     //残数僅少アラート一覧ボタンクリック→残数僅少アラート表示
     Route::get('/zansu_kinshou', 'AlertController@zansu_kinshou');
-    //時間外労働（月）アラート一覧ボタンクリック→時間外労働（月）アラート表示
-    Route::get('/overtime_working_this_month_alert', 'AlertController@overtime_working_this_month_alert');
-    //時間外労働（年）アラート一覧ボタンクリック→時間外労働（年）アラート表示
-    Route::get('/overtime_working_year_alert', 'AlertController@overtime_working_year_alert');
-    //時間外労働平均（月）アラート一覧ボタンクリック→時間外労働平均（月）アラート表示
-    Route::get('/overtime_working_avarage_alert', 'AlertController@overtime_working_avarage_alert');
-    //時間外労働時間が45時間を超えた月の回数（年）アラート一覧ボタンクリック→時間外労働時間が45時間を超えた月の回数（年）アラート表示
-    Route::get('/overtime_working_45', 'AlertController@overtime_working_45');
-    //休日労働回数（月）アラート一覧ボタンクリック→休日労働回数（月）アラート表示
-    Route::get('/holiday_working_this_month_count', 'AlertController@holiday_working_this_month_count');
-    //時間外労働+休日労働（月）アラート一覧ボタンクリック→時間外労働+休日労働（月）アラート表示
-    Route::get('/overtime_and_holiday_working_sum', 'AlertController@overtime_and_holiday_working_sum');
-
+    //時間外労働アラート一覧ボタンクリック→時間外労働アラート表示
     Route::get('/overtime_working_alert', 'AlertController@overtime_working_alert');
 
 
