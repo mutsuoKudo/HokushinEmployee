@@ -14,7 +14,7 @@
 
 <div class="container" id="content">
 	<div class="row">
-		<div class="panel panel-default">
+		<div class="panel panel-default w-100">
 
 			<div class="panel-body col-12">
 				@include('common.errors')
@@ -295,7 +295,7 @@
 
 			<!-- テーブル -->
 			@if (count($select_shain_cd3) > 0)
-			<div class="panel panel-default mt-2">
+			<div class="panel panel-default mt-2 w-100">
 				<div class="panel-body">
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
 						<thead>
@@ -525,7 +525,7 @@
 
 	</div>
 </div>
-<script>
+<script type="application/javascript">
 	$('form').submit(function() {
 		var scroll_top = $(window).scrollTop(); //送信時の位置情報を取得
 		$('input.st', this).prop('value', scroll_top); //隠しフィールドに位置情報を設定

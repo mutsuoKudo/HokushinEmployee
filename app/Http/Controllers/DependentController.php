@@ -50,12 +50,12 @@ class DependentController extends Controller
     // 扶養家族編集画面の表示
     public function dependent_info_edit(Request $request,$id)
     {
+        var_dump($id);
         $employee = Employee::find($id);
 
         // 扶養家族の情報を取得
         $dependent_info = DB::table('dependent_infos')
-            // ->where('shain_cd', $id)
-            ->where('shain_cd', 202020)
+            ->where('shain_cd', $id)
             ->orderBy('birthday', 'asc')
             ->get();
 
