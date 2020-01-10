@@ -60,13 +60,14 @@
                             <input type="submit" class="btn btn-info m-2" value="有給取得日明細" disabled>
                             @else
 
-                            <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST">
+                            <form action="/employee/public/holiday/{{$employee->shain_cd}}" method="POST" class="mb-0">
                                 {{ csrf_field() }}
 
                                 <select name='year' style="background-color:lightblue">
                                     <?php
                                     //  DBのholidayテーブルに入力されている最新データ月より入社月が大きいか、同じのとき　かつ　最新データ年より入社年が大きいとき＝初回基準月未満
-                                    if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
+                                    // if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
+                                        if (((int)$year_month_a1 == (int)$kijunbi_year and (int)$year_month_a2 < (int)$kijunbi_month) or ((int)$year_month_a1 < (int)$kijunbi_year)){
                                         echo '<option value="00" selected >初回基準月未満</option>';
                                     } else {
 
@@ -233,7 +234,7 @@
                         @else
                         <!-- ※扶養家族明細ボタンを表示しないときは写真のトップにマージン12％ -->
                     </div>
-                    <div class="text-center mb-3" style="margin-top:12%;">
+                    <div class="text-center mb-3" style="margin-top:13%;">
                         @endif
 
                         @if ($employee->pic)
