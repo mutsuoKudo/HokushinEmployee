@@ -259,6 +259,14 @@ class CRUDController extends Controller
 
         }
 
+        // var_dump((int)$year_month_a1);
+        // var_dump((int)$kijunbi_year);
+        // var_dump((int)$year_month_a2);
+        // var_dump((int)$kijunbi_month);
+        // var_dump((int)$year_month_a1);
+        // var_dump((int)$kijunbi_year);
+
+
 
         return view('/show')->with([
             'employee' => $employee,
