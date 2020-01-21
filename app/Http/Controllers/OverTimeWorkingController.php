@@ -143,17 +143,30 @@ class OverTimeWorkingController extends Controller
         // echo ('</pre>');
 
         // 休日労働回数（月）
-        $holiday_working_this_month_count = DB::table('holiday_workings')
+        $holiday_working_this_month_count_pre1 = DB::table('holiday_workings')
+            ->select('count')
             ->where('year', $post_year)
             ->where('month', $post_month)
             ->where('shain_cd', $id)
-            ->count();
+            // ->count();
+            ->first();
+
+            $holiday_working_this_month_count_pre2 = (array) $holiday_working_this_month_count_pre1;
+
+            if (empty($holiday_working_this_month_count_pre2)) {
+
+                $holiday_working_this_month_count = 0;
+            } else {
+                foreach ($holiday_working_this_month_count_pre2 as $key => $value) {
+                      $holiday_working_this_month_count = $value;
+                }
+            }
 
 
         // echo ('<pre>');
         // var_dump('当月休日労働回数:' . $holiday_working_this_month_count);
+        // var_dump($holiday_working_this_month_count);
         // echo ('</pre>');
-
 
 
 
@@ -511,10 +524,10 @@ class OverTimeWorkingController extends Controller
             $latest_year_month2 = $latest_year2 . '年' . $latest_month2 . '月';
         }
 
-        var_dump('現在年1:' . $latest_year1);
-        var_dump('現在月1:' . $latest_month1);
-        var_dump('現在年2:' . $latest_year2);
-        var_dump('現在月2:' . $latest_month2);
+        // var_dump('現在年1:' . $latest_year1);
+        // var_dump('現在月1:' . $latest_month1);
+        // var_dump('現在年2:' . $latest_year2);
+        // var_dump('現在月2:' . $latest_month2);
 
         // 年月が新しい方を最新データにする
         if ($latest_year1 > $latest_year2 or ($latest_year1 == $latest_year2 and $latest_month1 >= $latest_month2)) {

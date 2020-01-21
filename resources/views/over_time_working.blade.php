@@ -149,7 +149,6 @@
                             <!-- 例外時間外労働（2か月平均） -->
                             <?php
                             $overtime_working_average_10 = $overtime_working_average-10;
-                            var_dump($overtime_working_average_10);
                             ?>
                             @if($two_months_average >= $overtime_working_average_10)
                             <td style="color:red">{{$two_months_average}} / {{$overtime_working_average}}時間</td>
@@ -210,11 +209,7 @@
 
                 <div class="mt-5">
                     <ul style="list-style:none">
-                        <li>※時間外労働45時間越えた回数について<br>
-                            選択した年月が属する、協定期間開始（協定期間はテーブル上部に表示されています）から選択した年月までの間で、45時間以上の時間外労働をした月が何回あったかを表します。</li>
-                        <li>※2～6ヶ月平均について
-                            前年度の36協定の対象期間の時間数についても2～6か月平均の算定時間に含みます。<br>
-                            例）2020年4月について計算するためには、直前の五か月分（2019年11月～2020年3月）の実績も必要になります。</li>
+                        <li>※各項目の計算方法などについては、仕様及び使い方の取扱説明書をご覧ください</li>
                     </ul>
                 </div>
 

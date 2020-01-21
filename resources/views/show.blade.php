@@ -69,8 +69,8 @@
                                     // if ($year_month_b >= $nyushabi_year_month and $year_month_b < $kijunbi_year_month) {
                                         if (((int)$year_month_a1 == (int)$kijunbi_year and (int)$year_month_a2 < (int)$kijunbi_month) or ((int)$year_month_a1 < (int)$kijunbi_year)){
                                         echo '<option value="00" selected >初回基準月未満</option>';
-                                    } else {
 
+                                    } else {
                                         //退職日が入力されている場合・・・
                                         if (isset($employee->taishokubi)) {
                                             // 初回基準日未満で退職した人(退職日より基準日のほうが大きい))

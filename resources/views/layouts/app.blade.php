@@ -62,7 +62,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item" style="margin-right:8rem">
-                            <a class="nav-link" href="./employee_doc/employee_doc.html" target="_blank" style="font-size:12px">仕様及び使い方</a>
+                            <a class="nav-link" href="{{ url('/employee_doc/employee_doc.html') }}" target="_blank" style="font-size:12px">仕様及び使い方</a>
                         </li>
                         <!-- Authentication Links -->
                         @guest
@@ -402,7 +402,7 @@
                 //プリントしたいエリアの取得
                 var printPage = $(this).closest('#table-area').html();
 
-                //プリント用の要素「#print」を作成
+                //プリント用の要素「#print-alert」を作成
                 $('body').append('<div id="print-alert"></div>');
                 $('#print-alert').append(printPage);
 

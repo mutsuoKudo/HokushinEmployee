@@ -17,7 +17,7 @@ class HolidayWorkings extends Migration
             $table->string('shain_cd');
             $table->integer('year');
             $table->integer('month');
-            $table->integer('day');
+            $table->integer('count');
             $table->decimal('holiday_working', 4, 1);
         });
     }
