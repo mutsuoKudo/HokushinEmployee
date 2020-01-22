@@ -87,7 +87,7 @@ class OverTimeWorkingClass
         }
 
 
-        
+
 
         return [$latest_year_pre, $latest_month_pre, $latest_year_month_pre];
     }
@@ -873,11 +873,29 @@ class OverTimeWorkingClass
 
         // 休日労働回数（月）
         for ($i = 0; $i <= $employees_count - 1; $i++) {
-            $holiday_working_this_month_count = DB::table('holiday_workings')
+            $holiday_working_this_month_count_pre1 = DB::table('holiday_workings')
+                ->select('count')
                 ->where('year', $latest_year)
                 ->where('month', $latest_month)
                 ->where('shain_cd', $shain_cd_array[$i])
-                ->count();
+                ->first();
+
+            $holiday_working_this_month_count_pre2 = (array) $holiday_working_this_month_count_pre1;
+
+            // var_dump($test);
+
+            if (empty($holiday_working_this_month_count_pre2)) {
+                // var_dump('empty');
+                $holiday_working_this_month_count = 0;
+            } else {
+                foreach ($holiday_working_this_month_count_pre2 as $key => $value) {
+                      $holiday_working_this_month_count = $value;
+                }
+            }
+
+
+            // var_dump($holiday_working_this_month_count);
+
 
             $holiday_working_this_month_count_array_pre[] = [$shain_cd_array[$i], $holiday_working_this_month_count];
         }
