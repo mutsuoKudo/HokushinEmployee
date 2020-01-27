@@ -1124,7 +1124,10 @@ class AlertController extends Controller
         //一番最近のデータの年
         $year = $year_month_a1_pre;
         //一番最近のデータの月
-        $month = $year_month_a2_pre;
+        $month = (int) $year_month_a2_pre;
+
+        // var_dump($year);
+        // var_dump($month);
 
 
         //社員情報データ数分繰り返す
@@ -1141,51 +1144,19 @@ class AlertController extends Controller
             // var_dump($employees_count[$i]->shain_cd);
 
             if (($second_kijunbi_year > (int) $year) or ($second_kijunbi_year == (int) $year and $second_kijunbi_month > (int) $month)) {
-                // if ((int) $kijunbi_array[$i][4] + 1 > (int) $year or ((int) $kijunbi_array[$i][4] + 1 == $year and (int) $kijunbi_array[$i][5] > $month)) {
 
                 $kinzoku_array[] = 0;
-                // var_dump('通った');
-                // var_dump($year);
-                // var_dump($month);
-                // var_dump($second_kijunbi_year);
-                // var_dump($second_kijunbi_month);
+
             } else {
                 // 現在の年月と基準日年月が同じの時は勤続年数は1年
-                if (($second_kijunbi_year == (int) $year and $second_kijunbi_month == (int) $month) or ((int) $kijunbi_array[$i][6] == $year - 1)) {
-                    $kinzoku_array[] = $year - (int) $kijunbi_array[$i][6];
-                    // var_dump('通った2');
-                    // var_dump($year);
-                    // var_dump($month);
-                    // var_dump($second_kijunbi_year);
-                    // var_dump($second_kijunbi_month);
-                } else {
-                    // 入社年が現在年-1と同じ場合、勤続年数は現在年-入社年（例えば、現在年が2019年の時、2018年のひとが対象になり、2019-2018になる。）
-                    // if ((int) $kijunbi_array[$i][6] == $year - 1) {
-
-                    // $kinzoku_array[] = 1;　でもいいのでは
-                    // $kinzoku_array[] = (int) $year - (int) $kijunbi_array[$i][6];
-
-                    // var_dump('通った3');
-                    // var_dump($kijunbi_array[$i][6]);
-                    // var_dump($year);
-                    // var_dump($month);
-                    // var_dump($second_kijunbi_year);
-                    // var_dump($second_kijunbi_month);
-                    // } else {
-
-                    $kinzoku_array[] = (int) $year - (int) $kijunbi_array[$i][6] - 1;
-
-                    // var_dump('通った4');
-                    // var_dump($kijunbi_array[$i][6]);
-                    // var_dump($year);
-                    // var_dump($month);
-                    // var_dump($second_kijunbi_year);
-                    // var_dump($second_kijunbi_month);
-                    // }
-                }
+                
+                    $kinzoku_array[] = (int)$year - (int) $kijunbi_array[$i][6];
+                    
             }
-
-            // var_dump($kinzoku_array);
+            // echo ('<pre>');
+            // var_dump($shain_cd_array[$i]);
+            // var_dump($kinzoku_array[$i]);
+            // echo ('</pre>');
         }
 
 
@@ -1501,10 +1472,20 @@ class AlertController extends Controller
 
                 //[0]付与日数/[1]最大繰り越し日数/[2]前期繰越/[3]期首残高/[4]消化日数/[5]消化残/[6]繰越日数/[7]社員コード/
                 $array[] = [$huyo_holiday, $max_carry_over, $carry_over, $kisyu_nokori, $holiday_count_int, $nokori, $carry_over_count, $shain_cd_array[$i]];
+                // echo ('<pre>');
+                // var_dump($shain_cd_array[$i]);
+                // var_dump('付与日数:' . $huyo_holiday);
+                // var_dump('最大繰り越し日数:' . $max_carry_over);
+                // var_dump('前期繰越:' . $carry_over);
+                // var_dump('機種残高:' . $kisyu_nokori);
+                // var_dump('消化日数:' . $holiday_count_int);
+                // var_dump('消化残:' . $nokori);
+                // var_dump('繰り越し日数:' . $carry_over_count);
+                // echo ('</pre>');
             }
         }
 
-        // var_dump($array);
+
 
 
         // 全社員数分繰り返す
@@ -1519,6 +1500,8 @@ class AlertController extends Controller
             }
         }
 
+
+
         $holidays = [];
         // 全社員数分繰り返す
         for ($i = 0; $i < count($shain_cd_array); $i++) {
@@ -1526,7 +1509,13 @@ class AlertController extends Controller
             if ($zansuu_holiday_personal[$shain_cd_array[$i]][5] <= 3) {
                 array_push($holidays, $zansuu_holiday_personal[$shain_cd_array[$i]]);
             } else { }
+            // echo ('<pre>');
+            // var_dump($shain_cd_array[$i]);
+            // var_dump($zansuu_holiday_personal[$shain_cd_array[$i]][5]);
+            // var_dump($holidays);
+            // echo ('</pre>');
         }
+
 
 
         $employees_array = [];
@@ -1622,14 +1611,14 @@ class AlertController extends Controller
 
         // 時間外労働（月）アラート対象者を取得
         $employees_overtime_working_this_month = [];
-        list($employees_overtime_working_this_month_pre,$overtime_working_this_month_array) = $o_class->overtime_working_this_month($latest_year, $latest_month);
+        list($employees_overtime_working_this_month_pre, $overtime_working_this_month_array) = $o_class->overtime_working_this_month($latest_year, $latest_month);
         // $employees_overtime_working_this_month = $o_class->overtime_working_this_month($latest_year, $latest_month);
 
         // 時間外労働（月）アラートに引っ掛かった従業員のデータ
         $employees_overtime_working_this_month = $employees_overtime_working_this_month_pre;
         // 時間外労働（月）アラートに引っ掛かったデータ
         $overtime_working_this_month_array_result = $overtime_working_this_month_array;
-        
+
         // var_dump('ここだ1');
         // var_dump($employees_overtime_working_this_month);
         // var_dump($overtime_working_this_month_array_result);
@@ -1638,7 +1627,7 @@ class AlertController extends Controller
         // 時間外労働（年）アラート対象者を取得
         $employees_overtime_working_year = [];
         // $employees_overtime_working_year = $o_class->overtime_working_year($latest_year, $latest_month);
-        list($employees_overtime_working_year_pre,$overtime_working_year_array) = $o_class->overtime_working_year($latest_year, $latest_month);
+        list($employees_overtime_working_year_pre, $overtime_working_year_array) = $o_class->overtime_working_year($latest_year, $latest_month);
         $employees_overtime_working_year = $employees_overtime_working_year_pre;
         $overtime_working_year_array_result = $overtime_working_year_array;
 
@@ -1650,7 +1639,7 @@ class AlertController extends Controller
         // 平均（月）アラート対象者を取得
         $employees_overtime_working_avarege = [];
         // $employees_overtime_working_avarege = $o_class->overtime_working_avarage($latest_year, $latest_month);
-        list($employees_overtime_working_avarege_pre,$test) = $o_class->overtime_working_avarage($latest_year, $latest_month);
+        list($employees_overtime_working_avarege_pre, $test) = $o_class->overtime_working_avarage($latest_year, $latest_month);
         $employees_overtime_working_avarege = $employees_overtime_working_avarege_pre;
         $test_result = $test;
 
@@ -1694,10 +1683,10 @@ class AlertController extends Controller
         // 時間外労働+休日労働（月）アラート対象者を取得
         $employees_overtime_and_holiday_working_sum = [];
         // $employees_overtime_and_holiday_working_sum = $o_class->overtime_and_holiday_working_sum($latest_year, $latest_month);
-        list($employees_overtime_and_holiday_working_sum_pre,$overtime_and_holiday_working_sum_array) = $o_class->overtime_and_holiday_working_sum($latest_year, $latest_month);
+        list($employees_overtime_and_holiday_working_sum_pre, $overtime_and_holiday_working_sum_array) = $o_class->overtime_and_holiday_working_sum($latest_year, $latest_month);
         $employees_overtime_and_holiday_working_sum = $employees_overtime_and_holiday_working_sum_pre;
         $overtime_and_holiday_working_sum_array_result = $overtime_and_holiday_working_sum_array;
-        
+
         // var_dump('ここだ6');
         // var_dump($employees_overtime_and_holiday_working_sum);
         // var_dump(count($employees_overtime_and_holiday_working_sum));
@@ -1734,7 +1723,7 @@ class AlertController extends Controller
             'employees_overtime_working_year' => $employees_overtime_working_year,
             'employees_overtime_working_avarege' => $employees_overtime_working_avarege,
             'employees_overtime_and_holiday_working_sum' => $employees_overtime_and_holiday_working_sum,
-            
+
             // 時間外労働時間が45時間を超えた月の回数（年）に引っ掛かった回数
             'overtime_working_45_array_count_values' => $overtime_working_45_array_count_values,
 
@@ -1743,12 +1732,4 @@ class AlertController extends Controller
 
         ]);
     }
-
-
-
-
-
-
-
-
 }
