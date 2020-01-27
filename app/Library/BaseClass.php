@@ -229,6 +229,11 @@ class BaseClass
             ->get();
         // ->toSQL();
 
+        // var_dump('ここ');
+        // var_dump($nyushabi_year_month);
+        // var_dump($day_max);
+        // var_dump($holiday_count);
+
         //配列で取得された消化日数の一番目を変数にいれる
         foreach ($holiday_count as $counts) {
 
