@@ -6,6 +6,7 @@ use DB;
 use App\Library\BaseClass;
 use App\Library\OverTimeWorkingClass;
 
+use DateTime;
 
 class AlertController extends Controller
 {
@@ -173,6 +174,8 @@ class AlertController extends Controller
             $select_shain_cd[] = [$employee->shain_cd];
         }
 
+        // var_dump($select_shain_cd);
+
 
         // 4ヶ月以内に基準月がくる人の数分繰り返す
         for ($i = 0; $i < count($select_shain_cd); $i++) {
@@ -202,72 +205,34 @@ class AlertController extends Controller
             // 入社日の取得
             list($nyushabi_year_pre, $nyushabi_month_pre, $nyushabi_year_month_pre) = $class->nyushabi_year_month($select_shain_cd[$i]);
             $nyushabi_year = $nyushabi_year_pre;
+            $nyushabi_month = $nyushabi_month_pre;
             $nyushabi_year_month = $nyushabi_year_month_pre;
 
             // var_dump($select_shain_cd[$i]);
 
+            // var_dump($second_kijunbi_year);
+            // var_dump($year);
+            // var_dump($second_kijunbi_month);
+            // var_dump($month);
 
-            if (($second_kijunbi_year > (int) $year) or ($second_kijunbi_year == (int) $year and $second_kijunbi_month > (int) $month)) {
+            // $time1 = new DateTime('2019-04-01');
+            $time1 = new DateTime($year . '-' . $month . '-01');
+            // $time2 = new DateTime('2018-02-05');
+            $time2 = new DateTime($kijunbi_year . '-' . $kijunbi_month . '-01');
 
-                $kinzoku_year = 0;
+            // var_dump($time1);
+            // var_dump($time2);
 
-                // var_dump('0');
-                // var_dump($year);
-                // var_dump($month);
-                // var_dump($second_kijunbi_year);
-                // var_dump($second_kijunbi_month);
+            $diff = $time1->diff($time2);
+
+            if ((int) $diff->format('%m') > 3 or ((int) $diff->format('%m') == 3 and (int) $diff->format('%d') > 0)) {
+                $kinzoku_year = (int) $diff->format('%y');
             } else {
-                // if ((int) $nyushabi_year == $year - 1) {
-                // 現在の年月と基準日年月が同じの時は勤続年数は1年
-                // if (($second_kijunbi_year == (int) $year and $second_kijunbi_month == (int) $month) or ((int) $nyushabi_year == $year - 1)) {
-
-                // $kinzoku_year =  (int) $year - (int) $nyushabi_year;
-                // $kinzoku_year =  1;
-
-                // var_dump('2');
-                // var_dump($year);
-                // var_dump($month);
-                // var_dump($second_kijunbi_year);
-                // var_dump($second_kijunbi_month);
-                // } else {
-                // 入社年が現在年-1と同じ場合、勤続年数は現在年-入社年（例えば、現在年が2019年の時、2018年のひとが対象になり、2019-2018になる。）
-                // if ((int) $nyushabi_year == $year - 1) {
-
-                //     // $kinzoku_array[] = 1;　でもいいのでは
-                //     $kinzoku_year = (int) $year - (int) $nyushabi_year;
-
-                // var_dump('3');
-                // var_dump($nyushabi_year);
-                // var_dump($year);
-                // var_dump($month);
-                // var_dump($second_kijunbi_year);
-                // var_dump($second_kijunbi_month);
-                // } else {
-
-                $kinzoku_year = (int) $year - (int) $nyushabi_year - 1;
-
-                // var_dump('通った4');
-                // var_dump($nyushabi_year);
-                // var_dump($year);
-                // var_dump($month);
-                // var_dump($second_kijunbi_year);
-                // var_dump($second_kijunbi_month);
-                // }
-                // }
+                $kinzoku_year = -1;
             }
 
-            // var_dump($kinzoku_year);
-
-
-            // // 基準年が最新データの年より大きければ、月数は関係なく勤続年数は0年
-            // // 基準年が最新データの年と同じであれば、月数は大きい時勤続年数は０年
-
-            // if (($kijunbi_year > $year and ($kijunbi_month > $month or $kijunbi_month =  $month or $kijunbi_month < $month)) or ($kijunbi_year == $year and $kijunbi_month > $month)
-            // ) {
-            //     $kinzoku_year = 0;
-            // } else {
-            //     $kinzoku_year = $year - $kijunbi_year;
-            // }
+            // echo $diff->format('%y年と%m月と%d日'), PHP_EOL;
+            // echo $diff->format('総日数は%a日');
 
 
 
@@ -276,16 +241,22 @@ class AlertController extends Controller
             // $nyushabi_year_month = $nyushabi_year_month_pre;
 
 
-            if ($kinzoku_year == 0) {
+            // if ($kinzoku_year == -1) {
+            //     $day_min = $nyushabi_year_month;
+            // } else if ($kinzoku_year == 0) {
+            //     $day_min = $kijunbi_year . $kijunbi_month;
+            // } else {
+            //     $day_min = date('Y') - 1 . $kijunbi_month;
+            // }
+            if ($kinzoku_year <= 0) {
                 $day_min = $nyushabi_year_month;
+            // } else if ($kinzoku_year == 0) {
+            //     $day_min = $kijunbi_year . $kijunbi_month;
             } else {
-                //本年度の始まりを作成
-                if ($kijunbi_month == 01) {
-                    $day_min = date('Y') . $kijunbi_month;
-                } else {
-                    $day_min = date('Y') - 1 . $kijunbi_month;
-                }
+                $day_min = date('Y') - 1 . $kijunbi_month;
             }
+
+
 
 
 
@@ -294,24 +265,55 @@ class AlertController extends Controller
             $kijunbi_month = $end_kijunbi_month_pre;
 
             //本年度終わりの年を計算
-            if ($kijunbi_month >= 7) {
-                $kijunbi_year = date('Y') - 1 + 1;
-            }
+            // if ($kijunbi_month >= 7) {
+            //     $kijunbi_year = date('Y') - 1 + 1;
+            // }
+
+            if ($nyushabi_month >= 8) {
+                // var_dump('入社月が8月以降');
+                if ($kinzoku_year == -1) {
+                    $day_max = $kijunbi_year + 1 . $kijunbi_month;
+                } else if ($kinzoku_year == 0) {
+                    $day_max = $kijunbi_year + 1 . $kijunbi_month;
+                } else {
+                    $day_max = date('Y') . $kijunbi_month;
+                }
 
 
-            //本年度の終わりを作成
-
-            if ($kinzoku_year == 0) {
-
-                $day_max = $kijunbi_year + 1 . $kijunbi_month;
             } else {
-
-                $day_max = $kijunbi_year . $kijunbi_month;
+                // var_dump('入社月が8月より前');
+                if ($kinzoku_year == -1) {
+                    $day_max = $kijunbi_year + 1 . $kijunbi_month;
+                } else if ($kinzoku_year == 0) {
+                    $day_max = $kijunbi_year . $kijunbi_month;
+                } else {
+                    $day_max = date('Y') - 1 . $kijunbi_month;
+                }
             }
+
+
+
+
+            // if ($kinzoku_year == 0) {
+
+            //     $day_max = $kijunbi_year + 1 . $kijunbi_month;
+            // } else {
+
+            //     $day_max = $kijunbi_year . $kijunbi_month;
+            // }
+
 
 
             // 本年度の有給取得数を計算
             $holiday_count = $class->holiday_count($day_min, $day_max, $select_shain_cd[$i]);
+
+            // echo ('<pre>');
+            // var_dump($select_shain_cd[$i]);
+            // var_dump('勤続年数' . $kinzoku_year);
+            // var_dump('年度初め' . $day_min);
+            // var_dump('年度終わり' . $day_max);
+            // var_dump('有給取得日数' . $holiday_count);
+            // echo ('</pre>');
 
 
             // 1日も休んでいない場合、0を代入。休んでいる場合はその日数を取得。
@@ -1146,12 +1148,10 @@ class AlertController extends Controller
             if (($second_kijunbi_year > (int) $year) or ($second_kijunbi_year == (int) $year and $second_kijunbi_month > (int) $month)) {
 
                 $kinzoku_array[] = 0;
-
             } else {
                 // 現在の年月と基準日年月が同じの時は勤続年数は1年
-                
-                    $kinzoku_array[] = (int)$year - (int) $kijunbi_array[$i][6];
-                    
+
+                $kinzoku_array[] = (int) $year - (int) $kijunbi_array[$i][6];
             }
             // echo ('<pre>');
             // var_dump($shain_cd_array[$i]);
