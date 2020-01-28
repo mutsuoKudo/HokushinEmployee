@@ -291,28 +291,28 @@ class ButtonController extends Controller
         ]);
     }
 
-    // //2020年
-    // public function nyushabi2020()
-    // {
-    //     $class = new BaseClass();
+    //2020年
+    public function nyushabi2020()
+    {
+        $class = new BaseClass();
 
-    //     // 社員情報（入社日が2020年度）取得
-    //     $employees = $class->nyushabi("2020-01-01", "2020-12-31");
+        // 社員情報（入社日が2020年度）取得
+        $employees = $class->nyushabi("2020-01-01", "2020-12-31");
 
-    //     list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
-    //     $select_nyusha_year = $select_nyusha_year_pre;
-    //     $select_taishoku_year = $select_taishoku_year_pre;
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
 
-    //     $title = "2020年入社";
+        $title = "2020年入社";
 
-    //     return view('employees')->with([
-    //         'title' => $title,
-    //         'employees' => $employees,
-    //         'select_nyusha_year' => $select_nyusha_year,
-    //         'select_taishoku_year' => $select_taishoku_year,
-    //     ]);
-    // }
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
 
 
 
@@ -846,27 +846,27 @@ class ButtonController extends Controller
         ]);
     }
 
-    // // 退社2020年
-    // public function taishokubi2020()
-    // {
-    //     $class = new BaseClass();
+    // 退社2020年
+    public function taishokubi2020()
+    {
+        $class = new BaseClass();
 
-    //     // 社員情報（退職日が入力されていて、退職日が2020年代の人）取得
-    //     $employees = $class->taishokubi("2020-01-01", "2020-12-31");
+        // 社員情報（退職日が入力されていて、退職日が2020年代の人）取得
+        $employees = $class->taishokubi("2020-01-01", "2020-12-31");
 
-    //     list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
-    //     $select_nyusha_year = $select_nyusha_year_pre;
-    //     $select_taishoku_year = $select_taishoku_year_pre;
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
 
-    //     $title = "2020年退社";
+        $title = "2020年退社";
 
-    //     return view('employees')->with([
-    //         'title' => $title,
-    //         'employees' => $employees,
-    //         'select_nyusha_year' => $select_nyusha_year,
-    //         'select_taishoku_year' => $select_taishoku_year,
-    //     ]);
-    // }
+        return view('employees')->with([
+            'title' => $title,
+            'employees' => $employees,
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+        ]);
+    }
 
 
 
