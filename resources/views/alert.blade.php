@@ -225,6 +225,12 @@
 						<input type="submit" name="overtime_working" value="時間外労働アラート一覧" class="mr-2 mt-1 table_reset function-button table_reset">
 					</form>
 
+					<!-- 時間外労働ランキング -->
+					<form action="/employee/public/overtime_working_ranking" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="overtime_working_ranking" value="時間外労働ランキング" class="mr-2 mt-1 table_reset function-button table_reset">
+					</form>
+
 				</div>
 
 

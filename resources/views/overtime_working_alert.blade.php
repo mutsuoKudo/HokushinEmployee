@@ -214,15 +214,23 @@
 						{{ csrf_field() }}
 						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
+
 					<!-- 残数僅少アラート -->
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
+
 					<!-- 時間外労働アラート -->
 					<form action="/employee/public/overtime_working_alert" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="overtime_working" value="時間外労働アラート一覧" class="mr-2 mt-1 table_reset function-button table_reset">
+					</form>
+					
+					<!-- 時間外労働ランキング -->
+					<form action="/employee/public/overtime_working_ranking" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="overtime_working_ranking" value="時間外労働ランキング" class="mr-2 mt-1 table_reset function-button table_reset">
 					</form>
 				</div>
 
@@ -274,18 +282,18 @@
 				<button type="submit" class="btn btn-info btn-lg">新規作成</button>
 			</form>
 		</div>
-		
+
 		<div id="table-area" class="w-100">
 			<div class="panel-heading font-weight-bold mt-5 text-center" style="font-size:30px; background-color:#F7F7EE;">
 				{{ $title }}
-				
+
 				@if($latest_year == 0 and $latest_month == 0)
 				<p style="color:red; font-size:15px;">時間外労働テーブルおよび休日労働テーブルにデータが入力されていません。</p>
 				@else
 				<!-- DBのoverti,e_workingsテーブルに入力されている最新のデータ月 -->
 				<p style="color:red; font-size:15px;">※{{$latest_year}}年{{$latest_month}}月末時点のデータです</p>
 				@endif
-				
+
 				<p id="print" width="150" height="30"><a href="" class="btn btn-success btn-lg">このページを印刷</a></p>
 			</div>
 			@endif
@@ -655,7 +663,7 @@
 									<div>{{ $employees_overtime_working_45[$i][0]->nyushabi }}</div>
 								</td>
 								<td class="table-text text-center" style="color:red">
-									<div>{{ $overtime_working_45_array_count_values[$employees_overtime_working_45[$i][0]->shain_cd]}}  / 6回</div>
+									<div>{{ $overtime_working_45_array_count_values[$employees_overtime_working_45[$i][0]->shain_cd]}} / 6回</div>
 								</td>
 								</tr>
 								@endfor

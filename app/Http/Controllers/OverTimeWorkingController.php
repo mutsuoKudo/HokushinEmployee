@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Employee;
 use \DB;
 use App\Library\BaseClass;
+use App\Library\OverTimeWorkingClass;
 
 class OverTimeWorkingController extends Controller
 {
@@ -151,16 +152,16 @@ class OverTimeWorkingController extends Controller
             // ->count();
             ->first();
 
-            $holiday_working_this_month_count_pre2 = (array) $holiday_working_this_month_count_pre1;
+        $holiday_working_this_month_count_pre2 = (array) $holiday_working_this_month_count_pre1;
 
-            if (empty($holiday_working_this_month_count_pre2)) {
+        if (empty($holiday_working_this_month_count_pre2)) {
 
-                $holiday_working_this_month_count = 0;
-            } else {
-                foreach ($holiday_working_this_month_count_pre2 as $key => $value) {
-                      $holiday_working_this_month_count = $value;
-                }
+            $holiday_working_this_month_count = 0;
+        } else {
+            foreach ($holiday_working_this_month_count_pre2 as $key => $value) {
+                $holiday_working_this_month_count = $value;
             }
+        }
 
 
         // echo ('<pre>');
@@ -175,6 +176,7 @@ class OverTimeWorkingController extends Controller
         // 選択した月数が4月より大きい場合は4月から選択した月数まで繰り返してOK（年数が全て同じなので…）
         if ((int) $post_month >= 4) {
             // var_dump('通った1');
+
             for ($i = 4; $i <= (int) $post_month; $i++) {
                 // var_dump('通った1-1');
                 $overtime_working = DB::table('overtime_workings')
@@ -183,7 +185,6 @@ class OverTimeWorkingController extends Controller
                     ->where('month', $i)
                     ->where('shain_cd', $id)
                     ->first();
-                // ->toSql();
 
                 // 入力されていない場合は0時間とする
                 if (is_null($overtime_working)) {
@@ -192,8 +193,28 @@ class OverTimeWorkingController extends Controller
                 } else {
                     $overtime_working_result = $overtime_working->overtime_working;
                 }
+
+                $holiday_working = DB::table('holiday_workings')
+                    ->select(DB::raw('sum(holiday_working) as holiday_working'))
+                    ->where('year', $post_year)
+                    ->where('month', $i)
+                    ->where('shain_cd', $id)
+                    ->first();
+
+                // var_dump($holiday_working);
+                // 入力されていない場合は0時間とする
+                if (is_null($holiday_working)) {
+                    $holiday_working_result = 0;
+                    // 入力されている場合は配列使いやすくするために入れ替える
+                } else {
+                    $holiday_working_result = $holiday_working->holiday_working;
+                }
+
+                $overtime_working_sum = $overtime_working_result + $holiday_working_result;
+
+
                 // 順番に追加していく
-                array_push($overtime_working_array, $overtime_working_result);
+                array_push($overtime_working_array, $overtime_working_sum);
             }
 
             // 選択した月数が1・2・3月だった場合、前年の4月から今年の選択した年数になる
@@ -216,8 +237,27 @@ class OverTimeWorkingController extends Controller
                 } else {
                     $overtime_working_result = $overtime_working->overtime_working;
                 }
+
+                $holiday_working = DB::table('holiday_workings')
+                    ->select(DB::raw('sum(holiday_working) as holiday_working'))
+                    ->where('year', $post_year)
+                    ->where('month', $i)
+                    ->where('shain_cd', $id)
+                    ->first();
+
+                // 入力されていない場合は0時間とする
+                if (is_null($holiday_working)) {
+                    $holiday_working_result = 0;
+                    // 入力されている場合は配列使いやすくするために入れ替える
+                } else {
+                    $holiday_working_result = $holiday_working->holiday_working;
+                }
+
+                $overtime_working_sum = $overtime_working_result + $holiday_working_result;
+
+
                 // 順番に追加していく
-                array_push($overtime_working_array, $overtime_working_result);
+                array_push($overtime_working_array, $overtime_working_sum);
             }
 
             // var_dump($overtime_working_array);
@@ -231,18 +271,38 @@ class OverTimeWorkingController extends Controller
                     ->where('shain_cd', $id)
                     ->first();
 
-
-
                 // 入力されていない場合は0時間とする
                 if (is_null($overtime_working)) {
                     $overtime_working_result = 0;
                     // 入力されている場合は配列使いやすくするために入れ替える
                 } else {
                     $overtime_working_result = $overtime_working->overtime_working;
-                    var_dump($overtime_working_result);
+                    // var_dump($overtime_working_result);
                 }
+
+
+                $holiday_working = DB::table('holiday_workings')
+                    ->select(DB::raw('sum(holiday_working) as holiday_working'))
+                    ->where('year', $post_year - 1)
+                    ->where('month', $i2)
+                    ->where('shain_cd', $id)
+                    ->first();
+
+                // 入力されていない場合は0時間とする
+                if (is_null($holiday_working)) {
+                    $holiday_working_result = 0;
+                    // 入力されている場合は配列使いやすくするために入れ替える
+                } else {
+                    $holiday_working_result = $holiday_working->holiday_working;
+                }
+
+                
+                $overtime_working_sum = $overtime_working_result + $holiday_working_result;
+
+
                 // 順番に追加していく
-                array_push($overtime_working_array, $overtime_working_result);
+                array_push($overtime_working_array, $overtime_working_sum);
+
             }
         }
 
@@ -257,7 +317,10 @@ class OverTimeWorkingController extends Controller
         // 抜き出した時間外労働を足していく
         foreach ($overtime_working_array as $owa) { //変数bに配列aの中身を順番に入れていく
             // 例外時間外労働の計算
+
             $overtime_working_sum += (float) $owa;
+            // var_dump('合計');
+            // var_dump($overtime_working_sum);
             // 45時間超えることができるのは年6回までの計算
             if ($owa >= $base_working_overtime_month) {
                 // var_dump('この一年のうちに45時間以上時間外労働してる月があるぞ！');
@@ -649,6 +712,208 @@ class OverTimeWorkingController extends Controller
             'overtime_working_error' => $overtime_working_error,
             // 2019年4月よりも前の年月を選択しないでくださいエラー
             'overtime_working_error2' => $overtime_working_error2,
+
+        ]);
+    }
+
+
+
+
+    public function over_time_ranking()
+    {
+
+        $title = '時間外労働ランキング';
+
+        // クラスのインスタンス化
+        $class = new BaseClass();
+        $o_class = new OverTimeWorkingClass();
+
+        // 在籍者全員のデータ取得
+        $employees = $class->all();
+
+        // 入社年月・退職年月の取得
+        list($select_nyusha_year_pre, $select_taishoku_year_pre) = $class->nyusya_taishoku_year();
+        $select_nyusha_year = $select_nyusha_year_pre;
+        $select_taishoku_year = $select_taishoku_year_pre;
+
+        //一番最近のデータの年月を取得(=現在日時になる)
+        list($latest_year_pre, $latest_month_pre, $latest_year_month_pre) = $o_class->overtime_working_all();
+
+        //一番最近のデータの年
+        $latest_year = $latest_year_pre;
+        //一番最近のデータの月
+        $latest_month = $latest_month_pre;
+        // $latest_month = 2;
+
+        //一番最近のデータの年月(文字あり)
+        $latest_year_month = $latest_year_month_pre;
+
+
+        // 時間外労働（年）を取得
+        // 在籍者の人数
+        $employees_count = count($employees);
+        // var_dump($employees_count);
+
+        // 在籍者の社員コード
+        for ($i = 0; $i < $employees_count; $i++) {
+            $shain_cd_array[] = $employees[$i]->shain_cd;
+        }
+        // var_dump($shain_cd_array);
+
+
+        // 例外時間外労働（年）
+        // 変更必要！！！※期間が4月～じゃなくなったときに使えなくなる
+        $overtime_working_year_array_pre = [];
+        // 選択された月までの例外時間外労働を抜き出す
+        // 選択した月数が4月より大きい場合は4月から選択した月数まで繰り返してOK（年数が全て同じなので…）
+        if ((int) $latest_month >= 4) {
+            // var_dump('通った');
+
+            // 在籍者人数分繰り返す
+            for ($m = 0; $m <= $employees_count - 1; $m++) {
+
+                $overtime_working_year = DB::table('overtime_workings')
+                    ->select(DB::raw('sum(CASE WHEN year =' . $latest_year . ' and month >= 4 and shain_cd = ' . $shain_cd_array[$m] . ' THEN overtime_working ELSE 0 END) AS sumday'))
+                    ->get();
+                // var_dump($overtime_working);
+
+                // 順番に追加していく
+                $overtime_working_year_array_pre[] = [$shain_cd_array[$m], $overtime_working_year[0]->sumday,];
+            }
+
+
+            // 選択した月数が1・2・3月だった場合、前年の4月から今年の選択した年数になる
+        } else {
+            for ($m = 0; $m <= $employees_count - 1; $m++) {
+
+                $latest_year_before = $latest_year - 1;
+                $overtime_working_year = DB::table('overtime_workings')
+                    ->select(DB::raw('sum(CASE WHEN (year =' . $latest_year_before . ' and month >= 4 and shain_cd = ' . $shain_cd_array[$m] . ' ) or (year = ' . $latest_year . ' and month >= 1 and month <= 3 and shain_cd = ' . $shain_cd_array[$m] . ' ) THEN overtime_working ELSE 0 END) AS sumday'))
+                    ->get();
+
+                // 順番に追加していく
+                $overtime_working_year_array_pre[] = [$shain_cd_array[$m], $overtime_working_year[0]->sumday,];
+            }
+        }
+
+
+        // 時間外労働のデータを降順に並び替え
+        foreach ($overtime_working_year_array_pre as $key => $value) {
+            $sort[$key] = $value[1];
+        }
+
+        array_multisort($sort, SORT_DESC, $overtime_working_year_array_pre);
+        // print_r($overtime_working_year_array_pre);
+
+
+        // var_dump('年間時間外労働');
+        // var_dump($overtime_working_year_array_pre);
+
+
+        $rank_pre = 1;
+        $rank = [];
+        foreach ($overtime_working_year_array_pre as $key => $value) {
+            //キーが0(先頭)の時
+            // var_dump($key);
+            // var_dump($value[1]);
+            if ($key == 0) {
+                // var_dump($rank_pre);
+                // var_dump($overtime_working_year_array_pre[$key][0]);
+                // var_dump($overtime_working_year_array_pre[$key][1]);
+                $rank[] = [$rank_pre, $overtime_working_year_array_pre[$key][0], $overtime_working_year_array_pre[$key][1]];
+            } else {
+                $pre = $key - 1; //ひとつ前の数値と比較
+
+                // var_dump('ひとつ前の数値と比較');
+                // var_dump($value[1]);
+                // var_dump($overtime_working_year_array_pre[$pre][1]);
+                // var_dump($value[1] === $overtime_working_year_array_pre[$pre][1]);
+
+                if ($value[1] === $overtime_working_year_array_pre[$pre][1]) { //同じなら同位
+
+                    // echo $rank_pre . "位：{$value[1]}";
+                    // var_dump($rank_pre);
+                    // var_dump($overtime_working_year_array_pre[$key][0]);
+                    // var_dump($overtime_working_year_array_pre[$key][1]);
+
+                    $rank[] = [$rank_pre, $overtime_working_year_array_pre[$key][0], $overtime_working_year_array_pre[$key][1]];
+                } else { //違えばrankに足しこんで次の順位
+                    $rank_pre = 1 + $key;
+                    // var_dump($rank_pre);
+                    // var_dump($overtime_working_year_array_pre[$key][0]);
+                    // var_dump($overtime_working_year_array_pre[$key][1]);
+                    // echo ($key + 1) . "位：{$value[1]}";
+                    $rank[] = [$rank_pre, $overtime_working_year_array_pre[$key][0], $overtime_working_year_array_pre[$key][1]];
+                }
+            }
+            // echo "<br>";
+        }
+
+        // var_dump($rank);
+        $ranking = [];
+        foreach ($rank as $key => $value) {
+            // var_dump($rank[$key][0] <= 10);
+            if ($rank[$key][0] <= 10) {
+                $ranking[] = $rank[$key];
+            }
+        }
+        // var_dump($ranking);
+
+        $employees_overtime_working_year_pre = [];
+
+        if (empty($ranking)) {
+            // var_dump('例外時間外労働上限（月）に引っ掛かったひとはいません');
+        } else {
+            // 例外時間外労働ランキング10位以内に入った人
+
+            // 時間外労働上限（月）に引っ掛かった人の従業員データ
+            for ($i = 0; $i <= count($ranking) - 1; $i++) {
+                $employees_overtime_working_year_pre[] = DB::table('employees')
+                    ->whereNull('taishokubi')
+                    ->where('department', '!=', '05')
+                    ->where('shain_cd', $ranking[$i][1])
+                    ->get();
+            }
+        }
+
+        $employees_overtime_working_year = $employees_overtime_working_year_pre;
+        $overtime_working_year_array_result = $ranking;
+
+
+
+        //  時間外労働上限（年）
+        $exception_working_overtime_year_pre = DB::table('overtime_working_constants')
+            ->select('exception_working_overtime_year')
+            ->first();
+
+        $exception_working_overtime_year = $exception_working_overtime_year_pre->exception_working_overtime_year;
+        // var_dump('時間外労働上限（年）');
+        // var_dump($exception_working_overtime_year);
+
+
+
+
+
+        return view('overtime_working_ranking')->with([
+            'title' => $title,
+
+            // 社員情報はいれつ
+            'employees' => $employees,
+
+            'select_nyusha_year' => $select_nyusha_year,
+            'select_taishoku_year' => $select_taishoku_year,
+
+            // 最新年
+            'latest_year' => $latest_year,
+            // 最新月
+            'latest_month' => $latest_month,
+            // 最新年月
+            'latest_year_month' => $latest_year_month,
+
+            'overtime_working_year_array_result' => $overtime_working_year_array_result,
+            'employees_overtime_working_year' => $employees_overtime_working_year,
+
+            'exception_working_overtime_year' => $exception_working_overtime_year,
 
         ]);
     }
