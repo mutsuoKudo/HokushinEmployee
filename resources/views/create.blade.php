@@ -14,7 +14,7 @@ $top_scroll_top = $scroll_top;
 
 <div class="container">
     <div class="mb-5">
-        <div class="panel panel-default">
+        <div class="panel panel-default w-100">
 
             <div class="panel-body">
                 <div class="mt-2 text-center">
@@ -28,7 +28,7 @@ $top_scroll_top = $scroll_top;
         </div>
     </div>
 
-    <div class="panel panel-default mt-5 col-12">
+    <div class="panel panel-default mt-5 w-100">
 
         <!-- 登録しようとした画像がjpg/png以外の場合エラー -->
         @if(isset($file_extension_error))

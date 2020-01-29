@@ -50,6 +50,7 @@ class DependentController extends Controller
     // 扶養家族編集画面の表示
     public function dependent_info_edit(Request $request,$id)
     {
+        var_dump($id);
         $employee = Employee::find($id);
 
         // 扶養家族の情報を取得

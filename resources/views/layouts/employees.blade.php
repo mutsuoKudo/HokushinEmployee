@@ -3,7 +3,7 @@
 @section('content')
 	<div class="container">
 		<div class="col-12">
-			<div class="panel panel-default">
+			<div class="panel panel-default w-100">
 				<!-- <div class="panel-heading">
 					New Book
 				</div> -->
@@ -62,7 +62,7 @@
 
 			<!-- Books -->
 			@if (count($employees) > 0)
-				<div class="panel panel-default mt-5">
+				<div class="panel panel-default mt-5 w-100">
 					<div class="panel-heading">
 						社員一覧
 					</div>

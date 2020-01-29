@@ -232,6 +232,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         /* originals */
         'BaseClass' => 'app\Library\BaseClass', // 追加
+        'OverTimeWorkingClass' => 'app\Library\OverTimeWorkingClass', // 追加
 
     ],
 

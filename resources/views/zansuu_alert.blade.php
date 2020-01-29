@@ -12,8 +12,8 @@
 @if (session('create'))<div class="alert alert-success" role="alert" onclick="this.classList.add('hidden')">{{ session('create') }}</div>@endif
 
 <div class="container">
-	<div class="col-12">
-		<div class="panel panel-default">
+	<div class="row">
+		<div class="panel panel-default w-100">
 
 			<div class="panel-body">
 				@include('common.errors')
@@ -214,10 +214,23 @@
 						{{ csrf_field() }}
 						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
+
 					<!-- 残数僅少アラート -->
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
+					</form>
+
+					<!-- 時間外労働アラート -->
+					<form action="/employee/public/overtime_working_alert" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="overtime_working" value="時間外労働アラート一覧" class="mr-2 mt-1 table_reset function-button table_reset">
+					</form>
+
+					<!-- 時間外労働ランキング -->
+					<form action="/employee/public/overtime_working_ranking" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="overtime_working_ranking" value="時間外労働ランキング" class="mr-2 mt-1 table_reset function-button table_reset">
 					</form>
 				</div>
 
@@ -285,7 +298,7 @@
 
 			<!-- テーブル -->
 			@if (count($employees2) > 0)
-			<div class="panel panel-default mt-2">
+			<div class="panel panel-default mt-2 w-100">
 				<div class="panel-body">
 					<table class="table table-striped task-table" style="table-layout: fixed; width:100%;" id="data-teble">
 						<thead>

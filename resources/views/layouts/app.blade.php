@@ -24,7 +24,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/add.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/site.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/add.css') }}" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
@@ -61,7 +62,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item" style="margin-right:8rem">
-                            <a class="nav-link" href="./employee_doc/employee_doc.html" target="_blank" style="font-size:12px">仕様及び使い方</a>
+                            <a class="nav-link" href="{{ url('/employee_doc/employee_doc.html') }}" target="_blank" style="font-size:12px">仕様及び使い方</a>
                         </li>
                         <!-- Authentication Links -->
                         @guest
@@ -76,7 +77,7 @@
                         @else
 
 
-                        <!-- 退職者年代別 -->
+                        <!-- ログイン・ログアウト -->
                         <div class="dropdown">
                             <!-- 切替ボタンの設定 -->
                             <button type="button" class="dropdown-toggle" id="dropdownMenuButton_login_user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -401,7 +402,7 @@
                 //プリントしたいエリアの取得
                 var printPage = $(this).closest('#table-area').html();
 
-                //プリント用の要素「#print」を作成
+                //プリント用の要素「#print-alert」を作成
                 $('body').append('<div id="print-alert"></div>');
                 $('#print-alert').append(printPage);
 

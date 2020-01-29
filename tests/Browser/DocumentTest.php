@@ -30,7 +30,7 @@ class DocumentTest extends DuskTestCase
             // 読み込みに少し時間がかかるのでpause
             $browser->pause('1000')
                 ->assertPathIs('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
                 ->screenshot('ドキュメント遷移成功' . date('Ymd-his'))
 
 
@@ -41,28 +41,28 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('サイドバー（使用方法）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 ->press('#mysidebar > li:nth-child(2) > a')
                 ->assertSee('基本機能説明')
                 ->screenshot('サイドバー（基本機能説明）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 ->press('#mysidebar > li:nth-child(5) > a')
                 ->assertSee('テーブル定義書')
                 ->screenshot('サイドバー（テーブル定義書）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 ->press('#mysidebar > li:nth-child(6) > a')
                 ->assertSee('ファイル内容')
                 ->screenshot('サイドバー（ファイル内容）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
                 ->assertPathIs('/employee/public/employee_doc/employee_doc.html')
 
                 // トップページのリンク
@@ -71,28 +71,28 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('トップページリンク（使用方法）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 ->press('#top_instructions')
                 ->assertsee('基本機能説明')
                 ->screenshot('トップページリンク（基本機能説明）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 ->press('#top_sql_tbl')
                 ->assertSee('テーブル定義書')
                 ->screenshot('トップページリンク（テーブル定義書）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 ->press('#top_file')
                 ->assertSee('ファイル内容')
                 ->screenshot('トップページリンク（ファイル内容）' . date('Ymd-his'))
 
                 ->back()
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。');
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。');
         });
     }
 
@@ -105,7 +105,7 @@ class DocumentTest extends DuskTestCase
 
             // サイドバーのテスト
             $browser->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
                 ->screenshot('トップページ' . date('Ymd-his'))
 
                 // 取扱説明書
@@ -121,7 +121,7 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('サイドバー（取扱説明書）' . date('Ymd-his'))
 
                 ->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 // 画面遷移図
                 ->press('#mysidebar > li:nth-child(4) > a');
@@ -134,7 +134,7 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('サイドバー（画面遷移図）' . date('Ymd-his'))
 
                 ->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 // テーブル定義
                 ->press('#mysidebar > li:nth-child(5) > a')
@@ -150,7 +150,7 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('サイドバー（テーブル情報①）' . date('Ymd-his'))
 
                 ->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 // テーブル定義
                 ->press('#mysidebar > li:nth-child(5) > a')
@@ -167,7 +167,7 @@ class DocumentTest extends DuskTestCase
 
                 // トップページのリンク
                 ->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 // 取扱説明書
                 ->press('#top_screen_manual');
@@ -182,7 +182,7 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('トップページリンク（取扱説明書）' . date('Ymd-his'))
 
                 ->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 // 画面遷移図
                 ->press('#top_screen_transition');
@@ -196,7 +196,7 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('トップページリンク（画面遷移図）' . date('Ymd-his'))
 
                 ->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 // テーブル定義
                 ->press('#top_sql_tbl')
@@ -212,7 +212,7 @@ class DocumentTest extends DuskTestCase
                 ->screenshot('トップページリンク（テーブル情報①）' . date('Ymd-his'))
 
                 ->visit('/employee/public/employee_doc/employee_doc.html')
-                ->assertSee('社員情報・有給情報管理ツールドキュメントです。')
+                ->assertSee('社員情報・有給情報・時間外労働情報管理ツールドキュメントです。')
 
                 // テーブル定義
                 ->press('#top_sql_tbl')

@@ -12,7 +12,7 @@
 
 <div class="container">
     <div class="col-12">
-        <div class="panel panel-default">
+        <div class="panel panel-default w-100">
 
             <div class="panel-body">
 
@@ -33,7 +33,7 @@
         </div>
 
 
-        <div class="panel panel-default mt-5">
+        <div class="panel panel-default mt-5 w-100">
             <div class="panel-heading font-weight-bold text-center" style="font-size:40px; background-color:#F7F7EE;">
                 扶養家族明細
             </div>
