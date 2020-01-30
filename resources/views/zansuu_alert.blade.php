@@ -214,15 +214,23 @@
 						{{ csrf_field() }}
 						<input type="submit" name="mishouka" value="未消化アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
+
 					<!-- 残数僅少アラート -->
 					<form action="/employee/public/zansu_kinshou" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="zansu_kinshou" value="残数僅少アラート一覧" class="mr-2 mt-1 function-button table_reset">
 					</form>
+
 					<!-- 時間外労働アラート -->
 					<form action="/employee/public/overtime_working_alert" method="GET">
 						{{ csrf_field() }}
 						<input type="submit" name="overtime_working" value="時間外労働アラート一覧" class="mr-2 mt-1 table_reset function-button table_reset">
+					</form>
+
+					<!-- 時間外労働ランキング -->
+					<form action="/employee/public/overtime_working_ranking" method="GET">
+						{{ csrf_field() }}
+						<input type="submit" name="overtime_working_ranking" value="時間外労働ランキング" class="mr-2 mt-1 table_reset function-button table_reset">
 					</form>
 				</div>
 
@@ -525,7 +533,7 @@
 	</div>
 </div>
 
-<script >
+<script>
 	$('form').submit(function() {
 		var scroll_top = $(window).scrollTop(); //送信時の位置情報を取得
 		$('input.st', this).prop('value', scroll_top); //隠しフィールドに位置情報を設定

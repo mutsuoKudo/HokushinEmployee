@@ -252,6 +252,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/zansu_kinshou', 'AlertController@zansu_kinshou');
     //時間外労働アラート一覧ボタンクリック→時間外労働アラート表示
     Route::get('/overtime_working_alert', 'AlertController@overtime_working_alert');
+    //時間外労働ランキングボタンクリック→時間外労働ランキング表示
+    Route::get('/overtime_working_ranking', 'OverTimeWorkingController@over_time_ranking');
 
 
 

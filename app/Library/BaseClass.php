@@ -212,7 +212,11 @@ class BaseClass
     //☆期首残高（付与日数+前期繰越）
     public function kisyu_nokori($huyo_holiday, $carry_over)
     {
-        $kisyu_nokori = $huyo_holiday + $carry_over;
+        if($carry_over < 0){
+            $kisyu_nokori = $huyo_holiday;
+        }else{
+            $kisyu_nokori = $huyo_holiday + $carry_over;
+        }
 
         return $kisyu_nokori;
     }
@@ -230,6 +234,7 @@ class BaseClass
         // ->toSQL();
 
         // var_dump('ここ');
+        // var_dump($id);
         // var_dump($nyushabi_year_month);
         // var_dump($day_max);
         // var_dump($holiday_count);
