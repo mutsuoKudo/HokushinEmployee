@@ -194,23 +194,7 @@ class OverTimeWorkingController extends Controller
                     $overtime_working_result = $overtime_working->overtime_working;
                 }
 
-                $holiday_working = DB::table('holiday_workings')
-                    ->select(DB::raw('sum(holiday_working) as holiday_working'))
-                    ->where('year', $post_year)
-                    ->where('month', $i)
-                    ->where('shain_cd', $id)
-                    ->first();
-
-                // var_dump($holiday_working);
-                // 入力されていない場合は0時間とする
-                if (is_null($holiday_working)) {
-                    $holiday_working_result = 0;
-                    // 入力されている場合は配列使いやすくするために入れ替える
-                } else {
-                    $holiday_working_result = $holiday_working->holiday_working;
-                }
-
-                $overtime_working_sum = $overtime_working_result + $holiday_working_result;
+                $overtime_working_sum = $overtime_working_result;
 
 
                 // 順番に追加していく
@@ -238,22 +222,8 @@ class OverTimeWorkingController extends Controller
                     $overtime_working_result = $overtime_working->overtime_working;
                 }
 
-                $holiday_working = DB::table('holiday_workings')
-                    ->select(DB::raw('sum(holiday_working) as holiday_working'))
-                    ->where('year', $post_year)
-                    ->where('month', $i)
-                    ->where('shain_cd', $id)
-                    ->first();
 
-                // 入力されていない場合は0時間とする
-                if (is_null($holiday_working)) {
-                    $holiday_working_result = 0;
-                    // 入力されている場合は配列使いやすくするために入れ替える
-                } else {
-                    $holiday_working_result = $holiday_working->holiday_working;
-                }
-
-                $overtime_working_sum = $overtime_working_result + $holiday_working_result;
+                $overtime_working_sum = $overtime_working_result;
 
 
                 // 順番に追加していく
@@ -280,24 +250,7 @@ class OverTimeWorkingController extends Controller
                     // var_dump($overtime_working_result);
                 }
 
-
-                $holiday_working = DB::table('holiday_workings')
-                    ->select(DB::raw('sum(holiday_working) as holiday_working'))
-                    ->where('year', $post_year - 1)
-                    ->where('month', $i2)
-                    ->where('shain_cd', $id)
-                    ->first();
-
-                // 入力されていない場合は0時間とする
-                if (is_null($holiday_working)) {
-                    $holiday_working_result = 0;
-                    // 入力されている場合は配列使いやすくするために入れ替える
-                } else {
-                    $holiday_working_result = $holiday_working->holiday_working;
-                }
-
-                
-                $overtime_working_sum = $overtime_working_result + $holiday_working_result;
+                $overtime_working_sum = $overtime_working_result;
 
 
                 // 順番に追加していく
@@ -775,10 +728,11 @@ class OverTimeWorkingController extends Controller
                 $overtime_working_year = DB::table('overtime_workings')
                     ->select(DB::raw('sum(CASE WHEN year =' . $latest_year . ' and month >= 4 and shain_cd = ' . $shain_cd_array[$m] . ' THEN overtime_working ELSE 0 END) AS sumday'))
                     ->get();
-                // var_dump($overtime_working);
+                // var_dump($overtime_working_year);
 
                 // 順番に追加していく
                 $overtime_working_year_array_pre[] = [$shain_cd_array[$m], $overtime_working_year[0]->sumday,];
+                // var_dump(($overtime_working_year_array_pre));
             }
 
 
